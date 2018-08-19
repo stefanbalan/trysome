@@ -1,3 +1,13 @@
 <p>
   add-xp works!
 </p>
+
+<form (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <label for="amount">Amount</label>
+    <input type="text" class="form-control" id="amount" [(ngModel)]="amount" name="amount">
+  </div>
+
+
+</form>

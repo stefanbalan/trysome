@@ -27,6 +27,16 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="ClientApp\node_modules\bootstrap\dist\css\bootstrap-theme.css" />
+    <Content Include="ClientApp\node_modules\bootstrap\dist\css\bootstrap.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ClientApp\node_modules\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="ClientApp\node_modules\bootstrap\dist\css\bootstrap.css.map" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

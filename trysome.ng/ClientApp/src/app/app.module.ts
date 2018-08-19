@@ -11,6 +11,9 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AddXpComponent } from './add-xp/add-xp.component';
 
+
+import { XpService } from './xp.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,9 +31,12 @@ import { AddXpComponent } from './add-xp/add-xp.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'add-xp', component: AddXpComponent }
     ])
   ],
-  providers: [],
+  providers: [
+    XpService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,10 +8,11 @@ import { XpService } from '../xp.service';
   styleUrls: ['./add-xp.component.css']
 })
 export class AddXpComponent implements OnInit {
+  constructor(private xps: XpService) {}
 
-  constructor(private xps: XpService) { }
+  // model = new Xpence
+  amount: number;
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
+  public onSubmit() {}
 }
