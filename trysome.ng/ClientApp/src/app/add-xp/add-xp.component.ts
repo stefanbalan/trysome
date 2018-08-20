@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { XpService } from '../xp.service';
+import { Expense } from '../model/expense';
 
 @Component({
   selector: 'app-add-xp',
@@ -12,7 +13,12 @@ export class AddXpComponent implements OnInit {
 
   // model = new Xpence
   amount: number;
+  category: string;
+
+  submitted: boolean;
   ngOnInit() {}
 
-  public onSubmit() {}
+  public onSubmit() {
+    this.submitted = true;
+  }
 }
