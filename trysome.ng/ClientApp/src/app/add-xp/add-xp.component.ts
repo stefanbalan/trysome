@@ -12,13 +12,23 @@ export class AddXpComponent implements OnInit {
   constructor(private xps: XpService) {}
 
   // model = new Xpence
-  amount: number;
+  date?: Date;
+  amount?: number;
   category: string;
+  tags: string;
 
   submitted: boolean;
   ngOnInit() {}
 
   public onSubmit() {
+    const xp = new Expense(this.date, this.amount, this.category, this.tags);
+    if (!this.xps.addExpense(xp)) {
+      return;
+    }
+    this.date = null;
+    this.amount = null;
+    this.category = null;
+    this.tags = null;
     this.submitted = true;
   }
 }
