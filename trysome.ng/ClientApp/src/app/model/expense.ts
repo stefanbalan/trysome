@@ -1,3 +1,8 @@
 export class Expense {
-  constructor(date:Date, amount: number, category: string, tag: string) {}
+  constructor(
+    public date: Date,
+    public amount: number,
+    public category: string,
+    public tag: string
+  ) {}
 }

@@ -1,4 +1,3 @@
-import * as console from 'console';
 import { Expense } from './model/expense';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -6,7 +5,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class XpService {
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -20,7 +19,7 @@ export class XpService {
     // .pipe(
     //   catchError(this.handleError('addHero', hero))
     // );
-    // console.log('sent to service ');
+    console.log(expense);
     return true;
   }
 }
