@@ -10,7 +10,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 @Injectable()
 export class XpService {
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -31,14 +31,16 @@ export class XpService {
       );
     }
     // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try again later.');
+    //return throwError('Something bad happened; please try again later.');
   }
 
   addExpense(expense: Expense): boolean {
     console.log(expense);
     const result = this.http
       .post<Expense>('api/Expense', expense, this.httpOptions)
-      .pipe(catchError(this.handleError('addHero', expense)));
+      .pipe(retry(2))
+      .pipe(catchError(this.handleError('addHero', expense)))
+      ;
 
     return true;
   }
