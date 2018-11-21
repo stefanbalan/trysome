@@ -2,7 +2,11 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/trysome
 *.DotSettings.user
 /.vs/VSWorkspaceState.json
 /.vs/slnx.sqlite
+/.vs/trysome
+/.vs/trysome.odata
+**/bin
+**/obj
+

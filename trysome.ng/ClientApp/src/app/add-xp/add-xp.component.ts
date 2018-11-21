@@ -9,7 +9,7 @@ import { Expense } from '../model/expense';
   styleUrls: ['./add-xp.component.css']
 })
 export class AddXpComponent implements OnInit {
-  constructor(private xps: XpService) {}
+  constructor(private readonly xps: XpService) {}
 
   // model = new Xpence
   date?: Date;
@@ -20,7 +20,7 @@ export class AddXpComponent implements OnInit {
   submitted: boolean;
   ngOnInit() {}
 
-  public onSubmit() {
+  onSubmit() {
     const xp = new Expense(this.date, this.amount, this.category, this.tags);
     if (!this.xps.addExpense(xp)) {
       return;
