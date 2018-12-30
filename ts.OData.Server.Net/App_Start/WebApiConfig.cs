@@ -6,7 +6,11 @@ namespace ts.OData.Server.Net
     {
         public static void Register(HttpConfiguration config)
         {
+            
+            IocContainer.Setup(config);
+
             // Web API configuration and services
+
 
             // Web API routes
             config.MapHttpAttributeRoutes();

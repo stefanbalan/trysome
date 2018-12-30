@@ -7,31 +7,17 @@ using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Castle.Windsor.Installer;
 using ts.OData.Data.Net;
 
 namespace ts.OData.Server.Net
 {
-    public static class IocContainer
-    {
-        private static IWindsorContainer _container;
-
-        public static void Setup()
-        {
-            _container = new WindsorContainer().Install(FromAssembly.This());
-
-            var controllerFactory = new WindsorControllerFactory(_container.Kernel);
-            ControllerBuilder.Current.SetControllerFactory(controllerFactory);
-        }
-    }
-
     // ReSharper disable once UnusedMember.Global
     public class IoCInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(new[]{
-                Component.For<TsODataContext>().ImplementedBy<TsODataContext>().LifestylePerWebRequest()
+                Component.For<TsODataContext>().LifestylePerWebRequest()
             });
         }
     }
@@ -42,16 +28,12 @@ namespace ts.OData.Server.Net
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(Classes.FromThisAssembly()
-
                 .BasedOn<ApiController>()
-
                 //.Pick().If(t => t.Name.EndsWith("Controller"))
-
                 .Configure(configurer => configurer.Named(configurer.Implementation.Name))
                 .LifestylePerWebRequest());
         }
     }
-
 
     public class WindsorControllerFactory : DefaultControllerFactory
     {
@@ -62,9 +44,9 @@ namespace ts.OData.Server.Net
             _kernel = kernel;
         }
 
-        public override void ReleaseController(IController controller)
+        public override IController CreateController(RequestContext requestContext, string controllerName)
         {
-            _kernel.ReleaseComponent(controller);
+            return base.CreateController(requestContext, controllerName);
         }
 
         protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
@@ -75,5 +57,12 @@ namespace ts.OData.Server.Net
             }
             return (IController)_kernel.Resolve(controllerType);
         }
+
+        public override void ReleaseController(IController controller)
+        {
+            _kernel.ReleaseComponent(controller);
+        }
     }
+
+
 }

@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Class1.cs" />
+    <Compile Include="App_Start\IocContainer.cs" />
     <Compile Include="App_Start\IoCInstaller.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ServerController.cs" />

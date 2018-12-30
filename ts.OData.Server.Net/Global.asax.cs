@@ -8,10 +8,9 @@ namespace ts.OData.Server.Net
         protected void Application_Start()
         {
             
-
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            IocContainer.Setup();
+
 
 
             var ctx = new TsODataContext();
