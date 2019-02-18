@@ -3,11 +3,9 @@
 ################################################################################
 
 *.DotSettings.user
-/.vs/VSWorkspaceState.json
-/.vs/slnx.sqlite
-/.vs/trysome
-/.vs/trysome.odata
+*.csproj.user
+
+/.vs
+/packages
 **/bin
 **/obj
-
-/packages
