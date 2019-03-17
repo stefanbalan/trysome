@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ts.Domain", "ts.Domain\ts.Domain.csproj", "{0EE53CBE-DADE-42F2-AA75-00968E6C568E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ts.Blazor.Server", "ts.Blazor.Server\ts.Blazor.Server.csproj", "{7E82774B-F249-49CD-B98C-6A9D0D8F2436}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ts.Blazor.Api", "ts.Blazor.Server\ts.Blazor.Api.csproj", "{7E82774B-F249-49CD-B98C-6A9D0D8F2436}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ts.Blazor.Client", "ts.Blazor.Client\ts.Blazor.Client.csproj", "{E2894999-EB23-408A-9BF3-A86E0E7410CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ts.Blazor", "ts.Blazor\ts.Blazor.csproj", "{75D32704-DAAA-4D5F-8C21-14B4591BF225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{7E82774B-F249-49CD-B98C-6A9D0D8F2436}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E82774B-F249-49CD-B98C-6A9D0D8F2436}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E82774B-F249-49CD-B98C-6A9D0D8F2436}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2894999-EB23-408A-9BF3-A86E0E7410CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2894999-EB23-408A-9BF3-A86E0E7410CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2894999-EB23-408A-9BF3-A86E0E7410CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2894999-EB23-408A-9BF3-A86E0E7410CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75D32704-DAAA-4D5F-8C21-14B4591BF225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75D32704-DAAA-4D5F-8C21-14B4591BF225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75D32704-DAAA-4D5F-8C21-14B4591BF225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75D32704-DAAA-4D5F-8C21-14B4591BF225}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

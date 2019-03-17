@@ -5,7 +5,7 @@
 *.DotSettings.user
 *.csproj.user
 
-/.vs
+.vs
 /packages
 **/bin
 **/obj
