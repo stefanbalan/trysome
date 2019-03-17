@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Blazor.Server;
+﻿using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
