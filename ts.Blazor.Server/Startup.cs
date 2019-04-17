@@ -41,7 +41,7 @@ namespace ts.Blazor.Api
                 routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
             });
 
-            app.UseBlazor<Client.Startup>();
+            app.UseBlazor<Blazor.Startup>();
         }
     }
 }
