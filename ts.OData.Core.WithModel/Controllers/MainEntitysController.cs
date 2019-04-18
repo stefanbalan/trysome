@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -171,6 +172,7 @@ namespace ts.OData.Core.WithModel.Controllers
         }
 
         [AcceptVerbs("POST", "PUT")]
+        //https://stackoverflow.com/a/54111132/1187199
         public async Task<IActionResult> CreateRef([FromODataUri] int key, string navigationProperty, [FromBody] Uri link)
         {
             var MainEntity = await _SomeDbContext.MainEntitySet.SingleOrDefaultAsync(ls => ls.Id == key);
@@ -182,7 +184,7 @@ namespace ts.OData.Core.WithModel.Controllers
             switch (navigationProperty)
             {
                 case "Children":
-                    //var relatedKey = Helpers.GetKeyFromUri<Guid>( this.ControllerContext.HttpContext. , link);
+                    var relatedKey = ts.OData.Core.WithModel.Infrastructure.Extensions.GetKeyFromUri<Guid>(this.HttpContext?.Request, link);
 
                     //var serverIdentity = await _SomeDbContext.ChildrenSet.SingleOrDefaultAsync(si => si.ID == relatedKey);
                     //if (serverIdentity == null)
