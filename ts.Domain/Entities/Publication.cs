@@ -1,52 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace ts.Domain.Entities
+namespace ts.Domain
 {
-//    [Table("Publication")]
-    public class PolicyPublication : Securable
+    public partial class Publication
     {
-
-        public PolicyPublication()
+        public Publication()
         {
-//            SecurableType = Security.SecurableType.PolicyPublication;
-//            IsActive = false;
-//            Acknowledges = new List<Acknowledge.Acknowledge>();
-//            AcknowledgeList = new List<AcknowledgeServer>();
-//            Behaviors = new List<PublicationBehavior>();
-//            CollectionList = new List<IdCollection>();
+            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanents>();
+            AcknowledgeServers = new HashSet<AcknowledgeServers>();
+            Acknowledges = new HashSet<Acknowledges>();
+            BehaviorPublication = new HashSet<BehaviorPublication>();
+            PublicationOnCollection = new HashSet<PublicationOnCollection>();
         }
+
+        public int Id { get; set; }
         public string Name { get; set; }
-
-        public Guid PublicationID { get; set; }
-
+        public Guid PublicationId { get; set; }
         public bool IsUtcDateMode { get; set; }
-
         public DateTime BeginDate { get; set; }
-
         public DateTime EndDate { get; set; }
-
         public DateTime? ExpectedDate { get; set; }
-
-        public int PolicyID { get; set; }
-
-        public virtual AbstractPolicy Policy { get; set; }
-
-//        public virtual ICollection<IdCollection> CollectionList { get; set; }
-////        [ForeignKey("PublicationID")]
-//        public virtual ICollection<PublicationBehavior> Behaviors { get; set; }
-////        [JsonIgnore]
-//        public virtual ICollection<Acknowledge.Acknowledge> Acknowledges { get; set; }
-////        [JsonIgnore]
-//        public virtual ICollection<Acknowledge.AcknowledgeImpermanent> ListAcknowledgeImpermanent { get; set; }
-////        [JsonIgnore]
-//        public virtual ICollection<AcknowledgeServer> AcknowledgeList { get; set; }
-
+        public int PolicyId { get; set; }
         public bool IsActive { get; set; }
-
         public bool IsImpermanent { get; set; }
 
-        public bool IsArchived { get; set; }
+        public virtual SecurableObject IdNavigation { get; set; }
+        public virtual PolicyAbstract Policy { get; set; }
+        public virtual ICollection<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
+        public virtual ICollection<AcknowledgeServers> AcknowledgeServers { get; set; }
+        public virtual ICollection<Acknowledges> Acknowledges { get; set; }
+        public virtual ICollection<BehaviorPublication> BehaviorPublication { get; set; }
+        public virtual ICollection<PublicationOnCollection> PublicationOnCollection { get; set; }
     }
 }
