@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class IdentityServer
+    public class IdentityServer
     {
         public IdentityServer()
         {
-            AcknowledgeServers = new HashSet<AcknowledgeServers>();
+            AcknowledgeServers = new HashSet<AcknowledgeServer>();
             ComputerAssignationServers = new HashSet<ComputerAssignationServers>();
             InverseParentServer = new HashSet<IdentityServer>();
             LocalizedSiteServer = new HashSet<LocalizedSiteServer>();
@@ -29,7 +29,7 @@ namespace ts.Domain
         public Guid? ParentServerId { get; set; }
 
         public virtual IdentityServer ParentServer { get; set; }
-        public virtual ICollection<AcknowledgeServers> AcknowledgeServers { get; set; }
+        public virtual ICollection<AcknowledgeServer> AcknowledgeServers { get; set; }
         public virtual ICollection<ComputerAssignationServers> ComputerAssignationServers { get; set; }
         public virtual ICollection<IdentityServer> InverseParentServer { get; set; }
         public virtual ICollection<LocalizedSiteServer> LocalizedSiteServer { get; set; }

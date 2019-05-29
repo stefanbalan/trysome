@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class ComputerAssignationServers
+    public class ComputerAssignationServers
     {
         public int ComputerAssignationId { get; set; }
         public Guid DbServerIdentityId { get; set; }

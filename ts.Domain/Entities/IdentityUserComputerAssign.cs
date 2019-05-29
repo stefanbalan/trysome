@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class IdentityUserComputerAssign
+    public class IdentityUserComputerAssign
     {
         public IdentityUserComputerAssign()
         {
-            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanents>();
-            Acknowledges = new HashSet<Acknowledges>();
+            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanent>();
+            Acknowledges = new HashSet<Acknowledge>();
             CollectionMixedResolved = new HashSet<CollectionMixedResolved>();
             ComputerAssignationServers = new HashSet<ComputerAssignationServers>();
         }
@@ -22,8 +22,8 @@ namespace ts.Domain
 
         public virtual IdentityComputer Computer { get; set; }
         public virtual IdentityUser User { get; set; }
-        public virtual ICollection<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
-        public virtual ICollection<Acknowledges> Acknowledges { get; set; }
+        public virtual ICollection<AcknowledgeImpermanent> AcknowledgeImpermanents { get; set; }
+        public virtual ICollection<Acknowledge> Acknowledges { get; set; }
         public virtual ICollection<CollectionMixedResolved> CollectionMixedResolved { get; set; }
         public virtual ICollection<ComputerAssignationServers> ComputerAssignationServers { get; set; }
     }

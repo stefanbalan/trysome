@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using ts.Domain.Entities;
 
-namespace ts.Domain
+namespace ts.Database
 {
-    public partial class PolicyCenterCentralDevContext : DbContext
+    public class PolicyCenterCentralDevContext : DbContext
     {
         public PolicyCenterCentralDevContext()
         {
@@ -16,9 +15,9 @@ namespace ts.Domain
         }
 
         public virtual DbSet<AcknowledgeFeedback> AcknowledgeFeedback { get; set; }
-        public virtual DbSet<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
-        public virtual DbSet<AcknowledgeServers> AcknowledgeServers { get; set; }
-        public virtual DbSet<Acknowledges> Acknowledges { get; set; }
+        public virtual DbSet<AcknowledgeImpermanent> AcknowledgeImpermanents { get; set; }
+        public virtual DbSet<AcknowledgeServer> AcknowledgeServers { get; set; }
+        public virtual DbSet<Acknowledge> Acknowledges { get; set; }
         public virtual DbSet<BehaviorForceExecution> BehaviorForceExecution { get; set; }
         public virtual DbSet<BehaviorPolicyAbstract> BehaviorPolicyAbstract { get; set; }
         public virtual DbSet<BehaviorPolicyNotification> BehaviorPolicyNotification { get; set; }
@@ -35,7 +34,7 @@ namespace ts.Domain
         public virtual DbSet<IdentityUser> IdentityUser { get; set; }
         public virtual DbSet<IdentityUserComputerAssign> IdentityUserComputerAssign { get; set; }
         public virtual DbSet<LocalizedSiteServer> LocalizedSiteServer { get; set; }
-        public virtual DbSet<LocalizedSites> LocalizedSites { get; set; }
+        public virtual DbSet<LocalizedSite> LocalizedSites { get; set; }
         public virtual DbSet<MessageContent> MessageContent { get; set; }
         public virtual DbSet<MessageVariables> MessageVariables { get; set; }
         public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
@@ -47,10 +46,10 @@ namespace ts.Domain
         public virtual DbSet<PublicationOnCollection> PublicationOnCollection { get; set; }
         public virtual DbSet<SecurableObject> SecurableObject { get; set; }
         public virtual DbSet<SecurityIdentity> SecurityIdentity { get; set; }
-        public virtual DbSet<SecurityIdentityRights> SecurityIdentityRights { get; set; }
-        public virtual DbSet<SecurityPermissions> SecurityPermissions { get; set; }
-        public virtual DbSet<SecurityRoles> SecurityRoles { get; set; }
-        public virtual DbSet<SecurityScopes> SecurityScopes { get; set; }
+        public virtual DbSet<SecurityIdentityRight> SecurityIdentityRights { get; set; }
+        public virtual DbSet<SecurityPermission> SecurityPermissions { get; set; }
+        public virtual DbSet<SecurityRole> SecurityRoles { get; set; }
+        public virtual DbSet<SecurityScope> SecurityScopes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,7 +69,7 @@ namespace ts.Domain
                 entity.Property(e => e.Id).HasColumnName("ID");
             });
 
-            modelBuilder.Entity<AcknowledgeImpermanents>(entity =>
+            modelBuilder.Entity<AcknowledgeImpermanent>(entity =>
             {
                 entity.HasIndex(e => e.FeedbackId)
                     .HasName("IX_FeedbackID");
@@ -129,7 +128,7 @@ namespace ts.Domain
                     .HasConstraintName("FK_dbo.AcknowledgeImpermanents_dbo.Publication_Publication_ID");
             });
 
-            modelBuilder.Entity<AcknowledgeServers>(entity =>
+            modelBuilder.Entity<AcknowledgeServer>(entity =>
             {
                 entity.HasKey(e => new { e.PublicationId, e.ServerId })
                     .HasName("PK_dbo.AcknowledgeServers");
@@ -157,7 +156,7 @@ namespace ts.Domain
                     .HasConstraintName("FK_dbo.AcknowledgeServers_dbo.IdentityServer_ServerID");
             });
 
-            modelBuilder.Entity<Acknowledges>(entity =>
+            modelBuilder.Entity<Acknowledge>(entity =>
             {
                 entity.HasIndex(e => e.FeedbackId)
                     .HasName("IX_FeedbackID");
@@ -538,12 +537,12 @@ namespace ts.Domain
                     .HasConstraintName("FK_dbo.LocalizedSiteServer_dbo.IdentityServer_ServerId");
 
                 entity.HasOne(d => d.Site)
-                    .WithMany(p => p.LocalizedSiteServer)
+                    .WithMany(p => p.LocalizedSiteServers)
                     .HasForeignKey(d => d.SiteId)
                     .HasConstraintName("FK_dbo.LocalizedSiteServer_dbo.LocalizedSites_SiteId");
             });
 
-            modelBuilder.Entity<LocalizedSites>(entity =>
+            modelBuilder.Entity<LocalizedSite>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
             });
@@ -732,7 +731,7 @@ namespace ts.Domain
                 entity.Property(e => e.Id).HasColumnName("ID");
             });
 
-            modelBuilder.Entity<SecurityIdentityRights>(entity =>
+            modelBuilder.Entity<SecurityIdentityRight>(entity =>
             {
                 entity.HasIndex(e => e.AdministrativeIdentityId)
                     .HasName("IX_AdministrativeIdentityId");
@@ -761,7 +760,7 @@ namespace ts.Domain
                     .HasConstraintName("FK_dbo.SecurityIdentityRights_dbo.SecurityScopes_SecurityScopeId");
             });
 
-            modelBuilder.Entity<SecurityPermissions>(entity =>
+            modelBuilder.Entity<SecurityPermission>(entity =>
             {
                 entity.HasIndex(e => e.SecurityRoleId)
                     .HasName("IX_SecurityRoleId");
@@ -776,12 +775,12 @@ namespace ts.Domain
                     .HasConstraintName("FK_dbo.SecurityPermissions_dbo.SecurityRoles_SecurityRoleId");
             });
 
-            modelBuilder.Entity<SecurityRoles>(entity =>
+            modelBuilder.Entity<SecurityRole>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
             });
 
-            modelBuilder.Entity<SecurityScopes>(entity =>
+            modelBuilder.Entity<SecurityScope>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
             });

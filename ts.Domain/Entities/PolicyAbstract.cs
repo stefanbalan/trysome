@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class PolicyAbstract
+    public class PolicyAbstract
     {
         public PolicyAbstract()
         {
-            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanents>();
+            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanent>();
             BehaviorPolicyAbstract = new HashSet<BehaviorPolicyAbstract>();
             Publication = new HashSet<Publication>();
         }
@@ -28,7 +28,7 @@ namespace ts.Domain
         public virtual PolicyApplication PolicyApplication { get; set; }
         public virtual PolicyNotification PolicyNotification { get; set; }
         public virtual PolicyReboot PolicyReboot { get; set; }
-        public virtual ICollection<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
+        public virtual ICollection<AcknowledgeImpermanent> AcknowledgeImpermanents { get; set; }
         public virtual ICollection<BehaviorPolicyAbstract> BehaviorPolicyAbstract { get; set; }
         public virtual ICollection<Publication> Publication { get; set; }
     }
