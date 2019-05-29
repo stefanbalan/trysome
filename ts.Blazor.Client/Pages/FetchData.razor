@@ -1,0 +1,44 @@
+﻿@page "/fetchdata"
+@using Microsoft.AspNetCore.Components
+@using ts.Domain
+@using ts.Domain.Entities
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (scopes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in scopes)
+            {
+                <tr>
+                    <td>@forecast.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+    SecurityScope[] scopes;
+
+    protected override async Task OnInitAsync()
+    {
+        scopes = await Http.GetJsonAsync<SecurityScope[]>("api/SampleData/WeatherForecasts");
+    }
+}

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class IdentityComputer
+    public class IdentityComputer
     {
         public IdentityComputer()
         {

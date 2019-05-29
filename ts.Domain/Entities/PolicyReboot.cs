@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class PolicyReboot
+    public class PolicyReboot
     {
         public int Id { get; set; }
         public bool IsEmergency { get; set; }

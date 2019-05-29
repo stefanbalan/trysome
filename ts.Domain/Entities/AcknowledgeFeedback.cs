@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class AcknowledgeFeedback
+    public class AcknowledgeFeedback
     {
         public AcknowledgeFeedback()
         {
-            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanents>();
-            Acknowledges = new HashSet<Acknowledges>();
+            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanent>();
+            Acknowledges = new HashSet<Acknowledge>();
         }
 
         public int Id { get; set; }
         public int? Grade { get; set; }
         public string Comment { get; set; }
 
-        public virtual ICollection<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
-        public virtual ICollection<Acknowledges> Acknowledges { get; set; }
+        public virtual ICollection<AcknowledgeImpermanent> AcknowledgeImpermanents { get; set; }
+        public virtual ICollection<Acknowledge> Acknowledges { get; set; }
     }
 }

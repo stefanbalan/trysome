@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class BehaviorPolicyAbstract
+    public class BehaviorPolicyAbstract
     {
         public int Id { get; set; }
         public int PolicyId { get; set; }

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class SecurityIdentity
+    public class SecurityIdentity
     {
         public SecurityIdentity()
         {
-            SecurityIdentityRights = new HashSet<SecurityIdentityRights>();
+            SecurityIdentityRights = new HashSet<SecurityIdentityRight>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public int IdentityType { get; set; }
 
-        public virtual ICollection<SecurityIdentityRights> SecurityIdentityRights { get; set; }
+        public virtual ICollection<SecurityIdentityRight> SecurityIdentityRights { get; set; }
     }
 }
