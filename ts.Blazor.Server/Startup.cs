@@ -31,6 +31,9 @@ namespace ts.Blazor.Server
 
             //services.AddScoped<RepositoryBase<Product, DataContext>, ProductRepository>();
 
+            
+
+
             services.AddMvc()
                     .AddNewtonsoftJson(op =>
                     {
