@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using ts.Domain;
 
-namespace ts.Blazor.Api.Infrastructure
+namespace ts.Database
 {
     public abstract class RepositoryBase<TEntity, TContext> : IRepository<TEntity, int>
         where TEntity : EntityBaseIntKey

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class Publication
+    public class Publication
     {
         public Publication()
         {
-            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanents>();
-            AcknowledgeServers = new HashSet<AcknowledgeServers>();
-            Acknowledges = new HashSet<Acknowledges>();
+            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanent>();
+            AcknowledgeServers = new HashSet<AcknowledgeServer>();
+            Acknowledges = new HashSet<Acknowledge>();
             BehaviorPublication = new HashSet<BehaviorPublication>();
             PublicationOnCollection = new HashSet<PublicationOnCollection>();
         }
@@ -27,9 +27,9 @@ namespace ts.Domain
 
         public virtual SecurableObject IdNavigation { get; set; }
         public virtual PolicyAbstract Policy { get; set; }
-        public virtual ICollection<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
-        public virtual ICollection<AcknowledgeServers> AcknowledgeServers { get; set; }
-        public virtual ICollection<Acknowledges> Acknowledges { get; set; }
+        public virtual ICollection<AcknowledgeImpermanent> AcknowledgeImpermanents { get; set; }
+        public virtual ICollection<AcknowledgeServer> AcknowledgeServers { get; set; }
+        public virtual ICollection<Acknowledge> Acknowledges { get; set; }
         public virtual ICollection<BehaviorPublication> BehaviorPublication { get; set; }
         public virtual ICollection<PublicationOnCollection> PublicationOnCollection { get; set; }
     }

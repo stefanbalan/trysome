@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class BehaviorPolicySchedulabe
+    public class BehaviorPolicySchedulabe
     {
         public int Id { get; set; }
         public int MaxDeferCount { get; set; }

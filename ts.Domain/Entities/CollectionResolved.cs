@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class CollectionResolved
+    public class CollectionResolved
     {
         public int CollectionId { get; set; }
         public int IdentityId { get; set; }

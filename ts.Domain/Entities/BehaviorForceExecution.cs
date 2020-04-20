@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class BehaviorForceExecution
+    public class BehaviorForceExecution
     {
         public int Id { get; set; }
 

@@ -1,12 +1,22 @@
 ﻿@page "/fetchdata"
+<<<<<<< HEAD
 @using ts.Blazor.Shared
+=======
+@using Microsoft.AspNetCore.Components
+@using ts.Domain
+@using ts.Domain.Entities
+>>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
+<<<<<<< HEAD
 @if (forecasts == null)
+=======
+@if (scopes == null)
+>>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
 {
     <p><em>Loading...</em></p>
 }
@@ -22,6 +32,7 @@ else
             </tr>
         </thead>
         <tbody>
+<<<<<<< HEAD
             @foreach (var forecast in forecasts)
             {
                 <tr>
@@ -29,6 +40,12 @@ else
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
+=======
+            @foreach (var forecast in scopes)
+            {
+                <tr>
+                    <td>@forecast.Name</td>
+>>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
                 </tr>
             }
         </tbody>
@@ -36,10 +53,18 @@ else
 }
 
 @functions {
+<<<<<<< HEAD
     WeatherForecast[] forecasts;
 
     protected override async Task OnInitAsync()
     {
         forecasts = await Http.GetJsonAsync<WeatherForecast[]>("api/SampleData/WeatherForecasts");
+=======
+    SecurityScope[] scopes;
+
+    protected override async Task OnInitAsync()
+    {
+        scopes = await Http.GetJsonAsync<SecurityScope[]>("api/SampleData/WeatherForecasts");
+>>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
     }
 }

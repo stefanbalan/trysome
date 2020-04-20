@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class MigrationHistory
+    public class MigrationHistory
     {
         public string MigrationId { get; set; }
         public string ContextKey { get; set; }

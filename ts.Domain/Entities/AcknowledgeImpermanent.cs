@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class AcknowledgeImpermanents
+    public class AcknowledgeImpermanent
     {
         public int Id { get; set; }
         public int State { get; set; }

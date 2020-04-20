@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class CollectionMixedResolved
+    public class CollectionMixedResolved
     {
         public int IdCollectionId { get; set; }
         public int ComputerAssignationId { get; set; }

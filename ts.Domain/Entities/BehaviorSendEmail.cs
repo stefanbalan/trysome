@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class BehaviorSendEmail
+    public class BehaviorSendEmail
     {
         public int Id { get; set; }
         public string From { get; set; }

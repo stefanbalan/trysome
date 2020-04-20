@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class AcknowledgeServers
+    public class AcknowledgeServer
     {
         public Guid PublicationId { get; set; }
         public Guid ServerId { get; set; }

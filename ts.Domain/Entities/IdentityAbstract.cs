@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class IdentityAbstract
+    public class IdentityAbstract
     {
         public IdentityAbstract()
         {
-            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanents>();
-            Acknowledges = new HashSet<Acknowledges>();
+            AcknowledgeImpermanents = new HashSet<AcknowledgeImpermanent>();
+            Acknowledges = new HashSet<Acknowledge>();
             CollectionResolved = new HashSet<CollectionResolved>();
         }
 
@@ -17,8 +16,8 @@ namespace ts.Domain
 
         public virtual IdentityComputer IdentityComputer { get; set; }
         public virtual IdentityUser IdentityUser { get; set; }
-        public virtual ICollection<AcknowledgeImpermanents> AcknowledgeImpermanents { get; set; }
-        public virtual ICollection<Acknowledges> Acknowledges { get; set; }
+        public virtual ICollection<AcknowledgeImpermanent> AcknowledgeImpermanents { get; set; }
+        public virtual ICollection<Acknowledge> Acknowledges { get; set; }
         public virtual ICollection<CollectionResolved> CollectionResolved { get; set; }
     }
 }
