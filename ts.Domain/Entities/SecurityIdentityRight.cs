@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class SecurityIdentityRights
+    public class SecurityIdentityRight
     {
         public int Id { get; set; }
         public int SecurityRoleId { get; set; }
@@ -11,7 +8,7 @@ namespace ts.Domain
         public int SecurityScopeId { get; set; }
 
         public virtual SecurityIdentity AdministrativeIdentity { get; set; }
-        public virtual SecurityRoles SecurityRole { get; set; }
-        public virtual SecurityScopes SecurityScope { get; set; }
+        public virtual SecurityRole SecurityRole { get; set; }
+        public virtual SecurityScope SecurityScope { get; set; }
     }
 }

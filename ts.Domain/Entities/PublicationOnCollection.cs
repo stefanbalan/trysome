@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class PublicationOnCollection
+    public class PublicationOnCollection
     {
         public int CollectionId { get; set; }
         public int PublicationId { get; set; }

@@ -2,17 +2,18 @@
 
 namespace ts.Domain.Entities
 {
-    public class SecurityIdentity
+    public class SecurityRole
     {
-        public SecurityIdentity()
+        public SecurityRole()
         {
             SecurityIdentityRights = new HashSet<SecurityIdentityRight>();
+            SecurityPermissions = new HashSet<SecurityPermission>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int IdentityType { get; set; }
 
         public virtual ICollection<SecurityIdentityRight> SecurityIdentityRights { get; set; }
+        public virtual ICollection<SecurityPermission> SecurityPermissions { get; set; }
     }
 }

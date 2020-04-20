@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace ts.Domain
+namespace ts.Domain.Entities
 {
-    public partial class BehaviorPolicyNotification
+    public class BehaviorPolicyNotification
     {
         public int Id { get; set; }
         public int DisplayTime { get; set; }

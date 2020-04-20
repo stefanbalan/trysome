@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ts.Domain
+﻿namespace ts.Domain.Entities
 {
-    public partial class MessageVariables
+    public class MessageVariables
     {
         public int Id { get; set; }
         public string Name { get; set; }
