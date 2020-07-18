@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100%"
+   version="0.0"
+   height="100%"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="drawing.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="11.313709"
+     inkscape:cx="-14.704763"
+     inkscape:cy="1106.7107"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1-4"
+     style="display:none">
+    <path
+       style="stroke-width:0.19999748"
+       d="m -7.9968271,-4.2782416 c -1.1079861,0 -1.9998528,0.8918658 -1.9998528,1.9998528 v 4.000222 c 0,1.107986 0.8918667,1.999852 1.9998528,1.999852 h 7.33331013 L 0.00310059,5.7215381 0.66971815,3.7216852 H 8.0030283 c 1.1079861,1e-6 1.9998527,-0.891866 1.9998527,-1.999852 v -4.000222 c 0,-1.107987 -0.8918666,-1.9998528 -1.9998527,-1.9998528 z"
+       id="rect10-3"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="shapes"
+     style="display:none">
+    <rect
+       id="rect10-3-0"
+       width="20"
+       height="16"
+       x="-10"
+       y="-8"
+       style="stroke-width:0.2"
+       rx="2" />
+    <path
+       style="stroke:#000000;stroke-width:0.1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 0,10 1,7 h -2 z"
+       id="path21-6-2"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="-10.289876"
+       y="-2.0144646"
+       id="text140"><tspan
+         sodipodi:role="line"
+         id="tspan138"
+         x="-10.289876"
+         y="-2.0144646"
+         style="fill:#ffffff;stroke-width:0.26458332">ESI 1234</tspan><tspan
+         sodipodi:role="line"
+         x="-10.289876"
+         y="4.1591463"
+         style="fill:#ffffff;stroke-width:0.26458332"
+         id="tspan142">ESI 4444</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="shapes-8">
+    <path
+       style="stroke-width:0.19999748"
+       d="m -7.9999277,-8.3955573 c -1.1079861,0 -1.9998528,0.8918667 -1.9998528,1.9998528 V 5.6044453 c 0,1.1079861 0.8918667,1.9998522 1.9998528,1.9998522 h 7.33331014 L 0,9.6041493 0.66661756,7.6042975 H 7.9999277 c 1.1079861,0 1.9998528,-0.8918661 1.9998528,-1.9998522 V -6.3957045 c 0,-1.1079861 -0.8918667,-1.9998528 -1.9998528,-1.9998528 z"
+       id="rect10-3-0-7"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93888855px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="-10.289876"
+       y="-2.0144646"
+       id="text140-8"><tspan
+         sodipodi:role="line"
+         id="tspan138-2"
+         x="-10.289876"
+         y="-2.0144646"
+         style="fill:#ffffff;stroke-width:0.26458332">ESI 1234</tspan><tspan
+         sodipodi:role="line"
+         x="-10.289876"
+         y="4.1591463"
+         style="fill:#ffffff;stroke-width:0.26458332"
+         id="tspan142-9">ESI 4444</tspan></text>
+  </g>
+</svg>
