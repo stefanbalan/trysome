@@ -7,7 +7,7 @@ namespace AdventOfCode2020
     public class Day2
     {
 
-        public static int Compute1()
+        public int Compute1()
         {
             var count = 0;
             var regex = new Regex(@"(\d+)-(\d+) (\w): (\w+)");
@@ -34,7 +34,7 @@ namespace AdventOfCode2020
             }
         }
 
-        public static int Compute2()
+        public int Compute2()
         {
             var count = 0;
             var regex = new Regex(@"(\d+)-(\d+) (\w): (\w+)");
@@ -54,7 +54,7 @@ namespace AdventOfCode2020
                 var chr = match.Groups[3].Value[0];
                 var str = match.Groups[4].Value;
 
-                if ( str[min-1].Equals(chr) ^ str[max-1].Equals(chr)) count += 1;
+                if (str[min - 1].Equals(chr) ^ str[max - 1].Equals(chr)) count += 1;
             }
         }
 
