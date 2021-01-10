@@ -7,7 +7,7 @@ namespace AdventOfCode2020
 {
     public class Day1
     {
-        public static string Compute1()
+        public string Compute1()
         {
             var numbers = input.OrderByDescending(x => x).ToList();
 
@@ -39,7 +39,7 @@ namespace AdventOfCode2020
             return "";
         }
 
-        public static string Compute2()
+        public string Compute2()
         {
             var numbers = input.OrderByDescending(x => x).ToList();
 
