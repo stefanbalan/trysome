@@ -6,7 +6,11 @@ namespace AdventOfCode2020
     {
         static void Main(string[] args)
         {
-            var result = (new Day3()).Compute2();
+            var day = new Day4();
+            var result = day.Compute1();
+            Console.WriteLine(result);
+
+            result = day.Compute2();
             Console.WriteLine(result);
         }
     }
