@@ -16,45 +16,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var localizedSite in _localizedSites)
+                @foreach (var localizedSite in _sampleEntities)
                 {
-                    <tr onclick=@(() => SelectLocalizedSite(localizedSite.Id)) class="@(localizedSite.Id == SelectedLocalizedSite ? "selected" : "")">
-                        <td><span class="oi oi-check" hidden="@(localizedSite.Id != SelectedLocalizedSite)"></span></td>
+                    <tr onclick=@(() => SelectParentEntity(localizedSite.Id)) class="@(localizedSite.Id == SelectedParentEntityId ? "selected" : "")">
+                        <td><span class="oi oi-check" hidden="@(localizedSite.Id != SelectedParentEntityId)"></span></td>
                         <td>@localizedSite.Name</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div style="flex: 33%; margin: 20px;">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var sIdentityServer in _serversForSelectedSite)
-                {
-                    <tr onclick=@(() => RemoveIdentityServer(sIdentityServer.Id) )>
-                        <td>@sIdentityServer.Name</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div style="flex: 33%; margin: 20px;">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var identityServer in _availableServers)
-                {
-                    <tr onclick=@(() => AddIdentityServer(identityServer.Id) )>
-                        <td>@identityServer.Name</td>
                     </tr>
                 }
             </tbody>
@@ -63,64 +29,42 @@
 </div>
 
 @functions {
-
-    public int SelectedLocalizedSite { get; set; }
+    public int SelectedParentEntityId { get; set; }
     public int Changes { get; set; }
     public bool Saving { get; set; }
 
-    List<LocalizedSite> _localizedSites = new List<LocalizedSite>();
-    List<IdentityServer> _serversForSelectedSite = new List<IdentityServer>();
-    List<IdentityServer> _identityServers = new List<IdentityServer>();
-    List<IdentityServer> _availableServers = new List<IdentityServer>();
+    List<SampleEntity> _sampleEntities = new List<SampleEntity>();
 
     string DebugText()
     {
-        return $"MODEL: SelectedLocalizedSite={SelectedLocalizedSite} Changes={Changes} Saving={Saving}";
+        return $"MODEL: SelectedLocalizedSite={SelectedParentEntityId} Changes={Changes} Saving={Saving}";
     }
 
 
     protected override async Task OnInitAsync()
     {
-        _localizedSites = await Http.GetJsonAsync<List<LocalizedSite>>("api/site/GetSites");
-        _identityServers = await Http.GetJsonAsync<List<IdentityServer>>("api/site/servers");
+
+        _sampleEntities = await Http.GetJsonAsync<List<SampleEntity>>("api/site/GetSampleEtities");
+
     }
 
-    void SelectLocalizedSite(int id)
+    void SelectParentEntity(int id)
     {
-        SelectedLocalizedSite = id;
-        _serversForSelectedSite = _localizedSites.Find(s => s.Id == id).LocalizedSiteServers.Select(lss => lss.Server).ToList();
-        _availableServers = _identityServers.FindAll(s => _serversForSelectedSite.All(ss => ss.Id != s.Id));
+        SelectedParentEntityId = id;
+        //find child entity
     }
 
-    private void RemoveIdentityServer(Guid id)
+    private void RemoveSampleEntity(Guid id)
     {
-        var site = _localizedSites.First(s => s.Id == SelectedLocalizedSite);
-        var serv = site.LocalizedSiteServers.First(s => s.ServerId == id);
-
-        if (site.LocalizedSiteServers.Remove(serv))
-        {
-            _serversForSelectedSite = site.LocalizedSiteServers.Select(lss => lss.Server).ToList();
-        }
-
-        _availableServers = _identityServers.FindAll(s => _serversForSelectedSite.All(ss => ss.Id != s.Id));
+        var site = _sampleEntities.First(s => s.Id == SelectedParentEntityId);
+//remove
         Changes += 1;
         SaveDelayed();
     }
 
-    private void AddIdentityServer(Guid id)
+    private void AddSampleEntity(Guid id)
     {
-        var site = _localizedSites.First(s => s.Id == SelectedLocalizedSite);
-        var serv = _identityServers.First(s => s.Id == id);
-
-        if (site.LocalizedSiteServers == null)
-        {
-            site.LocalizedSiteServers = new List<LocalizedSiteServer>();
-        }
-
-        site.LocalizedSiteServers.Add(new LocalizedSiteServer { ServerId = serv.Id, Server = serv, SiteId = site.Id, Site = site });
-
-        _serversForSelectedSite = site.LocalizedSiteServers.Select(lss => lss.Server).ToList();
-        _availableServers = _identityServers.FindAll(s => _serversForSelectedSite.All(ss => ss.Id != s.Id));
+//...
         Changes++;
         SaveDelayed();
     }

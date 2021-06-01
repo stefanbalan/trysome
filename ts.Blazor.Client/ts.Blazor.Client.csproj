@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 <Project Sdk="Microsoft.NET.Sdk.Web">
-=======
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
->>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Exe</OutputType>
@@ -16,20 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-=======
     <PackageReference Include="MatBlazor" Version="0.9.12" />
->>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
     <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview5-19227-01" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <ProjectReference Include="..\ts.Blazor.Shared\ts.Blazor.Shared.csproj" />
-=======
     <ProjectReference Include="..\ts.Domain\ts.Domain.csproj" />
->>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
   </ItemGroup>
 
 </Project>

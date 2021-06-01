@@ -12,20 +12,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
-<<<<<<< HEAD
-=======
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
->>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ts.Blazor.Client\ts.Blazor.Client.csproj" />
-<<<<<<< HEAD
-    <ProjectReference Include="..\ts.Blazor.Shared\ts.Blazor.Shared.csproj" />
-=======
     <ProjectReference Include="..\ts.Database\ts.Database.csproj" />
     <ProjectReference Include="..\ts.Domain\ts.Domain.csproj" />
->>>>>>> a906ea0910cc0354a1eaf317acbca740793f1aeb
   </ItemGroup>
 
 </Project>
