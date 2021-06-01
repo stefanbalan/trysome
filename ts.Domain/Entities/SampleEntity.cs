@@ -1,9 +1,8 @@
 ﻿namespace ts.Domain.Entities
 {
-    public class MessageVariables
+    public class SampleEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
     }
 }
