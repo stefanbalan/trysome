@@ -1,6 +1,7 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// default app.js created by react create
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (
