@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8" />
+    <title>ESI map</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const icon1row =
+        "m -7.9968271,-4.2782416 c -1.1079861,0 -1.9998528,0.8918658 -1.9998528,1.9998528 v 4.000222 c 0,1.107986 0.8918667,1.999852 1.9998528,1.999852 h 7.33331013 L 0.00310059,5.7215381 0.66971815,3.7216852 H 8.0030283 c 1.1079861,1e-6 1.9998527,-0.891866 1.9998527,-1.999852 v -4.000222 c 0,-1.107987 -0.8918666,-1.9998528 -1.9998527,-1.9998528 z";
+      const icon2row =
+        "m -7.9999277,-8.3955573 c -1.1079861,0 -1.9998528,0.8918667 -1.9998528,1.9998528 V 5.6044453 c 0,1.1079861 0.8918667,1.9998522 1.9998528,1.9998522 h 7.33331014 L 0,9.6041493 0.66661756,7.6042975 H 7.9999277 c 1.1079861,0 1.9998528,-0.8918661 1.9998528,-1.9998522 V -6.3957045 c 0,-1.1079861 -0.8918667,-1.9998528 -1.9998528,-1.9998528 z";
+      const iconImage =
+        "data:image/svg+xml,%3Csvg%20%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%0D%0A%20%20%20width%3D%22100%22%0D%0A%20%20%20height%3D%2260%22%0D%0A%20%20%20viewBox%3D%220%200%2032%2048%22%3E%0D%0A%20%20%3Cpath%20d%3D%22m%20-12.628988%2C1.2665248%20c%20-4.025748%2C0%20-7.266251%2C3.8256027%20-7.266251%2C8.5782431%20V%2027.00347%20c%200%2C4.752637%203.240503%2C8.57824%207.266251%2C8.57824%20h%2026.6448%20l%202.422088%2C8.578246%202.422081%2C-8.578246%20h%2026.644798%20c%204.025749%2C7e-6%207.266253%2C-3.825603%207.266253%2C-8.57824%20V%209.8447679%20c%200%2C-4.7526404%20-3.240504%2C-8.5782431%20-7.266253%2C-8.5782431%20z%22%0D%0A%20%20%20%20%20style%3D%22fill%3A%23ffffff%3Bstroke%3A%23000000%3Bstroke-width%3A1.97390568%22%20%2F%3E%0D%0A%20%20%3Ctext%20style%3D%22font-weight%3Abold%3Bfont-size%3A13.98360538px%3Bfont-family%3AArial%2C%20sans-serif%3Btext-align%3Acenter%3Btext-anchor%3Amiddle%3Bfill%3A%230000ff%3Bstroke-width%3A1.16530049%22%0D%0A%20%20%20%20%20font-size%3D%2212%22%20x%3D%2214.952443%22%20y%3D%2214.111811%22%20transform%3D%22scale%281.0694162%2C0.93508964%29%22%3Eesitext1%3C%2Ftext%3E%0D%0A%20%20%3Ctext%20font-size%3D%2212%22%20style%3D%22font-weight%3Abold%3Bfont-size%3A13.98360538px%3Bfont-family%3AArial%2C%20sans-serif%3Btext-align%3Acenter%3Btext-anchor%3Amiddle%3Bfill%3A%230000ff%3Bstroke-width%3A1.16530049%22%0D%0A%20%20%20%20%20x%3D%2215.046258%22%20y%3D%2231.043528%22%20transform%3D%22scale%281.0694162%2C0.93508964%29%22%3Eesitext2%3C%2Ftext%3E%0D%0A%3C%2Fsvg%3E";
+      const testimage =
+        "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2238%22%20height%3D%2238%22%20viewBox%3D%220%200%2038%2038%22%3E%3Cpath%20fill%3D%22%23808080%22%20stroke%3D%22%23ccc%22%20stroke-width%3D%22.5%22%20d%3D%22M34.305%2016.234c0%208.83-15.148%2019.158-15.148%2019.158S3.507%2025.065%203.507%2016.1c0-8.505%206.894-14.304%2015.4-14.304%208.504%200%2015.398%205.933%2015.398%2014.438z%22%2F%3E%3Ctext%20transform%3D%22translate%2819%2018.5%29%22%20fill%3D%22%23fff%22%20style%3D%22font-family%3A%20Arial%2C%20sans-serif%3Bfont-weight%3Abold%3Btext-align%3Acenter%3B%22%20font-size%3D%2212%22%20text-anchor%3D%22middle%22%3E" +
+        "Test<br/>test" +
+        "%3C%2Ftext%3E%3C%2Fsvg%3E";
+
+      function initMap() {
+        var MapLabel = MapLabel || function () {};
+        var points = [
+          {
+            Esi: "0252",
+            Latitude: 47.803333,
+            Longitude: -0.167778,
+          },
+          {
+            Esi: "0595",
+            Latitude: 49.23311,
+            Longitude: 4.081013,
+          },
+          {
+            Esi: "1388",
+            Latitude: 48.995556,
+            Longitude: 2.648611,
+          },
+          {
+            Esi: "1700",
+            Latitude: 46.20444,
+            Longitude: 1.38583,
+          },
+          {
+            Esi: "2096",
+            Latitude: 45.582317,
+            Longitude: 4.792002,
+          },
+          {
+            Esi: "2157",
+            Latitude: 47.948718,
+            Longitude: 1.843772,
+          },
+          {
+            Esi: "2308&2310",
+            Latitude: 43.336944,
+            Longitude: 1.245833,
+          },
+          {
+            Esi: "2511",
+            Latitude: 48.655833,
+            Longitude: 7.755278,
+          },
+          {
+            Esi: "2543",
+            Latitude: 46.506111,
+            Longitude: 3.3625,
+          },
+          {
+            Esi: "3000",
+            Latitude: 48.908611,
+            Longitude: -1.104167,
+          },
+          {
+            Esi: "3030",
+            Latitude: 47.048889,
+            Longitude: 5.429444,
+          },
+          {
+            Esi: "3063&3326",
+            Latitude: 44.746111,
+            Longitude: -0.7025,
+          },
+          {
+            Esi: "3280",
+            Latitude: 47.650556,
+            Longitude: 0.469444,
+          },
+          {
+            Esi: "3283",
+            Latitude: 50.92833,
+            Longitude: 1.85416,
+          },
+          {
+            Esi: "3292",
+            Latitude: 43.4961994,
+            Longitude: 5.2123277,
+          },
+          {
+            Esi: "3305",
+            Latitude: 46.295428,
+            Longitude: -0.37975,
+          },
+          {
+            Esi: "3315",
+            Latitude: 46.464914,
+            Longitude: 4.077914,
+          },
+          {
+            Esi: "3648",
+            Latitude: 50.581389,
+            Longitude: 3.111944,
+          },
+          {
+            Esi: "4240",
+            Latitude: 43.936944,
+            Longitude: -1.09,
+          },
+          {
+            Esi: "8196",
+            Latitude: 46.1341,
+            Longitude: 4.7665,
+          },
+        ];
+        var pointsDE = [
+          {
+            Esi: "2097",
+            Latitude: 48.15957,
+            Longitude: 11.854001,
+          },
+          {
+            Esi: "2051",
+            Latitude: 49.766268,
+            Longitude: 10.470215,
+          },
+          {
+            Esi: "2239",
+            Latitude: 48.644046,
+            Longitude: 9.429249,
+          },
+          {
+            Esi: "1233",
+            Latitude: 48.411228,
+            Longitude: 10.439988,
+          },
+          {
+            Esi: "1941",
+            Latitude: 52.328968,
+            Longitude: 7.2467,
+          },
+          {
+            Esi: "2232",
+            Latitude: 49.423904,
+            Longitude: 7.559433,
+          },
+          {
+            Esi: "1151",
+            Latitude: 48.810788,
+            Longitude: 8.92719,
+          },
+          {
+            Esi: "0869",
+            Latitude: 50.747644,
+            Longitude: 6.851741,
+          },
+          {
+            Esi: "1945",
+            Latitude: 52.658334,
+            Longitude: 8.169409,
+          },
+        ];
+        var myLatLng = { lat: 47, lng: 2 };
+
+        var map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 7,
+          center: myLatLng,
+        });
+
+        points.forEach((point) => {
+          var labels = point.Esi.split("&");
+          // // standard pin for position debug
+          // new google.maps.Marker({
+          //   position: { lat: point.Latitude, lng: point.Longitude },
+          //   map: map,
+          //   title: point.Esi,
+          //   label: {
+          //     color: "red",
+          //     fontWeight: "bold",
+          //     text: point.Esi,
+          //   },
+          // });
+
+          if (labels.length == 1) {
+            new google.maps.Marker({
+              position: { lat: point.Latitude, lng: point.Longitude },
+              map: map,
+              title: point.Esi,
+              label: {
+                color: "blue",
+                fontWeight: "bold",
+                text: "ESI " + labels[0],
+              },
+              icon: {
+                anchor: { x: 0, y: 7 },
+                path: icon1row,
+                scale: 3,
+                fillColor: "white",
+                fillOpacity: 1,
+                strokeColor: "black",
+              },
+            });
+          } else {
+            var ii = iconImage
+              .replace("esitext1", "ESI%20" + labels[0])
+              .replace("esitext2", "ESI%20" + labels[1]);
+
+            new google.maps.Marker({
+              position: { lat: point.Latitude, lng: point.Longitude },
+              map: map,
+              title: point.Esi,
+              icon: ii,
+            });
+          }
+        });
+
+        // var marker = new google.maps.Marker({
+        //   position: myLatLng,
+        //   map: map,
+        //   title: point.Esi,
+        // });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeuZqAI0hbE-a2Vhmh_zaGrRR5yo4JXes&callback=initMap"></script>
+  </body>
+</html>
