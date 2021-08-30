@@ -1,40 +1,40 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ClashOfLogs.Shared
 {
-    public class Member
+    public class ClanMember
     {
-        [JsonProperty("tag")]
+        [JsonPropertyName("tag")]
         public string Tag { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("role")]
+        [JsonPropertyName("role")]
         public string Role { get; set; }
 
-        [JsonProperty("expLevel")]
+        [JsonPropertyName("expLevel")]
         public int ExpLevel { get; set; }
 
-        [JsonProperty("league")]
+        [JsonPropertyName("league")]
         public League League { get; set; }
 
-        [JsonProperty("trophies")]
+        [JsonPropertyName("trophies")]
         public int Trophies { get; set; }
 
-        [JsonProperty("versusTrophies")]
+        [JsonPropertyName("versusTrophies")]
         public int VersusTrophies { get; set; }
 
-        [JsonProperty("clanRank")]
+        [JsonPropertyName("clanRank")]
         public int ClanRank { get; set; }
 
-        [JsonProperty("previousClanRank")]
+        [JsonPropertyName("previousClanRank")]
         public int PreviousClanRank { get; set; }
 
-        [JsonProperty("donations")]
+        [JsonPropertyName("donations")]
         public int Donations { get; set; }
 
-        [JsonProperty("donationsReceived")]
+        [JsonPropertyName("donationsReceived")]
         public int DonationsReceived { get; set; }
     }
 }

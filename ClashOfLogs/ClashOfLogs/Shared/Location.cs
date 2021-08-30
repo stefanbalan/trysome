@@ -1,19 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ClashOfLogs.Shared
 {
     public class Location
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("isCountry")]
+        [JsonPropertyName("isCountry")]
         public bool IsCountry { get; set; }
 
-        [JsonProperty("countryCode")]
+        [JsonPropertyName("countryCode")]
         public string CountryCode { get; set; }
     }
 }

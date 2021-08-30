@@ -1,0 +1,1702 @@
+{
+    "items": [
+        {
+            "result": "win",
+            "endTime": "20210828T085935.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/UHq4ZBoZujg6CW0piRt2PKdKlIZi5fhWmv3gr5zH7NU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/UHq4ZBoZujg6CW0piRt2PKdKlIZi5fhWmv3gr5zH7NU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/UHq4ZBoZujg6CW0piRt2PKdKlIZi5fhWmv3gr5zH7NU.png"
+                },
+                "clanLevel": 7,
+                "attacks": 50,
+                "stars": 80,
+                "destructionPercentage": 79.075,
+                "expEarned": 284
+            },
+            "opponent": {
+                "tag": "#2P0VJP0LP",
+                "name": "Joadder clan",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/tWrjwbyBjxyo_toc6tY7Beqe6d83p6FOQsjDWIdRgz8.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/tWrjwbyBjxyo_toc6tY7Beqe6d83p6FOQsjDWIdRgz8.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/tWrjwbyBjxyo_toc6tY7Beqe6d83p6FOQsjDWIdRgz8.png"
+                },
+                "clanLevel": 10,
+                "stars": 48,
+                "destructionPercentage": 46.425
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210825T133859.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 49,
+                "stars": 91,
+                "destructionPercentage": 87.725,
+                "expEarned": 305
+            },
+            "opponent": {
+                "tag": "#2YJRRG008",
+                "name": "DARK RIDERS",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/BRY_b2oe61DxTXgcqoUeXOO_caR0nN4Y5i0L4eb7Iw4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/BRY_b2oe61DxTXgcqoUeXOO_caR0nN4Y5i0L4eb7Iw4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/BRY_b2oe61DxTXgcqoUeXOO_caR0nN4Y5i0L4eb7Iw4.png"
+                },
+                "clanLevel": 7,
+                "stars": 53,
+                "destructionPercentage": 56.9
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210822T183125.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 52,
+                "stars": 97,
+                "destructionPercentage": 86.4,
+                "expEarned": 278
+            },
+            "opponent": {
+                "tag": "#CY0GRVCG",
+                "name": "King Of Clash",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/zlnjLqALehLHdGT6jG_k356M1SWD6JUYit6YxXH1WDg.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/zlnjLqALehLHdGT6jG_k356M1SWD6JUYit6YxXH1WDg.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/zlnjLqALehLHdGT6jG_k356M1SWD6JUYit6YxXH1WDg.png"
+                },
+                "clanLevel": 12,
+                "stars": 71,
+                "destructionPercentage": 63.775
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210820T174634.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 42,
+                "stars": 73,
+                "destructionPercentage": 90.566666,
+                "expEarned": 256
+            },
+            "opponent": {
+                "tag": "#2YJL8R2U2",
+                "name": "CKHBJT",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/_jdRWZXmAH5v6_HJZV2wVm7SouSAhNsRaVJ2TbuZEPY.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/_jdRWZXmAH5v6_HJZV2wVm7SouSAhNsRaVJ2TbuZEPY.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/_jdRWZXmAH5v6_HJZV2wVm7SouSAhNsRaVJ2TbuZEPY.png"
+                },
+                "clanLevel": 6,
+                "stars": 58,
+                "destructionPercentage": 75.13333
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210818T090645.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 35,
+                "stars": 51,
+                "destructionPercentage": 74.8,
+                "expEarned": 169
+            },
+            "opponent": {
+                "tag": "#2Y9JR92UV",
+                "name": "ASSAULT WARRIOR",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/ku41QahkxWUrFyh31OBSEq7h63Qbj3vm8c4l9pQg3_g.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/ku41QahkxWUrFyh31OBSEq7h63Qbj3vm8c4l9pQg3_g.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/ku41QahkxWUrFyh31OBSEq7h63Qbj3vm8c4l9pQg3_g.png"
+                },
+                "clanLevel": 8,
+                "stars": 56,
+                "destructionPercentage": 70.13333
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210815T175414.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 40,
+                "stars": 74,
+                "destructionPercentage": 90.166664,
+                "expEarned": 253
+            },
+            "opponent": {
+                "tag": "#2Y2ULQ0JQ",
+                "name": "E6 Mafia",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/7fyeXYBnlyxqmfeRVkorDneXYbZ1ZjiTXxx7oU7baE0.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/7fyeXYBnlyxqmfeRVkorDneXYbZ1ZjiTXxx7oU7baE0.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/7fyeXYBnlyxqmfeRVkorDneXYbZ1ZjiTXxx7oU7baE0.png"
+                },
+                "clanLevel": 5,
+                "stars": 38,
+                "destructionPercentage": 49.033333
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210813T162349.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 44,
+                "stars": 69,
+                "destructionPercentage": 84.066666,
+                "expEarned": 184
+            },
+            "opponent": {
+                "tag": "#2L0GUQRQ0",
+                "name": "Anfield",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/hqBvysBsSlR9jSrtR9N_L7LzEg2Drpq_fpo58X2NebU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/hqBvysBsSlR9jSrtR9N_L7LzEg2Drpq_fpo58X2NebU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/hqBvysBsSlR9jSrtR9N_L7LzEg2Drpq_fpo58X2NebU.png"
+                },
+                "clanLevel": 6,
+                "stars": 74,
+                "destructionPercentage": 88.23333
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210811T103855.000Z",
+            "teamSize": 25,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 32,
+                "stars": 61,
+                "destructionPercentage": 88.32,
+                "expEarned": 219
+            },
+            "opponent": {
+                "tag": "#2LYGG9G28",
+                "name": "MK.H-B.MEHERPUR",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/NE3IA2yi4lfOgRjJYrUjyONDViIT0zUkp5AkCr3bmiU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/NE3IA2yi4lfOgRjJYrUjyONDViIT0zUkp5AkCr3bmiU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/NE3IA2yi4lfOgRjJYrUjyONDViIT0zUkp5AkCr3bmiU.png"
+                },
+                "clanLevel": 5,
+                "stars": 30,
+                "destructionPercentage": 43.96
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210809T084338.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 173,
+                "stars": 406,
+                "destructionPercentage": 447.7,
+                "expEarned": 0
+            },
+            "opponent": {
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png"
+                },
+                "clanLevel": 0,
+                "stars": 265,
+                "destructionPercentage": 0.0
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210731T092907.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 41,
+                "stars": 85,
+                "destructionPercentage": 75.9,
+                "expEarned": 252
+            },
+            "opponent": {
+                "tag": "#22Y228JJ2",
+                "name": "pudingggg",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/EAcwoGevS0At7SM5k35KtOjrfqQ1t8li_YKfZPKTLqw.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/EAcwoGevS0At7SM5k35KtOjrfqQ1t8li_YKfZPKTLqw.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/EAcwoGevS0At7SM5k35KtOjrfqQ1t8li_YKfZPKTLqw.png"
+                },
+                "clanLevel": 10,
+                "stars": 30,
+                "destructionPercentage": 35.125
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210729T035124.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 41,
+                "stars": 90,
+                "destructionPercentage": 83.975,
+                "expEarned": 263
+            },
+            "opponent": {
+                "tag": "#2PCPQPRV9",
+                "name": "PARATOOPER'Š",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6vxx8pKBQXNp7oyueSBp_lfyG0OL4t5wV642Xx2Xkaw.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6vxx8pKBQXNp7oyueSBp_lfyG0OL4t5wV642Xx2Xkaw.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6vxx8pKBQXNp7oyueSBp_lfyG0OL4t5wV642Xx2Xkaw.png"
+                },
+                "clanLevel": 9,
+                "stars": 16,
+                "destructionPercentage": 15.225
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210726T183153.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 40,
+                "stars": 81,
+                "destructionPercentage": 71.85,
+                "expEarned": 283
+            },
+            "opponent": {
+                "tag": "#2Y88UVPYL",
+                "name": "Герої України",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/EH3zQCXCuVB50IpHwgQH2_pMCYgoCiXoVZ1ySe9oqxM.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/EH3zQCXCuVB50IpHwgQH2_pMCYgoCiXoVZ1ySe9oqxM.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/EH3zQCXCuVB50IpHwgQH2_pMCYgoCiXoVZ1ySe9oqxM.png"
+                },
+                "clanLevel": 5,
+                "stars": 23,
+                "destructionPercentage": 28.475
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210723T113357.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 42,
+                "stars": 79,
+                "destructionPercentage": 77.5,
+                "expEarned": 203
+            },
+            "opponent": {
+                "tag": "#2YRR8CC02",
+                "name": "Rocket Runners",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/SkEFbPa5G1ySgYHRDI_J2qSdqSpt_UJ83qXTvSug8-g.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/SkEFbPa5G1ySgYHRDI_J2qSdqSpt_UJ83qXTvSug8-g.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/SkEFbPa5G1ySgYHRDI_J2qSdqSpt_UJ83qXTvSug8-g.png"
+                },
+                "clanLevel": 6,
+                "stars": 114,
+                "destructionPercentage": 95.6
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210721T104347.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "attacks": 46,
+                "stars": 69,
+                "destructionPercentage": 68.425,
+                "expEarned": 158
+            },
+            "opponent": {
+                "tag": "#2YPYY9PUL",
+                "name": "predator",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/zlja1bpdAE2hWmEMma52QFX7jrSpqUONmuhK88ZW-_I.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/zlja1bpdAE2hWmEMma52QFX7jrSpqUONmuhK88ZW-_I.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/zlja1bpdAE2hWmEMma52QFX7jrSpqUONmuhK88ZW-_I.png"
+                },
+                "clanLevel": 8,
+                "stars": 78,
+                "destructionPercentage": 70.425
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210719T090157.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 46,
+                "stars": 95,
+                "destructionPercentage": 83.3,
+                "expEarned": 273
+            },
+            "opponent": {
+                "tag": "#28VGPLQ0J",
+                "name": "·梦一场△",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/KMoak8qV30x9ZqanmMcKfibWymtgkw3Bd53cslt6yvU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/KMoak8qV30x9ZqanmMcKfibWymtgkw3Bd53cslt6yvU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/KMoak8qV30x9ZqanmMcKfibWymtgkw3Bd53cslt6yvU.png"
+                },
+                "clanLevel": 14,
+                "stars": 60,
+                "destructionPercentage": 59.9
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210717T033736.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 53,
+                "stars": 100,
+                "destructionPercentage": 88.725,
+                "expEarned": 280
+            },
+            "opponent": {
+                "tag": "#PCJUG000",
+                "name": "روح سوارs",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/WZ4OimQ3Dj7xc5bBw1m18FhbtRZdzoVEnKYkvohaess.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/WZ4OimQ3Dj7xc5bBw1m18FhbtRZdzoVEnKYkvohaess.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/WZ4OimQ3Dj7xc5bBw1m18FhbtRZdzoVEnKYkvohaess.png"
+                },
+                "clanLevel": 10,
+                "stars": 62,
+                "destructionPercentage": 58.2
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210714T144545.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 33,
+                "stars": 63,
+                "destructionPercentage": 77.4,
+                "expEarned": 220
+            },
+            "opponent": {
+                "tag": "#298CVC8YL",
+                "name": "东顺娱乐",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/vQPlt7y9HRjNRUcQKB8FiefrdKVt8D-9b_i_DM7mqDc.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/vQPlt7y9HRjNRUcQKB8FiefrdKVt8D-9b_i_DM7mqDc.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/vQPlt7y9HRjNRUcQKB8FiefrdKVt8D-9b_i_DM7mqDc.png"
+                },
+                "clanLevel": 10,
+                "stars": 14,
+                "destructionPercentage": 17.3
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210712T110948.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 39,
+                "stars": 61,
+                "destructionPercentage": 80.933334,
+                "expEarned": 194
+            },
+            "opponent": {
+                "tag": "#2YJL0G0PL",
+                "name": "擦皮鞋",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eft1DDGdhIDdsMhAyjqdwDkeY7RGV5wSrGKKfQ4GTUU.png"
+                },
+                "clanLevel": 6,
+                "stars": 62,
+                "destructionPercentage": 81.4
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210710T102539.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 159,
+                "stars": 428,
+                "destructionPercentage": 441.7,
+                "expEarned": 0
+            },
+            "opponent": {
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png"
+                },
+                "clanLevel": 0,
+                "stars": 162,
+                "destructionPercentage": 0.0
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210702T082638.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 43,
+                "stars": 87,
+                "destructionPercentage": 80.975,
+                "expEarned": 247
+            },
+            "opponent": {
+                "tag": "#2LP8V8LRG",
+                "name": "剑冢",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/OMzS7aLQ5Jyy__UFQOS9b4zEcxbSZc7hHW1_K1oJckE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/OMzS7aLQ5Jyy__UFQOS9b4zEcxbSZc7hHW1_K1oJckE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/OMzS7aLQ5Jyy__UFQOS9b4zEcxbSZc7hHW1_K1oJckE.png"
+                },
+                "clanLevel": 5,
+                "stars": 37,
+                "destructionPercentage": 41.2
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210630T060814.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 44,
+                "stars": 77,
+                "destructionPercentage": 76.75,
+                "expEarned": 246
+            },
+            "opponent": {
+                "tag": "#2P0J9QP9Y",
+                "name": "LongShlong",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/aV6eZ_5Pm1ymRQ1yk7jOB-pw7sy1QF-czmkIy1p79Gg.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/aV6eZ_5Pm1ymRQ1yk7jOB-pw7sy1QF-czmkIy1p79Gg.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/aV6eZ_5Pm1ymRQ1yk7jOB-pw7sy1QF-czmkIy1p79Gg.png"
+                },
+                "clanLevel": 6,
+                "stars": 49,
+                "destructionPercentage": 44.325
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210621T174231.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 45,
+                "stars": 69,
+                "destructionPercentage": 67.15,
+                "expEarned": 208
+            },
+            "opponent": {
+                "tag": "#29P8UGGGV",
+                "name": "✨*VICTORIOSO* ✨",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/HO7guWppFK-8fEYwFsuG9PJq2JdIGdP0yoreo2fLjYE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/HO7guWppFK-8fEYwFsuG9PJq2JdIGdP0yoreo2fLjYE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/HO7guWppFK-8fEYwFsuG9PJq2JdIGdP0yoreo2fLjYE.png"
+                },
+                "clanLevel": 5,
+                "stars": 38,
+                "destructionPercentage": 43.925
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210618T081208.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 51,
+                "stars": 72,
+                "destructionPercentage": 70.825,
+                "expEarned": 217
+            },
+            "opponent": {
+                "tag": "#29PRRCQ8G",
+                "name": "B2020",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/r3l9EBK1SE9a1tv-5fMIhQJhV7FleOADxE_JRvltmCg.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/r3l9EBK1SE9a1tv-5fMIhQJhV7FleOADxE_JRvltmCg.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/r3l9EBK1SE9a1tv-5fMIhQJhV7FleOADxE_JRvltmCg.png"
+                },
+                "clanLevel": 5,
+                "stars": 43,
+                "destructionPercentage": 45.05
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210616T081447.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rY7c0cPBWd1YS-lw4aoe0r8RIU2zau7e7dzvG5EmzO4.png"
+                },
+                "clanLevel": 5,
+                "attacks": 41,
+                "stars": 84,
+                "destructionPercentage": 77.1,
+                "expEarned": 250
+            },
+            "opponent": {
+                "tag": "#2YLQL8RP9",
+                "name": "AVENGERS",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/BbVtkplkpeC5rM3kd3SyBcWfCYbxgExame20JXDEDy8.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/BbVtkplkpeC5rM3kd3SyBcWfCYbxgExame20JXDEDy8.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/BbVtkplkpeC5rM3kd3SyBcWfCYbxgExame20JXDEDy8.png"
+                },
+                "clanLevel": 7,
+                "stars": 67,
+                "destructionPercentage": 62.125
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210613T215844.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 51,
+                "stars": 96,
+                "destructionPercentage": 87.15,
+                "expEarned": 246
+            },
+            "opponent": {
+                "tag": "#QVR9RCL2",
+                "name": "凛冬将至♠Winter",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/hLbFZQJlxXm_9ko_DySm6XgyId_xBVIH-2sBi1yQ-14.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/hLbFZQJlxXm_9ko_DySm6XgyId_xBVIH-2sBi1yQ-14.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/hLbFZQJlxXm_9ko_DySm6XgyId_xBVIH-2sBi1yQ-14.png"
+                },
+                "clanLevel": 8,
+                "stars": 42,
+                "destructionPercentage": 41.8
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210611T112033.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 43,
+                "stars": 68,
+                "destructionPercentage": 85.1,
+                "expEarned": 176
+            },
+            "opponent": {
+                "tag": "#LV0YQ9Y0",
+                "name": "Rhainmark03",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6RU31fD0zQLs11ym58UaipbBEOGVUwOqvK1Rrd_FgsU.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6RU31fD0zQLs11ym58UaipbBEOGVUwOqvK1Rrd_FgsU.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6RU31fD0zQLs11ym58UaipbBEOGVUwOqvK1Rrd_FgsU.png"
+                },
+                "clanLevel": 13,
+                "stars": 86,
+                "destructionPercentage": 97.333336
+            }
+        },
+        {
+            "result": null,
+            "endTime": "20210609T092300.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 156,
+                "stars": 366,
+                "destructionPercentage": 395.6,
+                "expEarned": 0
+            },
+            "opponent": {
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png"
+                },
+                "clanLevel": 0,
+                "stars": 209,
+                "destructionPercentage": 0.0
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210531T213339.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 31,
+                "stars": 54,
+                "destructionPercentage": 69.0,
+                "expEarned": 140
+            },
+            "opponent": {
+                "tag": "#JVC2PRLJ",
+                "name": "100% Winer Clan",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/p6E0hbvm9_dHJpN7HDrtMHOPp9ZKUDacEvX2MQtK6ww.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/p6E0hbvm9_dHJpN7HDrtMHOPp9ZKUDacEvX2MQtK6ww.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/p6E0hbvm9_dHJpN7HDrtMHOPp9ZKUDacEvX2MQtK6ww.png"
+                },
+                "clanLevel": 8,
+                "stars": 65,
+                "destructionPercentage": 81.53333
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210529T184521.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 38,
+                "stars": 66,
+                "destructionPercentage": 80.7,
+                "expEarned": 206
+            },
+            "opponent": {
+                "tag": "#28JQ0GLP0",
+                "name": "ياالظلام",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6oQ8O9YCdUlQ2FPLkAZOnqIS26qE95hEjk0KBTGP6FE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6oQ8O9YCdUlQ2FPLkAZOnqIS26qE95hEjk0KBTGP6FE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6oQ8O9YCdUlQ2FPLkAZOnqIS26qE95hEjk0KBTGP6FE.png"
+                },
+                "clanLevel": 8,
+                "stars": 39,
+                "destructionPercentage": 48.133335
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210527T102657.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 39,
+                "stars": 66,
+                "destructionPercentage": 63.825,
+                "expEarned": 195
+            },
+            "opponent": {
+                "tag": "#2PVQ9J8VY",
+                "name": "school whit day",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/0WrGr39weon7n3z7IW0VJL7AHkTTVFNU8kafRTieoZ0.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/0WrGr39weon7n3z7IW0VJL7AHkTTVFNU8kafRTieoZ0.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/0WrGr39weon7n3z7IW0VJL7AHkTTVFNU8kafRTieoZ0.png"
+                },
+                "clanLevel": 4,
+                "stars": 50,
+                "destructionPercentage": 50.925
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210524T130613.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 40,
+                "stars": 85,
+                "destructionPercentage": 80.425,
+                "expEarned": 217
+            },
+            "opponent": {
+                "tag": "#2YV92VP9J",
+                "name": "瑞文斯顿",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/zom3YxliFKot-W6ePP0BkoHBN2jjS-da6Sdtrb6kO10.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/zom3YxliFKot-W6ePP0BkoHBN2jjS-da6Sdtrb6kO10.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/zom3YxliFKot-W6ePP0BkoHBN2jjS-da6Sdtrb6kO10.png"
+                },
+                "clanLevel": 4,
+                "stars": 69,
+                "destructionPercentage": 63.0
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210522T083133.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 45,
+                "stars": 96,
+                "destructionPercentage": 85.0,
+                "expEarned": 226
+            },
+            "opponent": {
+                "tag": "#2PJGURQ9Y",
+                "name": "ابطال الاردن",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/fWervXVIi92UOVSbkcHIcOJBRx63pSr-ExM6M-ZqO54.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/fWervXVIi92UOVSbkcHIcOJBRx63pSr-ExM6M-ZqO54.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/fWervXVIi92UOVSbkcHIcOJBRx63pSr-ExM6M-ZqO54.png"
+                },
+                "clanLevel": 4,
+                "stars": 3,
+                "destructionPercentage": 2.5
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210519T145028.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 38,
+                "stars": 76,
+                "destructionPercentage": 86.9,
+                "expEarned": 211
+            },
+            "opponent": {
+                "tag": "#28PUYJLVY",
+                "name": "سوريا الاسد",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/xvNPzJSX8d2OyjgVnuFFtoLP9NmVzzgkqzKgHH_WJPA.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/xvNPzJSX8d2OyjgVnuFFtoLP9NmVzzgkqzKgHH_WJPA.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/xvNPzJSX8d2OyjgVnuFFtoLP9NmVzzgkqzKgHH_WJPA.png"
+                },
+                "clanLevel": 8,
+                "stars": 32,
+                "destructionPercentage": 42.633335
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210517T054117.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 29,
+                "stars": 50,
+                "destructionPercentage": 64.86667,
+                "expEarned": 112
+            },
+            "opponent": {
+                "tag": "#22R2LQ8G2",
+                "name": "Братство смерти",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/1YBtCvLSc51tvTuJBZos-ml87frIhdFB7J7Dsn26lwc.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/1YBtCvLSc51tvTuJBZos-ml87frIhdFB7J7Dsn26lwc.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/1YBtCvLSc51tvTuJBZos-ml87frIhdFB7J7Dsn26lwc.png"
+                },
+                "clanLevel": 10,
+                "stars": 70,
+                "destructionPercentage": 86.6
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210513T222708.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 49,
+                "stars": 84,
+                "destructionPercentage": 78.025,
+                "expEarned": 172
+            },
+            "opponent": {
+                "tag": "#VPJRCVG9",
+                "name": "SI FOKRUL",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/3slk6MSKV8yWZ9HOtREcivQ_0lmuyH65vB8btFK1D4o.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/3slk6MSKV8yWZ9HOtREcivQ_0lmuyH65vB8btFK1D4o.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/3slk6MSKV8yWZ9HOtREcivQ_0lmuyH65vB8btFK1D4o.png"
+                },
+                "clanLevel": 9,
+                "stars": 97,
+                "destructionPercentage": 85.975
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210511T140757.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 44,
+                "stars": 73,
+                "destructionPercentage": 87.26667,
+                "expEarned": 145
+            },
+            "opponent": {
+                "tag": "#G8RYJYJ0",
+                "name": "BD Friends",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/akj5YyilKAL_E-1VH3nl99Iol3lO1TJXVwhVtGMmfH8.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/akj5YyilKAL_E-1VH3nl99Iol3lO1TJXVwhVtGMmfH8.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/akj5YyilKAL_E-1VH3nl99Iol3lO1TJXVwhVtGMmfH8.png"
+                },
+                "clanLevel": 7,
+                "stars": 85,
+                "destructionPercentage": 97.0
+            }
+        },
+        {
+            "result": null,
+            "endTime": "20210509T093417.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/JdsQ1Q2whmJR_gAeSrDZrxmlC6XGi7yZ5OFT3L4EkkQ.png"
+                },
+                "clanLevel": 4,
+                "attacks": 138,
+                "stars": 331,
+                "destructionPercentage": 365.5,
+                "expEarned": 0
+            },
+            "opponent": {
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png"
+                },
+                "clanLevel": 0,
+                "stars": 276,
+                "destructionPercentage": 0.0
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210429T191211.000Z",
+            "teamSize": 40,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 35,
+                "stars": 65,
+                "destructionPercentage": 60.075,
+                "expEarned": 161
+            },
+            "opponent": {
+                "tag": "#V0Q0L2JL",
+                "name": "ФРЕНДЫ МОИ",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/bxkQkuBTnkM7fo-zhXgQsNhMgHeueKnUKujKL62FVoE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/bxkQkuBTnkM7fo-zhXgQsNhMgHeueKnUKujKL62FVoE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/bxkQkuBTnkM7fo-zhXgQsNhMgHeueKnUKujKL62FVoE.png"
+                },
+                "clanLevel": 10,
+                "stars": 64,
+                "destructionPercentage": 57.9
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210427T061955.000Z",
+            "teamSize": 20,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 28,
+                "stars": 49,
+                "destructionPercentage": 85.75,
+                "expEarned": 118
+            },
+            "opponent": {
+                "tag": "#29YLL2VYJ",
+                "name": "RA-ONE BEAST",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/cQ-Ho3wkwUCC5eYKjHrCzkMq7XxyfTfUQNxOoL3bOVA.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/cQ-Ho3wkwUCC5eYKjHrCzkMq7XxyfTfUQNxOoL3bOVA.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/cQ-Ho3wkwUCC5eYKjHrCzkMq7XxyfTfUQNxOoL3bOVA.png"
+                },
+                "clanLevel": 4,
+                "stars": 56,
+                "destructionPercentage": 93.9
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210424T182243.000Z",
+            "teamSize": 20,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 23,
+                "stars": 49,
+                "destructionPercentage": 80.8,
+                "expEarned": 146
+            },
+            "opponent": {
+                "tag": "#2Y0GCLC2R",
+                "name": "Амир Темур",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/7r0dknkwwT5ia9Zo6NXS3uYCwpTRSNQPenqJMcidONM.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/7r0dknkwwT5ia9Zo6NXS3uYCwpTRSNQPenqJMcidONM.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/7r0dknkwwT5ia9Zo6NXS3uYCwpTRSNQPenqJMcidONM.png"
+                },
+                "clanLevel": 3,
+                "stars": 18,
+                "destructionPercentage": 32.5
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210422T141732.000Z",
+            "teamSize": 15,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 26,
+                "stars": 40,
+                "destructionPercentage": 88.933334,
+                "expEarned": 104
+            },
+            "opponent": {
+                "tag": "#2Y92L890J",
+                "name": "Spartans",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/83Z0ikOEHf7kRMFq1qMptUEKk4VXZ4arRRR6qwRyzD8.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/83Z0ikOEHf7kRMFq1qMptUEKk4VXZ4arRRR6qwRyzD8.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/83Z0ikOEHf7kRMFq1qMptUEKk4VXZ4arRRR6qwRyzD8.png"
+                },
+                "clanLevel": 5,
+                "stars": 44,
+                "destructionPercentage": 98.666664
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210420T134124.000Z",
+            "teamSize": 20,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 26,
+                "stars": 50,
+                "destructionPercentage": 90.0,
+                "expEarned": 158
+            },
+            "opponent": {
+                "tag": "#2LRUCCPVR",
+                "name": "پسر های عاشق",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/ma6fWdXouafAR-3N5J0iHEBSpIsE51B3DnRod1ciqrA.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/ma6fWdXouafAR-3N5J0iHEBSpIsE51B3DnRod1ciqrA.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/ma6fWdXouafAR-3N5J0iHEBSpIsE51B3DnRod1ciqrA.png"
+                },
+                "clanLevel": 1,
+                "stars": 14,
+                "destructionPercentage": 29.45
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210418T113558.000Z",
+            "teamSize": 15,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 19,
+                "stars": 35,
+                "destructionPercentage": 79.26667,
+                "expEarned": 95
+            },
+            "opponent": {
+                "tag": "#GUP8QVC2",
+                "name": "DuLor Kabeh",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rzCcMwzF-2w6OlID_gen4GYxE8tkNNPDyFX5ZMBQ9lM.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rzCcMwzF-2w6OlID_gen4GYxE8tkNNPDyFX5ZMBQ9lM.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rzCcMwzF-2w6OlID_gen4GYxE8tkNNPDyFX5ZMBQ9lM.png"
+                },
+                "clanLevel": 9,
+                "stars": 41,
+                "destructionPercentage": 95.6
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210416T011820.000Z",
+            "teamSize": 15,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 22,
+                "stars": 32,
+                "destructionPercentage": 78.8,
+                "expEarned": 76
+            },
+            "opponent": {
+                "tag": "#2P89G9YCV",
+                "name": "خان خانا",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/7hj04DVe1KpJpg2p9T0YVchVFQQCuldzxgWXxrevOuo.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/7hj04DVe1KpJpg2p9T0YVchVFQQCuldzxgWXxrevOuo.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/7hj04DVe1KpJpg2p9T0YVchVFQQCuldzxgWXxrevOuo.png"
+                },
+                "clanLevel": 3,
+                "stars": 40,
+                "destructionPercentage": 90.53333
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210413T203902.000Z",
+            "teamSize": 15,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 21,
+                "stars": 29,
+                "destructionPercentage": 73.666664,
+                "expEarned": 121
+            },
+            "opponent": {
+                "tag": "#2L8GU989P",
+                "name": "گرگ زخمی",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/fWervXVIi92UOVSbkcHIcOJBRx63pSr-ExM6M-ZqO54.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/fWervXVIi92UOVSbkcHIcOJBRx63pSr-ExM6M-ZqO54.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/fWervXVIi92UOVSbkcHIcOJBRx63pSr-ExM6M-ZqO54.png"
+                },
+                "clanLevel": 4,
+                "stars": 6,
+                "destructionPercentage": 14.333333
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210411T164316.000Z",
+            "teamSize": 20,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 22,
+                "stars": 53,
+                "destructionPercentage": 90.05,
+                "expEarned": 158
+            },
+            "opponent": {
+                "tag": "#2LGLCG2JJ",
+                "name": "dragonscholclan",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/Q__0ZvNAbeyi_546cgjZEA5ZBhytFO_ypjswzDuc0PE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/Q__0ZvNAbeyi_546cgjZEA5ZBhytFO_ypjswzDuc0PE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/Q__0ZvNAbeyi_546cgjZEA5ZBhytFO_ypjswzDuc0PE.png"
+                },
+                "clanLevel": 1,
+                "stars": 23,
+                "destructionPercentage": 47.8
+            }
+        },
+        {
+            "result": null,
+            "endTime": "20210409T121230.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/6xviVwNj48JN0c2w6kn76JICUPA9M5WazQ9_8q5gFvE.png"
+                },
+                "clanLevel": 3,
+                "attacks": 86,
+                "stars": 173,
+                "destructionPercentage": 188.5,
+                "expEarned": 0
+            },
+            "opponent": {
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/H39b_-WLZGtZVWQ0hqTkE-Tn2AaQnQWy_Iz4yBlvL0M.png"
+                },
+                "clanLevel": 0,
+                "stars": 246,
+                "destructionPercentage": 0.0
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210330T223212.000Z",
+            "teamSize": 20,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 25,
+                "stars": 39,
+                "destructionPercentage": 77.2,
+                "expEarned": 90
+            },
+            "opponent": {
+                "tag": "#2Y2JLPQ2R",
+                "name": "maya",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/rdbYeSlPUEVJ1vi1RMf9qgALb64quJxB5d8pXs967bg.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/rdbYeSlPUEVJ1vi1RMf9qgALb64quJxB5d8pXs967bg.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/rdbYeSlPUEVJ1vi1RMf9qgALb64quJxB5d8pXs967bg.png"
+                },
+                "clanLevel": 5,
+                "stars": 51,
+                "destructionPercentage": 88.55
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210327T182838.000Z",
+            "teamSize": 10,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 17,
+                "stars": 25,
+                "destructionPercentage": 83.7,
+                "expEarned": 70
+            },
+            "opponent": {
+                "tag": "#2YJ08JJPR",
+                "name": "دروع الوحوش",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/cQ-Ho3wkwUCC5eYKjHrCzkMq7XxyfTfUQNxOoL3bOVA.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/cQ-Ho3wkwUCC5eYKjHrCzkMq7XxyfTfUQNxOoL3bOVA.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/cQ-Ho3wkwUCC5eYKjHrCzkMq7XxyfTfUQNxOoL3bOVA.png"
+                },
+                "clanLevel": 4,
+                "stars": 25,
+                "destructionPercentage": 90.5
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210325T175650.000Z",
+            "teamSize": 10,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 13,
+                "stars": 23,
+                "destructionPercentage": 87.5,
+                "expEarned": 104
+            },
+            "opponent": {
+                "tag": "#2YL0Y9J8R",
+                "name": "بچه های نرزیوه",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/YG2M-h-oV_lM7lEdWDRZo8bHO0uJ8-c4UAs6_vBZATE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/YG2M-h-oV_lM7lEdWDRZo8bHO0uJ8-c4UAs6_vBZATE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/YG2M-h-oV_lM7lEdWDRZo8bHO0uJ8-c4UAs6_vBZATE.png"
+                },
+                "clanLevel": 2,
+                "stars": 23,
+                "destructionPercentage": 80.9
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210323T164623.000Z",
+            "teamSize": 15,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 14,
+                "stars": 28,
+                "destructionPercentage": 73.4,
+                "expEarned": 83
+            },
+            "opponent": {
+                "tag": "#29V08UUC9",
+                "name": "VTT enduro",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/xjkM7KaTQ24H8FLHL8qbPKcMaawCMhvX_UW7OMpE-Ys.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/xjkM7KaTQ24H8FLHL8qbPKcMaawCMhvX_UW7OMpE-Ys.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/xjkM7KaTQ24H8FLHL8qbPKcMaawCMhvX_UW7OMpE-Ys.png"
+                },
+                "clanLevel": 3,
+                "stars": 35,
+                "destructionPercentage": 82.933334
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210321T133424.000Z",
+            "teamSize": 10,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 10,
+                "stars": 22,
+                "destructionPercentage": 80.1,
+                "expEarned": 77
+            },
+            "opponent": {
+                "tag": "#2P29CQC9L",
+                "name": "ØcTo",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/jqabKPbWd6n4m2YWixgbHtNXRiwK3CrIagCzloAo_Z4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/jqabKPbWd6n4m2YWixgbHtNXRiwK3CrIagCzloAo_Z4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/jqabKPbWd6n4m2YWixgbHtNXRiwK3CrIagCzloAo_Z4.png"
+                },
+                "clanLevel": 5,
+                "stars": 25,
+                "destructionPercentage": 86.2
+            }
+        },
+        {
+            "result": "win",
+            "endTime": "20210319T112741.000Z",
+            "teamSize": 20,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 21,
+                "stars": 46,
+                "destructionPercentage": 81.4,
+                "expEarned": 139
+            },
+            "opponent": {
+                "tag": "#2YCJ08QL8",
+                "name": "سلحشوران",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/1C9jsY9zUNltj9ph_5_GsFnibYVfYiOM76lFsFf6PXE.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/1C9jsY9zUNltj9ph_5_GsFnibYVfYiOM76lFsFf6PXE.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/1C9jsY9zUNltj9ph_5_GsFnibYVfYiOM76lFsFf6PXE.png"
+                },
+                "clanLevel": 4,
+                "stars": 20,
+                "destructionPercentage": 35.55
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210317T064928.000Z",
+            "teamSize": 15,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 19,
+                "stars": 25,
+                "destructionPercentage": 61.4,
+                "expEarned": 44
+            },
+            "opponent": {
+                "tag": "#2L9VLV0L2",
+                "name": "MARGIANA",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/eL9RBgjox8nYf7sykJBQbO3fzjqOuq3gtue18KMCaL4.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/eL9RBgjox8nYf7sykJBQbO3fzjqOuq3gtue18KMCaL4.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/eL9RBgjox8nYf7sykJBQbO3fzjqOuq3gtue18KMCaL4.png"
+                },
+                "clanLevel": 3,
+                "stars": 42,
+                "destructionPercentage": 95.86667
+            }
+        },
+        {
+            "result": "lose",
+            "endTime": "20210314T192059.000Z",
+            "teamSize": 30,
+            "clan": {
+                "tag": "#2L82JLL9R",
+                "name": "wild roses rise",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/4PqGcP2ulD3hevKvGPGNn6aSw0i5s9pKjOSepQB_R04.png"
+                },
+                "clanLevel": 2,
+                "attacks": 20,
+                "stars": 35,
+                "destructionPercentage": 41.966667,
+                "expEarned": 44
+            },
+            "opponent": {
+                "tag": "#2YYR99LV2",
+                "name": "ПАЦАНЬІ",
+                "badgeUrls": {
+                    "small": "https://api-assets.clashofclans.com/badges/70/DpUBGqQLGv0rS8-I-NJKIdhGkPBGhuGvVavhU8t8s7w.png",
+                    "large": "https://api-assets.clashofclans.com/badges/512/DpUBGqQLGv0rS8-I-NJKIdhGkPBGhuGvVavhU8t8s7w.png",
+                    "medium": "https://api-assets.clashofclans.com/badges/200/DpUBGqQLGv0rS8-I-NJKIdhGkPBGhuGvVavhU8t8s7w.png"
+                },
+                "clanLevel": 2,
+                "stars": 46,
+                "destructionPercentage": 56.9
+            }
+        }
+    ],
+    "paging": {
+        "cursors": {}
+    }
+}
