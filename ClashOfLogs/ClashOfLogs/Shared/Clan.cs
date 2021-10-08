@@ -1,74 +1,75 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ClashOfLogs.Shared
 {
     public class Clan
     {
-        [JsonProperty("tag")]
+        [JsonPropertyName("tag")]
         public string Tag { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("location")]
+        [JsonPropertyName("location")]
         public Location Location { get; set; }
 
-        [JsonProperty("badgeUrls")]
-        public ImageUrls BadgeUrls { get; set; }
+        [JsonPropertyName("badgeUrls")]
+        public BadgeUrls BadgeUrls { get; set; }
 
-        [JsonProperty("clanLevel")]
+        [JsonPropertyName("clanLevel")]
         public int ClanLevel { get; set; }
 
-        [JsonProperty("clanPoints")]
+        [JsonPropertyName("clanPoints")]
         public int ClanPoints { get; set; }
 
-        [JsonProperty("clanVersusPoints")]
+        [JsonPropertyName("clanVersusPoints")]
         public int ClanVersusPoints { get; set; }
 
-        [JsonProperty("requiredTrophies")]
+        [JsonPropertyName("requiredTrophies")]
         public int RequiredTrophies { get; set; }
 
-        [JsonProperty("warFrequency")]
+        [JsonPropertyName("warFrequency")]
         public string WarFrequency { get; set; }
 
-        [JsonProperty("warWinStreak")]
+        [JsonPropertyName("warWinStreak")]
         public int WarWinStreak { get; set; }
 
-        [JsonProperty("warWins")]
+        [JsonPropertyName("warWins")]
         public int WarWins { get; set; }
 
-        [JsonProperty("warTies")]
+        [JsonPropertyName("warTies")]
         public int WarTies { get; set; }
 
-        [JsonProperty("warLosses")]
+        [JsonPropertyName("warLosses")]
         public int WarLosses { get; set; }
 
-        [JsonProperty("isWarLogPublic")]
+        [JsonPropertyName("isWarLogPublic")]
         public bool IsWarLogPublic { get; set; }
 
-        [JsonProperty("warLeague")]
+        [JsonPropertyName("warLeague")]
         public WarLeague WarLeague { get; set; }
 
-        [JsonProperty("members")]
+        [JsonPropertyName("members")]
         public int Members { get; set; }
 
-        [JsonProperty("memberList")]
-        public List<Member> MemberList { get; set; }
+        [JsonPropertyName("memberList")]
+        public List<ClanMember> MemberList { get; } = new List<ClanMember>();
 
-        [JsonProperty("labels")]
-        public List<Label> Labels { get; set; }
+        [JsonPropertyName("labels")]
+        public List<Label> Labels { get; } = new List<Label>();
 
-        [JsonProperty("requiredVersusTrophies")]
+        [JsonPropertyName("requiredVersusTrophies")]
         public int RequiredVersusTrophies { get; set; }
 
-        [JsonProperty("requiredTownhallLevel")]
+        [JsonPropertyName("requiredTownhallLevel")]
         public int RequiredTownhallLevel { get; set; }
     }
+}
 }
