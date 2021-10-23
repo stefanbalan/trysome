@@ -1,9 +1,8 @@
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace CoL.Service
 {
@@ -11,14 +10,34 @@ namespace CoL.Service
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var config = BuildConfiguration(); // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
+
+            CreateHostBuilder(config, args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
+        private static IConfigurationRoot BuildConfiguration()
+        {
+            
+            var env = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
+            var builder = new ConfigurationBuilder().AddJsonFile($"appsettings.json", true, true)
+                                                    .AddJsonFile($"appsettings.{env}.json", true, true)
+                                                    .AddEnvironmentVariables();
+
+            return builder.Build();
+        }
+
+        public static IHostBuilder CreateHostBuilder(IConfigurationRoot configuration, string[] args) =>
+            Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
+            {
+                services.AddLogging(lb =>
                 {
-                    services.AddHostedService<Worker>();
+                    lb.AddConsole();
+                    lb.AddConfiguration(configuration);
                 });
+                services.AddHostedService<Worker>();
+            });
+
+
+
     }
 }
