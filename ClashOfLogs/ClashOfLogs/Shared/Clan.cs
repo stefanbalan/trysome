@@ -72,4 +72,3 @@ namespace ClashOfLogs.Shared
         public int RequiredTownhallLevel { get; set; }
     }
 }
-}
