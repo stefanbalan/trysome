@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ClashOfLogs.Shared
 {
-    // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
-
     public class Attack
     {
         [JsonPropertyName("attackerTag")]
@@ -66,7 +60,7 @@ namespace ClashOfLogs.Shared
         public int MapPosition { get; set; }
 
         [JsonPropertyName("attacks")]
-        public List<Attack> Attacks { get; } = new List<Attack>();
+        public List<Attack> Attacks { get; set; }
 
         [JsonPropertyName("opponentAttacks")]
         public int OpponentAttacks { get; set; }
@@ -101,7 +95,7 @@ namespace ClashOfLogs.Shared
         [JsonPropertyName("members")]
         public List<Member> Members { get; } = new List<Member>();
     }
-   
+
     public class War
     {
         [JsonPropertyName("state")]
@@ -125,6 +119,4 @@ namespace ClashOfLogs.Shared
         [JsonPropertyName("opponent")]
         public WarClan Opponent { get; set; }
     }
-
-
 }
