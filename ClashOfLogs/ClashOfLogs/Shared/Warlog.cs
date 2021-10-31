@@ -3,8 +3,6 @@ using System.Text.Json.Serialization;
 
 namespace ClashOfLogs.Shared
 {
-    // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
-
     public class Cursors
     {
     }
@@ -18,7 +16,7 @@ namespace ClashOfLogs.Shared
     public class Warlog
     {
         [JsonPropertyName("items")]
-        public List<WarSummary> Items { get; } = new List<WarSummary>();
+        public List<WarSummary> Items { get; set; }
 
         [JsonPropertyName("paging")]
         public Paging Paging { get; set; }

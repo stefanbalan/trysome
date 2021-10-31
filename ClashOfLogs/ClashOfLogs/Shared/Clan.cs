@@ -60,10 +60,10 @@ namespace ClashOfLogs.Shared
         public int Members { get; set; }
 
         [JsonPropertyName("memberList")]
-        public List<ClanMember> MemberList { get; } = new List<ClanMember>();
+        public List<ClanMember> MemberList { get; set; } // = new List<ClanMember>();
 
         [JsonPropertyName("labels")]
-        public List<Label> Labels { get; } = new List<Label>();
+        public List<Label> Labels { get; set; } //= new List<Label>();
 
         [JsonPropertyName("requiredVersusTrophies")]
         public int RequiredVersusTrophies { get; set; }
