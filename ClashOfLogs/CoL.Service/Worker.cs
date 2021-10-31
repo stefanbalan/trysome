@@ -1,15 +1,14 @@
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
-using System.Threading.Tasks;
 using ClashOfLogs.Shared;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoL.Service
 {
@@ -39,36 +38,56 @@ namespace CoL.Service
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
 
-                await ImportFiles();
+                await ImportDirectories();
 
-                await Task.Delay(10000, stoppingToken);
+                await Task.Delay(120_000, stoppingToken);
             }
         }
 
-        private async Task ImportFiles()
+        private async Task ImportDirectories()
         {
-            if (!Directory.Exists(jsondirectory))
+            try
             {
-                Directory.CreateDirectory(jsondirectory);
-                var d = new DirectoryInfo(jsondirectory);
+                if (!Directory.Exists(jsondirectory))
+                {
+                    Directory.CreateDirectory(jsondirectory);
+                    var d = new DirectoryInfo(jsondirectory);
+                }
+
+                var importdates = Directory.EnumerateDirectories(jsondirectory);
+                foreach (var importdate in importdates)
+                {
+                    var dir = new DirectoryInfo(importdate);
+                    if (!dir.Exists) continue;
+
+                    var dirDateString = dir.Name;
+                    if (!DateTime.TryParse(dirDateString, out var dirDate)) continue;
+
+                    await ImportFiles(dir, dirDate);
+                }
+
             }
-
-            var jsonfiles = Directory.EnumerateFiles(jsondirectory, "*.json");
-            var jf = jsonfiles.FirstOrDefault();
-            if (jf is null) return;
-
-            if (jf.Contains("clan")) await ImportClan(jf);
-
-
+            catch (Exception ex) { }
         }
 
-        private async Task ImportClan(string jf)
+        async Task ImportFiles(DirectoryInfo dir, DateTime date)
         {
-            if (!File.Exists(jf)) return;
-            var stream = File.OpenRead(jf);
-            var clan = await JsonSerializer.DeserializeAsync(stream, typeof(Clan));
+            var jsonFiles = dir.EnumerateFiles("*.json");
 
+            foreach (var jsonFile in jsonFiles)
+            {
+                if (!jsonFile.Exists) continue;
+                if (jsonFile.Name.Contains("clan")) await ImportClan(jsonFile);
+            }
+        }
 
+        private async Task ImportClan(FileInfo file)
+        {
+
+            if (!file.Exists) return;
+            var stream = file.OpenRead();
+            var clan = await JsonSerializer.DeserializeAsync(stream, typeof(Clan)  , new JsonSerializerOptions() {  });
+            stream.Close();
         }
     }
 }
