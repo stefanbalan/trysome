@@ -1,8 +1,13 @@
+using AutoMapper;
+
+using CoL.DB.mssql;
+
 using Microsoft.Extensions.Configuration;
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+using System;
 
 namespace CoL.Service
 {
@@ -13,11 +18,17 @@ namespace CoL.Service
             var config = BuildConfiguration(); // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
 
             CreateHostBuilder(config, args).Build().Run();
+
+
+
         }
+
+
+
 
         private static IConfigurationRoot BuildConfiguration()
         {
-            
+
             var env = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
             var builder = new ConfigurationBuilder().AddJsonFile($"appsettings.json", true, true)
                                                     .AddJsonFile($"appsettings.{env}.json", true, true)
@@ -26,18 +37,30 @@ namespace CoL.Service
             return builder.Build();
         }
 
-        public static IHostBuilder CreateHostBuilder(IConfigurationRoot configuration, string[] args) =>
-            Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
-            {
-                services.AddLogging(lb =>
+
+
+        public static IHostBuilder CreateHostBuilder(IConfigurationRoot configuration, string[] args)
+        {
+            var mapperConfig = new MapperConfiguration(cfg => cfg
+                .CreateMap<ClashOfLogs.Shared.Clan, CoL.DB.Entities.Clan>()
+                );
+
+            return Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
                 {
-                    lb.AddConsole();
-                    lb.AddConfiguration(configuration);
+                    services.AddLogging(lb =>
+                    {
+                        lb.AddConsole();
+                        lb.AddConfiguration(configuration);
+                    });
+
+
+                    services.AddSingleton((sp) => mapperConfig.CreateMapper());
+
+                    services.AddHostedService<Worker>();
+
+                    services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
+
                 });
-                services.AddHostedService<Worker>();
-            });
-
-
-
+        }
     }
 }

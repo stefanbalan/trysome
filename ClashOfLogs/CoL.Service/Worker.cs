@@ -1,5 +1,7 @@
 using ClashOfLogs.Shared;
 
+using CoL.DB.mssql;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,6 +11,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace CoL.Service
 {
@@ -16,13 +19,16 @@ namespace CoL.Service
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
+        private readonly CoLContext context;
+        private readonly IMapper mapper;
         private readonly string jsondirectory;
 
-        public Worker(ILogger<Worker> logger, IConfiguration config)
+        public Worker(ILogger<Worker> logger, IConfiguration config, CoLContext context, IMapper mapper )
         {
             _logger = logger;
             _config = config;
-
+            this.context = context;
+            this.mapper = mapper;
             jsondirectory = config["JSONdirectory"];
             if (string.IsNullOrEmpty(jsondirectory))
             {
@@ -33,6 +39,13 @@ namespace CoL.Service
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            var dbOk = await context.Database.EnsureCreatedAsync();
+            if (!dbOk)
+            {
+                _logger.LogError("database not created");
+                return;
+            }
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
@@ -86,7 +99,7 @@ namespace CoL.Service
 
             if (!file.Exists) return;
             var stream = file.OpenRead();
-            var clan = await JsonSerializer.DeserializeAsync(stream, typeof(Clan)  , new JsonSerializerOptions() {  });
+            var clan = await JsonSerializer.DeserializeAsync(stream, typeof(Clan), new JsonSerializerOptions() { });
             stream.Close();
         }
     }
