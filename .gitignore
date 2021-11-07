@@ -9,3 +9,6 @@
 /packages
 **/bin
 **/obj
+/ClashOfLogs/db/CoL.mdf
+/ClashOfLogs/db/CoL.ldf
+/ClashOfLogs/db

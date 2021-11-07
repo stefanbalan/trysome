@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClashOfLogs.Shared", "Clash
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoL.Service", "CoL.Service\CoL.Service.csproj", "{2EAFC519-C4A3-479A-8D2B-90FE03233152}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoL.DB.mssql", "CoL.DB.mssql\CoL.DB.mssql.csproj", "{BC1C527B-401A-4A5A-BC72-47F61A69687B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2EAFC519-C4A3-479A-8D2B-90FE03233152}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EAFC519-C4A3-479A-8D2B-90FE03233152}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EAFC519-C4A3-479A-8D2B-90FE03233152}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC1C527B-401A-4A5A-BC72-47F61A69687B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC1C527B-401A-4A5A-BC72-47F61A69687B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC1C527B-401A-4A5A-BC72-47F61A69687B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC1C527B-401A-4A5A-BC72-47F61A69687B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
