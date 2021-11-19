@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CoL.DB.Entities
 {
-    public class Clan
+    public class Clan : BaseCoLEntity
     {
         [Key]
         public string Tag { get; set; }
@@ -47,8 +47,6 @@ namespace CoL.DB.Entities
         //public List<Label> Labels { get; set; } //= new List<Label>();
 
         public int RequiredVersusTrophies { get; set; }
-
         public int RequiredTownhallLevel { get; set; }
-
     }
 }
