@@ -1,17 +1,17 @@
+using AutoMapper;
 using ClashOfLogs.Shared;
-
 using CoL.DB.mssql;
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
+using DBClan = CoL.DB.Entities.Clan;
+using DBClanMember = CoL.DB.Entities.ClanMember;
+
 
 namespace CoL.Service
 {
@@ -23,7 +23,7 @@ namespace CoL.Service
         private readonly IMapper mapper;
         private readonly string jsondirectory;
 
-        public Worker(ILogger<Worker> logger, IConfiguration config, CoLContext context, IMapper mapper )
+        public Worker(ILogger<Worker> logger, IConfiguration config, CoLContext context, IMapper mapper)
         {
             _logger = logger;
             _config = config;
@@ -99,8 +99,76 @@ namespace CoL.Service
 
             if (!file.Exists) return;
             var stream = file.OpenRead();
-            var clan = await JsonSerializer.DeserializeAsync(stream, typeof(Clan), new JsonSerializerOptions() { });
+            var clan = await JsonSerializer.DeserializeAsync<Clan>(stream);
             stream.Close();
+
+            var exdbclan = await context.Clans.FindAsync(clan.Tag);
+            if (exdbclan != null)
+            {
+                exdbclan.Name = clan.Name;
+                exdbclan.Type = clan.Type;
+                exdbclan.Description = clan.Description;
+                exdbclan.ClanLevel = clan.ClanLevel;
+                exdbclan.ClanPoints = clan.ClanPoints;
+                exdbclan.ClanVersusPoints = clan.ClanVersusPoints;
+                exdbclan.RequiredTrophies = clan.RequiredTrophies;
+                exdbclan.WarFrequency = clan.WarFrequency;
+                exdbclan.WarWinStreak = clan.WarWinStreak;
+                exdbclan.WarWins = clan.WarWins;
+                exdbclan.WarTies = clan.WarTies;
+                exdbclan.WarLosses = clan.WarLosses;
+                exdbclan.IsWarLogPublic = clan.IsWarLogPublic;
+                exdbclan.RequiredVersusTrophies = clan.RequiredVersusTrophies;
+                exdbclan.RequiredTownhallLevel = clan.RequiredTownhallLevel;
+
+                var saved = await context.SaveChangesAsync();
+            }
+            else
+            {
+                var dbClan = mapper.Map<DBClan>(clan);
+                context.Clans.Add(dbClan);
+                var saved = await context.SaveChangesAsync();
+            }
+
+            foreach (var member in clan.MemberList)
+            {
+                await AddOrUpdateClanMember(member);
+            }
+        }
+
+        private async Task AddOrUpdateClanMember(ClanMember member)
+        {
+            var exMember = await context.ClanMembers.FindAsync(member.Tag);
+            if (exMember != null)
+            {
+                exMember.Name = member.Name;
+                exMember.Role = member.Role;
+                exMember.ExpLevel = member.ExpLevel;
+                exMember.Trophies = member.Trophies;
+                exMember.VersusTrophies = member.VersusTrophies;
+                exMember.ClanRank = member.ClanRank;
+                exMember.PreviousClanRank = member.PreviousClanRank;
+
+                if (member.Donations < exMember.Donations)
+                {
+                    //new season
+                    exMember.DonationsPreviousSeason = exMember.Donations;
+                    exMember.DonationsReceivedPreviousSeason = exMember.DonationsReceived;
+                }
+                else
+                {
+                    exMember.Donations = member.Donations;
+                    exMember.DonationsReceived = member.DonationsReceived;
+                }
+
+                var saved = await context.SaveChangesAsync();
+            }
+            else
+            {
+                var dbMember = mapper.Map<DBClanMember>(member);
+                context.ClanMembers.Add(dbMember);
+                var saved = await context.SaveChangesAsync();
+            }
         }
     }
 }
