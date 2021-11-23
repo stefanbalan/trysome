@@ -3,30 +3,48 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CoL.DB.mssql
+namespace CoL.DB
 {
     //todo implement as separate, injectable service?
 
-    public abstract class ModelConvertibleBase<TEntity, TModel>
+    public interface IModelConvertible
+    {
+        string Key { get; }
+
+        TModel FromEntityToThisModel<TModel, TEntity>(TEntity entity);
+
+        TEntity ToEntity<TEntity>();
+    }
+
+    public class ModelConvertibleBase<TEntity, TModel> : IModelConvertible
         where TModel : /*ModelConvertibleBase<TEntity, TModel>,*/ new()
     {
         public TModel FromEntity(TEntity entity)
         {
             var model = new TModel();
-            model = FromEntityToThisModel(entity);
+            model = FromEntityToThisModel<TModel,TEntity>(entity);
             return model;
         }
 
-        protected abstract TModel FromEntityToThisModel(TEntity entity);
-
-        public abstract TEntity ToEntity();
 
         private static Dictionary<string, IMapping<TEntity, TModel>> Mappings { get; } = new Dictionary<string, IMapping<TEntity, TModel>>();
 
-        public static void Map<TPEntity, TPModel>(Expression<Func<TEntity, TPEntity>> entityExp, Expression<Func<TModel, TPModel>> modelExp)
+        public string Key => typeof(TEntity).FullName + "_" + typeof(TModel).FullName;
+
+        public static void Map<TPropEntity, TPropModel>(Expression<Func<TEntity, TPropEntity>> entityExp, Expression<Func<TModel, TPropModel>> modelExp)
         {
-            var mapping = new Mapping<TEntity, TPEntity, TModel, TPModel>(entityExp, modelExp);
+            var mapping = new Mapping<TEntity, TPropEntity, TModel, TPropModel>(entityExp, modelExp);
             Mappings.Add(mapping.Key, mapping);
+        }
+
+        public TModel1 FromEntityToThisModel<TModel1, TEntity1>(TEntity1 entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TEntity1 ToEntity<TEntity1>()
+        {
+            throw new NotImplementedException();
         }
     }
 

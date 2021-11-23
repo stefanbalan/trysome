@@ -30,5 +30,6 @@ namespace CoL.DB.mssql
 
         public virtual DbSet<Clan> Clans { get; set; }
         public virtual DbSet<ClanMember> ClanMembers { get; set; }
+        public virtual DbSet<WarSummary> WarSummaries { get; set; }
     }
 }

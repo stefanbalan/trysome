@@ -13,6 +13,9 @@ namespace ClashOfLogs.Shared
         [JsonPropertyName("teamSize")]
         public int TeamSize { get; set; }
 
+        [JsonPropertyName("attacksPerMember")]
+        public int AttacksPerMember { get; set; }
+
         [JsonPropertyName("clan")]
         public WarClan Clan { get; set; }
 

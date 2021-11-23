@@ -1,7 +1,7 @@
 using AutoMapper;
 
 using CoL.DB.mssql;
-
+using CoL.Service.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,8 +19,7 @@ namespace CoL.Service
 
             CreateHostBuilder(config, args).Build().Run();
 
-
-
+            //ClanMapper.Map(dbclan => dbclan.Name, clan => clan.Name);
         }
 
 
