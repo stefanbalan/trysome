@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CoL.DB.Entities;
+﻿using CoL.DB.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace CoL.DB.mssql
 {
@@ -26,10 +27,15 @@ namespace CoL.DB.mssql
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "1.0.1");
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoLContext).Assembly);
+
+
+
         }
 
         public virtual DbSet<Clan> Clans { get; set; }
-        public virtual DbSet<ClanMember> ClanMembers { get; set; }
-        public virtual DbSet<WarSummary> WarSummaries { get; set; }
+        public virtual DbSet<Member> ClanMembers { get; set; }
+        public virtual DbSet<War> WarSummaries { get; set; }
     }
 }
