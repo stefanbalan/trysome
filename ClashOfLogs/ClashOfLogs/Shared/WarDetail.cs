@@ -24,28 +24,7 @@ namespace ClashOfLogs.Shared
         public int Duration { get; set; }
     }
 
-    public class BestOpponentAttack
-    {
-        [JsonPropertyName("attackerTag")]
-        public string AttackerTag { get; set; }
-
-        [JsonPropertyName("defenderTag")]
-        public string DefenderTag { get; set; }
-
-        [JsonPropertyName("stars")]
-        public int Stars { get; set; }
-
-        [JsonPropertyName("destructionPercentage")]
-        public int DestructionPercentage { get; set; }
-
-        [JsonPropertyName("order")]
-        public int Order { get; set; }
-
-        [JsonPropertyName("duration")]
-        public int Duration { get; set; }
-    }
-
-    public class Member
+    public class WarMember
     {
         [JsonPropertyName("tag")]
         public string Tag { get; set; }
@@ -66,7 +45,7 @@ namespace ClashOfLogs.Shared
         public int OpponentAttacks { get; set; }
 
         [JsonPropertyName("bestOpponentAttack")]
-        public BestOpponentAttack BestOpponentAttack { get; set; }
+        public Attack BestOpponentAttack { get; set; }
     }
 
     public class WarClan
@@ -93,16 +72,19 @@ namespace ClashOfLogs.Shared
         public double DestructionPercentage { get; set; }
 
         [JsonPropertyName("members")]
-        public List<Member> Members { get; } = new List<Member>();
+        public List<WarMember> Members { get; } = new List<WarMember>();
     }
 
-    public class War
+    public class WarDetail
     {
         [JsonPropertyName("state")]
         public string State { get; set; }
 
         [JsonPropertyName("teamSize")]
         public int TeamSize { get; set; }
+
+        [JsonPropertyName("attacksPerMember")]
+        public int AttacksPerMember { get; set; }
 
         [JsonPropertyName("preparationStartTime")]
         public string PreparationStartTime { get; set; }
