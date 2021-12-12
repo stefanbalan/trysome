@@ -20,13 +20,11 @@ namespace CoL.DB.Entities
         public int TeamSize { get; set; }
         public int AttacksPerMember { get; set; }
 
-        public string ClanTag { get; set; }
         public WarClan Clan { get; set; }
-        public List<ClanWarMember> ClanMembers { get; set; }
+        public List<WarMemberClan> ClanMembers { get; set; }
 
-        public string OpponentTag { get; set; }
         public WarClan Opponent { get; set; }
-        public List<OpponentWarMember> OpponentMembers { get; set; }
+        public List<WarMemberOpponent> OpponentMembers { get; set; }
     }
 
     public class WarConfiguration : IEntityTypeConfiguration<War>
@@ -37,22 +35,17 @@ namespace CoL.DB.Entities
 
             //builder.HasAlternateKey(nameof(War.EndTime), nameof(War.ClanTag), nameof(War.OpponentTag));
 
-            builder.OwnsOne<WarClan>(nameof(War.Clan));
-            builder.OwnsOne<WarClan>(nameof(War.Opponent));
-
-            //builder.OwnsMany<OpponentWarMember>(wc => wc.ClanMembers).WithOwner(wm => wm.War)
-            //    //.Navigation(wm => wm.War).HasField(nameof(WarMember.WarId))
-            //    ;
-            //builder.OwnsMany<OpponentWarMember>(wc => wc.OpponentMembers).WithOwner(wm => wm.War)
-            //    //.Navigation(wm => wm.War).HasField(nameof(WarMember.WarId))
-            //    ;
+            builder.OwnsOne(w => w.Clan).WithOwner();
+            builder.OwnsOne(w => w.Opponent).WithOwner();
 
 
-            builder.HasMany<ClanWarMember>(wc => wc.ClanMembers).WithOne(wm => wm.War).HasForeignKey(wm => wm.WarId);
-            builder.HasMany<OpponentWarMember>(wc => wc.OpponentMembers).WithOne(wm => wm.War).HasForeignKey(wm => wm.WarId);
+            //builder.HasMany<ClanWarMember>(wc => wc.ClanMembers).WithOne(wm => wm.War).HasForeignKey(wm => wm.WarId);
+            //builder.HasMany<OpponentWarMember>(wc => wc.OpponentMembers).WithOne(wm => wm.War).HasForeignKey(wm => wm.WarId);
 
-            //builder.HasOne<WarClan>(nameof(War.Clan));
-            //builder.HasOne<WarClan>(nameof(War.Opponent));
+
+            builder.OwnsMany(wc => wc.ClanMembers).ToTable("WarMembers_Clan").WithOwner().HasForeignKey(wm => wm.WarId);
+            builder.OwnsMany(wc => wc.OpponentMembers).ToTable("WarMembers_Opponent").WithOwner().HasForeignKey(wm => wm.WarId);
+
         }
     }
 }

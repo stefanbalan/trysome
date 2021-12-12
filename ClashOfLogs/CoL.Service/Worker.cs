@@ -221,7 +221,7 @@ namespace CoL.Service
                 return;
             }
 
-            var exdbWarSummary = await context.WarSummaries
+            var exdbWarSummary = await context.Wars
                .FindAsync(endTime, warSummary.Clan.Tag, warSummary.Opponent.Tag);
 
             if (exdbWarSummary != null)
@@ -234,7 +234,7 @@ namespace CoL.Service
                 TeamSize = warSummary.TeamSize,
                 AttacksPerMember = warSummary.AttacksPerMember,
 
-                ClanTag = warSummary.Clan.Tag,
+                //ClanTag = warSummary.Clan.Tag,
                 Clan = new DBWarClan
                 {
                     Name = warSummary.Clan.Name,
@@ -250,7 +250,7 @@ namespace CoL.Service
                     DestructionPercentage = warSummary.Clan.DestructionPercentage,
                 },
 
-                OpponentTag = warSummary.Opponent.Tag,
+                //OpponentTag = warSummary.Opponent.Tag,
                 Opponent = new DBWarClan
                 {
                     Tag = warSummary.Opponent.Tag,
@@ -268,7 +268,7 @@ namespace CoL.Service
                 }
             };
 
-            context.WarSummaries.Add(dbWarSummary);
+            context.Wars.Add(dbWarSummary);
             var saved = await context.SaveChangesAsync();
         }
 
@@ -303,7 +303,7 @@ namespace CoL.Service
                 return;
             }
 
-            var exdbWarSummary = await context.WarSummaries
+            var exdbWarSummary = await context.Wars
                .FindAsync(endTime, war.Clan.Tag, war.Opponent.Tag);
 
             if (exdbWarSummary != null)
@@ -315,7 +315,7 @@ namespace CoL.Service
                 TeamSize = war.TeamSize,
                 AttacksPerMember = war.AttacksPerMember,
 
-                ClanTag = war.Clan.Tag,
+                //ClanTag = war.Clan.Tag,
                 Clan = new DBWarClan
                 {
                     Name = war.Clan.Name,
@@ -331,7 +331,7 @@ namespace CoL.Service
                     DestructionPercentage = war.Clan.DestructionPercentage,
                 },
 
-                OpponentTag = war.Opponent.Tag,
+                //OpponentTag = war.Opponent.Tag,
                 Opponent = new DBWarClan
                 {
                     Tag = war.Opponent.Tag,
@@ -349,7 +349,7 @@ namespace CoL.Service
                 }
             };
 
-            context.WarSummaries.Add(dbWarSummary);
+            context.Wars.Add(dbWarSummary);
             var saved = await context.SaveChangesAsync();
         }
     }

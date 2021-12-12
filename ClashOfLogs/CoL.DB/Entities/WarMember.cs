@@ -6,13 +6,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoL.DB.Entities
 {
-    public class ClanWarMember : WarMember
+    public class WarMemberClan : WarMember
     {
 
     }
 
 
-    public class OpponentWarMember : WarMember
+    public class WarMemberOpponent : WarMember
     {
 
     }
@@ -22,7 +22,6 @@ namespace CoL.DB.Entities
     public class WarMember
     {
         public int WarId { get; set; }
-        public War War { get; set; }
 
         [Key]
         public string Tag { get; set; }
