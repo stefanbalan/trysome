@@ -19,12 +19,10 @@ namespace CoL.DB.Entities
 
     
 
-    public class WarMember
+    public class WarMember : BaseEntityWithTag
     {
         public int WarId { get; set; }
 
-        [Key]
-        public string Tag { get; set; }
         public string Name { get; set; }
         public int TownhallLevel { get; set; }
         public int MapPosition { get; set; }

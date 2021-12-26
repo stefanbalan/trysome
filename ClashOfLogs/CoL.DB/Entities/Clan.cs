@@ -1,22 +1,18 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoL.DB.Entities
 {
-    public class Clan : BaseCoLEntity
+    public class Clan : BaseEntityWithTag
     {
-        [Key]
-        public string Tag { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
 
         //public Location Location { get; set; }
-        
+
         [Required]
         public BadgeUrls BadgeUrls { get; set; }
 
@@ -35,7 +31,7 @@ namespace CoL.DB.Entities
 
         public int Members { get; set; }
 
-        public List<Member> MemberList { get; set; } 
+        public List<Member> MemberList { get; set; }
         //public List<Label> Labels { get; set; } //= new List<Label>();
 
         public int RequiredVersusTrophies { get; set; }
@@ -44,12 +40,16 @@ namespace CoL.DB.Entities
 
 
 
-    public class ClanConfiguration : IEntityTypeConfiguration<Clan>
+    public class ClanConfiguration : BaseEntityWithTag.Configuration<Clan>
     {
-        public void Configure(EntityTypeBuilder<Clan> builder)
+        public new void Configure(EntityTypeBuilder<Clan> builder)
         {
-            builder.HasKey(clan => clan.Tag);
+            base.Configure(builder);
+
             builder.HasMany(clan => clan.MemberList);
+
         }
+
+
     }
 }
