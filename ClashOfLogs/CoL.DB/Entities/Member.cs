@@ -5,13 +5,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CoL.DB.Entities
 {
-    public class Member
+    public class Member : BaseEntityWithTag
     {
 
         public string ClanTag { get; set; }
 
-        [Key]
-        public string Tag { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
         public int ExpLevel { get; set; }
@@ -31,11 +29,13 @@ namespace CoL.DB.Entities
     }
 
 
-    public class ClanMemberConfiguration : IEntityTypeConfiguration<Member>
+    public class ClanMemberConfiguration : BaseEntityWithTag.Configuration<Member>
 
     {
-        public void Configure(EntityTypeBuilder<Member> builder)
+        public new void Configure(EntityTypeBuilder<Member> builder)
         {
+            base.Configure(builder);
+
             builder.HasKey(clan => clan.Tag);
         }
     }
