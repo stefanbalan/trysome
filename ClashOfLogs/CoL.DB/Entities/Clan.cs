@@ -7,6 +7,11 @@ namespace CoL.DB.Entities
 {
     public class Clan : BaseEntityWithTag
     {
+        public Clan()
+        {
+            MemberList = new List<Member>();
+        }
+
         public string Name { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }

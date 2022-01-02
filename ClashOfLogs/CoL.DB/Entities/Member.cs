@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace CoL.DB.Entities
 {
@@ -20,12 +19,16 @@ namespace CoL.DB.Entities
         public int VersusTrophies { get; set; }
         public int ClanRank { get; set; }
         public int PreviousClanRank { get; set; }
-        
+
         public int Donations { get; set; }
         public int DonationsReceived { get; set; }
 
         public int DonationsPreviousSeason { get; set; }
         public int DonationsReceivedPreviousSeason { get; set; }
+
+        public DateTime TimeFirstSeen { get; set; }
+        public DateTime TimeLastSeen { get; set; }
+        public DateTime? TimeQuit { get; set; }
     }
 
 

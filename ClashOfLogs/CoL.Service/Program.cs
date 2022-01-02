@@ -1,5 +1,3 @@
-using AutoMapper;
-
 using CoL.DB.mssql;
 using CoL.Service.Mappers;
 using Microsoft.Extensions.Configuration;
@@ -40,9 +38,6 @@ namespace CoL.Service
 
         public static IHostBuilder CreateHostBuilder(IConfigurationRoot configuration, string[] args)
         {
-            var mapperConfig = new MapperConfiguration(cfg => cfg
-                .CreateMap<ClashOfLogs.Shared.Clan, CoL.DB.Entities.Clan>()
-                );
 
             return Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
                 {
@@ -51,9 +46,6 @@ namespace CoL.Service
                         lb.AddConsole();
                         lb.AddConfiguration(configuration);
                     });
-
-
-                    services.AddSingleton((sp) => mapperConfig.CreateMapper());
 
                     services.AddHostedService<Worker>();
 

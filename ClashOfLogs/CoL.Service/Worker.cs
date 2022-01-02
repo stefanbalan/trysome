@@ -1,4 +1,3 @@
-using AutoMapper;
 
 using ClashOfLogs.Shared;
 
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
@@ -24,18 +24,19 @@ namespace CoL.Service
 {
     public class Worker : BackgroundService
     {
+        private readonly IHostApplicationLifetime hostApplicationLifetime;
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
         private readonly CoLContext context;
-        private readonly IMapper mapper;
         private readonly string jsondirectory;
 
-        public Worker(ILogger<Worker> logger, IConfiguration config, CoLContext context, IMapper mapper)
+        public Worker(IHostApplicationLifetime hostApplicationLifetime, ILogger<Worker> logger, IConfiguration config, CoLContext context)
         {
+            this.hostApplicationLifetime = hostApplicationLifetime;
             _logger = logger;
             _config = config;
             this.context = context;
-            this.mapper = mapper;
+
             jsondirectory = config["JSONdirectory"];
             if (string.IsNullOrEmpty(jsondirectory))
             {
@@ -46,10 +47,11 @@ namespace CoL.Service
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var dbOk = await context.Database.EnsureCreatedAsync();
+            var dbOk = context.Database.CanConnect();
             if (!dbOk)
             {
-                _logger.LogError("database not created");
+                _logger.LogError("database not available");
+                hostApplicationLifetime.StopApplication();
                 return;
             }
 
@@ -62,6 +64,17 @@ namespace CoL.Service
 
                 await Task.Delay(120_000, stoppingToken);
             }
+        }
+
+
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            return base.StartAsync(cancellationToken);
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            return base.StopAsync(cancellationToken);
         }
 
         private async Task ImportDirectories()
@@ -97,13 +110,13 @@ namespace CoL.Service
             foreach (var jsonFile in jsonFiles)
             {
                 if (!jsonFile.Exists) continue;
-                if (jsonFile.Name.StartsWith("clan")) await ImportClan(jsonFile);
-                if (jsonFile.Name.StartsWith("warlog")) await ImportWarlog(jsonFile);
-                if (jsonFile.Name.StartsWith("currentwar")) await ImportCurrentwar(jsonFile);
+                if (jsonFile.Name.StartsWith("clan")) await ImportClan(jsonFile, date);
+                if (jsonFile.Name.StartsWith("warlog")) await ImportWarlog(jsonFile, date);
+                if (jsonFile.Name.StartsWith("currentwar")) await ImportCurrentwar(jsonFile, date);
             }
         }
 
-        private async Task ImportClan(FileInfo file)
+        private async Task ImportClan(FileInfo file, DateTime date)
         {
             Clan clan = null;
             FileStream stream = null;
@@ -119,76 +132,94 @@ namespace CoL.Service
                 stream.Close();
             }
 
-            var exdbclan = await context.Clans.FindAsync(clan.Tag);
-            if (exdbclan != null)
-            {
-                exdbclan.Name = clan.Name;
-                exdbclan.Type = clan.Type;
-                exdbclan.Description = clan.Description;
-                exdbclan.ClanLevel = clan.ClanLevel;
-                exdbclan.ClanPoints = clan.ClanPoints;
-                exdbclan.ClanVersusPoints = clan.ClanVersusPoints;
-                exdbclan.RequiredTrophies = clan.RequiredTrophies;
-                exdbclan.WarFrequency = clan.WarFrequency;
-                exdbclan.WarWinStreak = clan.WarWinStreak;
-                exdbclan.WarWins = clan.WarWins;
-                exdbclan.WarTies = clan.WarTies;
-                exdbclan.WarLosses = clan.WarLosses;
-                exdbclan.IsWarLogPublic = clan.IsWarLogPublic;
-                exdbclan.RequiredVersusTrophies = clan.RequiredVersusTrophies;
-                exdbclan.RequiredTownhallLevel = clan.RequiredTownhallLevel;
+            var dbclan = await context.Clans.FindAsync(clan.Tag);
 
-                var saved = await context.SaveChangesAsync();
-            }
-            else
+
+            if (dbclan == null)
             {
-                var dbClan = mapper.Map<DBClan>(clan);
-                context.Clans.Add(dbClan);
-                var saved = await context.SaveChangesAsync();
+                dbclan = new DBClan
+                {
+                    Tag = clan.Tag,
+                };
+
+                context.Clans.Add(dbclan);
             }
+
+            dbclan.Name = clan.Name;
+            dbclan.Type = clan.Type;
+            dbclan.Description = clan.Description;
+            dbclan.ClanLevel = clan.ClanLevel;
+            dbclan.ClanPoints = clan.ClanPoints;
+            dbclan.ClanVersusPoints = clan.ClanVersusPoints;
+            dbclan.RequiredTrophies = clan.RequiredTrophies;
+            dbclan.WarFrequency = clan.WarFrequency;
+            dbclan.WarWinStreak = clan.WarWinStreak;
+            dbclan.WarWins = clan.WarWins;
+            dbclan.WarTies = clan.WarTies;
+            dbclan.WarLosses = clan.WarLosses;
+            dbclan.IsWarLogPublic = clan.IsWarLogPublic;
+            dbclan.RequiredVersusTrophies = clan.RequiredVersusTrophies;
+            dbclan.RequiredTownhallLevel = clan.RequiredTownhallLevel;
+
+            dbclan.BadgeUrls = new DBBadgeUrls()
+            {
+                Large = clan.BadgeUrls.Large,
+                Medium = clan.BadgeUrls.Medium,
+                Small = clan.BadgeUrls.Small
+            };
+
+            dbclan.UpdatedAt = date;
+
+            var saved = await context.SaveChangesAsync();
+            if (saved > 0) _logger.LogInformation($"Clan {dbclan.Tag} updated");
 
             foreach (var member in clan.MemberList)
             {
-                await AddOrUpdateClanMember(member);
+                await AddOrUpdateClanMember(dbclan, member, date);
             }
         }
 
-        private async Task AddOrUpdateClanMember(ClanMember member)
+        private async Task AddOrUpdateClanMember(DBClan dbclan, ClanMember member, DateTime date)
         {
-            var exMember = await context.ClanMembers.FindAsync(member.Tag);
-            if (exMember != null)
+            var dbMember = await context.ClanMembers.FindAsync(member.Tag);
+            if (dbMember == null)
             {
-                exMember.Name = member.Name;
-                exMember.Role = member.Role;
-                exMember.ExpLevel = member.ExpLevel;
-                exMember.Trophies = member.Trophies;
-                exMember.VersusTrophies = member.VersusTrophies;
-                exMember.ClanRank = member.ClanRank;
-                exMember.PreviousClanRank = member.PreviousClanRank;
-
-                if (member.Donations < exMember.Donations)
+                dbMember = new DBClanMember
                 {
-                    //new season
-                    exMember.DonationsPreviousSeason = exMember.Donations;
-                    exMember.DonationsReceivedPreviousSeason = exMember.DonationsReceived;
-                }
-                else
-                {
-                    exMember.Donations = member.Donations;
-                    exMember.DonationsReceived = member.DonationsReceived;
-                }
+                    Tag = member.Tag,
+                    ClanTag = dbclan.Tag,
+                    TimeFirstSeen = date
+                };
+            }
 
-                var saved = await context.SaveChangesAsync();
+
+            dbMember.Name = member.Name;
+            dbMember.Role = member.Role;
+            dbMember.ExpLevel = member.ExpLevel;
+            dbMember.Trophies = member.Trophies;
+            dbMember.VersusTrophies = member.VersusTrophies;
+            dbMember.ClanRank = member.ClanRank;
+            dbMember.PreviousClanRank = member.PreviousClanRank;
+            dbMember.TimeLastSeen = date;
+
+            if (member.Donations < dbMember.Donations)
+            {
+                //new season
+                dbMember.DonationsPreviousSeason = dbMember.Donations;
+                dbMember.DonationsReceivedPreviousSeason = dbMember.DonationsReceived;
             }
             else
             {
-                var dbMember = mapper.Map<DBClanMember>(member);
-                context.ClanMembers.Add(dbMember);
-                var saved = await context.SaveChangesAsync();
+                dbMember.Donations = member.Donations;
+                dbMember.DonationsReceived = member.DonationsReceived;
             }
+            dbclan.MemberList.Add(dbMember);
+
+            var saved = await context.SaveChangesAsync();
+            if (saved > 0) _logger.LogInformation($"Clan member {dbMember.Name}({dbMember.Tag}) updated");
         }
 
-        private async Task ImportWarlog(FileInfo file)
+        private async Task ImportWarlog(FileInfo file, DateTime date)
         {
             Warlog warlog = null;
             FileStream stream = null;
@@ -273,7 +304,7 @@ namespace CoL.Service
         }
 
 
-        private async Task ImportCurrentwar(FileInfo file)
+        private async Task ImportCurrentwar(FileInfo file, DateTime date)
         {
             WarDetail wardetail = null;
             FileStream stream = null;
@@ -296,7 +327,7 @@ namespace CoL.Service
 
         private async Task AddOrUpdateWarDetail(WarDetail war)
         {
-            if (!DateTime.TryParse(war.EndTime, out var endTime))
+            if (!DateTime.TryParseExact(war.EndTime, @"yyyyMMdd\THHmmss.fff\Z", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var endTime))
             {
                 _logger.LogError($"Cannot import warsummary, invalid end time {war.EndTime} " +
                     $"clan:{war.Clan.Tag} opponent:{war.Opponent.Tag}");
