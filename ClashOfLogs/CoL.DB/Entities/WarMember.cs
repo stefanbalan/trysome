@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CoL.DB.Entities
+﻿namespace CoL.DB.Entities
 {
     public class WarMemberClan : WarMember
     {
@@ -17,12 +11,11 @@ namespace CoL.DB.Entities
 
     }
 
-    
+
 
     public class WarMember : BaseEntityWithTag
     {
         public int WarId { get; set; }
-
         public string Name { get; set; }
         public int TownhallLevel { get; set; }
         public int MapPosition { get; set; }
