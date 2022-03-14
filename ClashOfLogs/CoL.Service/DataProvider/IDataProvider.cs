@@ -1,7 +1,7 @@
 ﻿namespace CoL.Service
 {
-    internal interface IDataProvider
-   {
-        JsonImport<T> GetImport<T>();
+    public interface IDataProvider
+    {
+        JsonImport GetImport();
     }
 }
