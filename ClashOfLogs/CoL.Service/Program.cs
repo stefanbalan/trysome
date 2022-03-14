@@ -1,5 +1,4 @@
 using CoL.DB.mssql;
-using CoL.Service.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -47,9 +46,12 @@ namespace CoL.Service
                         lb.AddConfiguration(configuration);
                     });
 
-                    services.AddHostedService<Worker>();
 
                     services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
+
+                    services.AddSingleton<IDataProvider, FileDataProvider>();
+
+                    services.AddHostedService<Worker>();
 
                 });
         }
