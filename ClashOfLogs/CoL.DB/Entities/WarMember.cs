@@ -24,6 +24,4 @@
         public int OpponentAttacks { get; set; }
         public WarAttack BestOpponentAttack { get; set; }
     }
-
-
 }

@@ -28,15 +28,16 @@ namespace CoL.Service
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
         private readonly CoLContext context;
+        private readonly IJsonDataProvider importDataProvider;
         private readonly string jsondirectory;
 
-        public Worker(IHostApplicationLifetime hostApplicationLifetime, ILogger<Worker> logger, IConfiguration config, CoLContext context)
+        public Worker(IHostApplicationLifetime hostApplicationLifetime, ILogger<Worker> logger, IConfiguration config, CoLContext context, IJsonDataProvider importDataProvider)
         {
             this.hostApplicationLifetime = hostApplicationLifetime;
             _logger = logger;
             _config = config;
             this.context = context;
-
+            this.importDataProvider = importDataProvider;
             jsondirectory = config["JSONdirectory"];
             if (string.IsNullOrEmpty(jsondirectory))
             {
@@ -59,8 +60,11 @@ namespace CoL.Service
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
+                if (importDataProvider.HasImportData())
+                {
+                    var importData = await importDataProvider.GetImportDataAsync();
 
-                await ImportDirectories();
+                }
 
                 await Task.Delay(120_000, stoppingToken);
             }
@@ -75,32 +79,6 @@ namespace CoL.Service
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             return base.StopAsync(cancellationToken);
-        }
-
-        private async Task ImportDirectories()
-        {
-            try
-            {
-                if (!Directory.Exists(jsondirectory))
-                {
-                    Directory.CreateDirectory(jsondirectory);
-                    var d = new DirectoryInfo(jsondirectory);
-                }
-
-                var importdates = Directory.EnumerateDirectories(jsondirectory);
-                foreach (var importdate in importdates)
-                {
-                    var dir = new DirectoryInfo(importdate);
-                    if (!dir.Exists) continue;
-
-                    var dirDateString = dir.Name;
-                    if (!DateTime.TryParse(dirDateString, out var dirDate)) continue;
-
-                    await ImportFiles(dir, dirDate);
-                }
-
-            }
-            catch (Exception ex) { }
         }
 
         async Task ImportFiles(DirectoryInfo dir, DateTime date)

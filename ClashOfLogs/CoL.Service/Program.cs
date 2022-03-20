@@ -9,7 +9,7 @@ using System;
 
 namespace CoL.Service
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -39,7 +39,8 @@ namespace CoL.Service
         public static IHostBuilder CreateHostBuilder(IConfigurationRoot configuration, string[] args)
         {
 
-            return Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) =>
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureServices((hostContext, services) =>
                 {
                     services.AddLogging(lb =>
                     {
@@ -47,10 +48,13 @@ namespace CoL.Service
                         lb.AddConfiguration(configuration);
                     });
 
-                    services.AddHostedService<Worker>();
 
                     services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
 
+                    //services.AddSingleton<IImportDataProvider, FileImportDataProvider>();
+                    services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+
+                    services.AddHostedService<Worker>();
                 });
         }
     }
