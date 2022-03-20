@@ -30,7 +30,6 @@ namespace CoL.Service
         private readonly CoLContext context;
         private readonly IJsonDataProvider importDataProvider;
         private readonly string jsondirectory;
-        private readonly IDataProvider dataProvider;
 
         public Worker(IHostApplicationLifetime hostApplicationLifetime, ILogger<Worker> logger, IConfiguration config, CoLContext context, IJsonDataProvider importDataProvider)
         {
@@ -45,8 +44,6 @@ namespace CoL.Service
                 jsondirectory = "JSON";
                 config["JSONdirectory"] = jsondirectory;
             }
-
-            this.dataProvider = dataProvider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
