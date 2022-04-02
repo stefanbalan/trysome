@@ -5,6 +5,6 @@ namespace CoL.Service
     public interface IJsonDataProvider
     {
         bool HasImportData();
-        Task<JsonImportData> GetImportDataAsync();
+        Task<JsonData> GetImportDataAsync();
     }
 }

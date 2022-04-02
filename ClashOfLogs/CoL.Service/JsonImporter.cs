@@ -3,7 +3,7 @@
 
    public class JsonImporter
     {
-        public void Import(JsonImportData importProvider)
+        public void Import(JsonData importProvider)
         {
 
         }

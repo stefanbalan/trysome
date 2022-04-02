@@ -4,7 +4,7 @@ using System;
 
 namespace CoL.Service
 {
-    public class JsonImportData
+    public class JsonData
     {
         public DateTime Date { get; internal set; }
 

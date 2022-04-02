@@ -1,35 +1,45 @@
-﻿using DBClan = CoL.DB.Entities.Clan;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClashOfLogs.Shared;
+﻿using ClashOfLogs.Shared;
 using CoL.DB.mssql;
+using Microsoft.EntityFrameworkCore;
+using DBClan = CoL.DB.Entities.Clan;
 
 namespace CoL.Service.Importer
 {
-    internal class ClanImporter : EntityImporter<CoLContext, DBClan, Clan>
+    internal class ClanImporter : EntityImporter<DBClan, Clan, string>
     {
         public ClanImporter(CoLContext context) : base(context)
         {
         }
 
-        public override DBClan CreateNew(Clan entity, DateTime dateTime)
+        public override Func<Clan, string> GetKey => (clan) => clan.Tag;
+
+        public override async Task<DBClan> CreateNewAsync(Clan entity, DateTime dateTime)
         {
             var dbclan = new DBClan
             {
                 Tag = entity.Tag,
             };
 
-            context.Clans.Add(dbclan);
+            await context.Clans.AddAsync(dbclan);
             return dbclan;
         }
 
+        public override async Task<DBClan> FindExistingAsync(Clan entity)
+        {
+            var dbEntity = await context.Clans.Include(clan => clan.Members)
+                .FirstOrDefaultAsync(clan => clan.Tag == entity.Tag);
+
+            return dbEntity;
+        }
+
+        public override DbSet<DBClan> GetDbSet() => context.Clans;
+
         public override void UpdateChildren(DBClan tDBEntity, Clan entity, DateTime dateTime)
         {
-            throw new NotImplementedException();
+            foreach (var m in tDBEntity.Members)
+            {
+
+            }
         }
 
         public override void UpdateProperties(DBClan tDBEntity, Clan entity, DateTime dateTime)

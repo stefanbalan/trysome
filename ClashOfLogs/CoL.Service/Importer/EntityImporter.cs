@@ -1,32 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using System;
-using System.Threading.Tasks;
+﻿using CoL.DB.mssql;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service
 {
-    internal abstract class EntityImporter<TContext, TDBEntity, TEntity>
-        where TContext : DbContext
+    public abstract class EntityImporter<TDBEntity, TEntity, TKey>
         where TDBEntity : class
         where TEntity : class
     {
-        protected readonly TContext context;
+        protected readonly CoLContext context;
 
-        public EntityImporter(TContext context)
+        protected EntityImporter(CoLContext context)
         {
             this.context = context;
         }
 
-        public async Task Import<TKey>(DbSet<TDBEntity> dbset, TKey key, TEntity entity, DateTime dateTime)
+        public async Task ImportAsync(TEntity entity, DateTime dateTime)
         {
-            var dbEntity = await dbset.FindAsync(key);
-            if (dbEntity != null) dbEntity = CreateNew(entity, dateTime);
+            var dbEntity = await FindExistingAsync(entity);
+            if (dbEntity != null) dbEntity = await CreateNewAsync(entity, dateTime);
             UpdateProperties(dbEntity, entity, dateTime);
             UpdateChildren(dbEntity, entity, dateTime);
             await context.SaveChangesAsync();
         }
 
-        public abstract TDBEntity CreateNew(TEntity entity, DateTime dateTime);
+        public abstract Task<TDBEntity> FindExistingAsync(TEntity entity);
+        public abstract DbSet<TDBEntity> GetDbSet();
+        public abstract Func<TEntity, TKey> GetKey { get; }
+        public abstract Task<TDBEntity> CreateNewAsync(TEntity entity, DateTime dateTime);
         public abstract void UpdateProperties(TDBEntity tDBEntity, TEntity entity, DateTime dateTime);
         public abstract void UpdateChildren(TDBEntity tDBEntity, TEntity entity, DateTime dateTime);
     }

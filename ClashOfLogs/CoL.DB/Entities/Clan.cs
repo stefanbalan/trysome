@@ -9,7 +9,7 @@ namespace CoL.DB.Entities
     {
         public Clan()
         {
-            MemberList = new List<Member>();
+            Members = new List<Member>();
         }
 
         public string Name { get; set; }
@@ -34,9 +34,9 @@ namespace CoL.DB.Entities
 
         //public WarLeague WarLeague { get; set; }
 
-        public int Members { get; set; }
+        public int MembersCount { get; set; }
 
-        public List<Member> MemberList { get; set; }
+        public List<Member> Members { get; set; }
         //public List<Label> Labels { get; set; } //= new List<Label>();
 
         public int RequiredVersusTrophies { get; set; }
@@ -51,7 +51,7 @@ namespace CoL.DB.Entities
         {
             base.Configure(builder);
 
-            builder.HasMany(clan => clan.MemberList);
+            builder.HasMany(clan => clan.Members);
 
         }
 
