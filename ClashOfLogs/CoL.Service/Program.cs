@@ -1,10 +1,11 @@
+global using System;
+global using System.Threading.Tasks;
+
 using CoL.DB.mssql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using System;
 
 namespace CoL.Service
 {

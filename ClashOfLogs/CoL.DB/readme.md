@@ -14,6 +14,7 @@ dotnet tool install --global dotnet-ef
 dotnet tool update --global dotnet-ef
 
 dotnet ef migrations add InitialCreate
+dotnet ef migrations add RenameClanMembers --project CoL.DB
 
 dotnet ef database update
 

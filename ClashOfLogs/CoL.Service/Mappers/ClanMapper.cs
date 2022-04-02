@@ -4,16 +4,23 @@ using System;
 
 namespace CoL.Service.Mappers
 {
-    //internal class ClanMapper : ModelConvertibleBase<CoL.DB.Entities.Clan, ClashOfLogs.Shared.Clan>
-    //{
-    //    public override DB.Entities.Clan ToEntity()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+    interface IMapper<TEntity, TModel>
+    {
+        TModel NewModel(TEntity entity);
+        void ToModel(TEntity entity, out TModel model);
 
-    //    protected override ClashOfLogs.Shared.Clan FromEntityToThisModel(DB.Entities.Clan entity)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
+    }
+
+    internal class ClanMapper : IMapper<DB.Entities.Clan, ClashOfLogs.Shared.Clan>
+    {
+        public void ToModel(DB.Entities.Clan entity, out ClashOfLogs.Shared.Clan model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ClashOfLogs.Shared.Clan NewModel(DB.Entities.Clan entity)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -42,7 +42,7 @@ namespace CoL.Service
             return importDir != null;
         }
 
-        public async Task<JsonImportData> GetImportDataAsync()
+        public async Task<JsonData> GetImportDataAsync()
         {
             if (!(directory?.Exists ?? false)) return null;
             try
@@ -52,7 +52,7 @@ namespace CoL.Service
                     .Where(d => !d.Name.Contains("imported"))
                     .FirstOrDefault(d => DateTime.TryParse(d.Name, out date));
 
-                var result = new JsonImportData() { Date = date };
+                var result = new JsonData() { Date = date };
 
                 result.Clan = await ImportFileAsync<ClashOfLogs.Shared.Clan>(importDir, "Clan");
                 result.Warlog = await ImportFileAsync<ClashOfLogs.Shared.Warlog>(importDir, "Warlog");

@@ -6,13 +6,10 @@ using CoL.DB.mssql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
-using System;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 
 using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
 using DBClan = CoL.DB.Entities.Clan;
@@ -29,21 +26,22 @@ namespace CoL.Service
         private readonly IConfiguration _config;
         private readonly CoLContext context;
         private readonly IJsonDataProvider importDataProvider;
-        private readonly string jsondirectory;
+        private readonly EntityImporter<DBClan, Clan, string> clanDataImporter;
 
-        public Worker(IHostApplicationLifetime hostApplicationLifetime, ILogger<Worker> logger, IConfiguration config, CoLContext context, IJsonDataProvider importDataProvider)
+        public Worker(
+            IHostApplicationLifetime hostApplicationLifetime,
+            ILogger<Worker> logger,
+            IConfiguration config,
+            CoLContext context,
+            IJsonDataProvider importDataProvider,
+            EntityImporter<DBClan, Clan, string> clanDataImporter)
         {
             this.hostApplicationLifetime = hostApplicationLifetime;
             _logger = logger;
             _config = config;
             this.context = context;
             this.importDataProvider = importDataProvider;
-            jsondirectory = config["JSONdirectory"];
-            if (string.IsNullOrEmpty(jsondirectory))
-            {
-                jsondirectory = "JSON";
-                config["JSONdirectory"] = jsondirectory;
-            }
+            this.clanDataImporter = clanDataImporter;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -62,8 +60,9 @@ namespace CoL.Service
 
                 if (importDataProvider.HasImportData())
                 {
-                    var importData = await importDataProvider.GetImportDataAsync();
+                    var jsonData = await importDataProvider.GetImportDataAsync();
 
+                    await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
                 }
 
                 await Task.Delay(120_000, stoppingToken);
@@ -191,7 +190,7 @@ namespace CoL.Service
                 dbMember.Donations = member.Donations;
                 dbMember.DonationsReceived = member.DonationsReceived;
             }
-            dbclan.MemberList.Add(dbMember);
+            dbclan.Members.Add(dbMember);
 
             var saved = await context.SaveChangesAsync();
             if (saved > 0) _logger.LogInformation($"Clan member {dbMember.Name}({dbMember.Tag}) updated");

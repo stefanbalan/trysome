@@ -7,22 +7,22 @@ namespace CoL.DB
 {
     //todo implement as separate, injectable service?
 
-    public interface IModelConvertible
+    public interface IModelConvertible<TEntity, TModel>
     {
         string Key { get; }
 
-        TModel FromEntityToThisModel<TModel, TEntity>(TEntity entity);
+        TModel FromEntityToThisModel(TEntity entity);
 
-        TEntity ToEntity<TEntity>();
+        TEntity ToEntity();
     }
 
-    public class ModelConvertibleBase<TEntity, TModel> : IModelConvertible
+    public class ModelConvertibleBase<TEntity, TModel> : IModelConvertible<TEntity, TModel>
         where TModel : /*ModelConvertibleBase<TEntity, TModel>,*/ new()
     {
         public TModel FromEntity(TEntity entity)
         {
             var model = new TModel();
-            model = FromEntityToThisModel<TModel,TEntity>(entity);
+            model = FromEntityToThisModel(entity);
             return model;
         }
 
@@ -37,12 +37,12 @@ namespace CoL.DB
             Mappings.Add(mapping.Key, mapping);
         }
 
-        public TModel1 FromEntityToThisModel<TModel1, TEntity1>(TEntity1 entity)
+        public TModel FromEntityToThisModel(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public TEntity1 ToEntity<TEntity1>()
+        public TEntity ToEntity()
         {
             throw new NotImplementedException();
         }
