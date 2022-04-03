@@ -1,32 +1,35 @@
 ﻿using ClashOfLogs.Shared;
+
 using CoL.DB.mssql;
+using CoL.Service.Mappers;
+
 using Microsoft.EntityFrameworkCore;
-using DBClan = CoL.DB.Entities.Clan;
+
+using System.Linq;
+
+
 
 namespace CoL.Service.Importer
 {
     internal class ClanImporter : EntityImporter<DBClan, Clan, string>
     {
-        public ClanImporter(CoLContext context) : base(context)
+        private readonly IMapper<DBClan, Clan> clanMapper;
+
+        public ClanImporter(
+            CoLContext context,
+            IMapper<DBClan, Clan> clanMapper
+            ) : base(context)
         {
+            this.clanMapper = clanMapper;
         }
 
         public override Func<Clan, string> GetKey => (clan) => clan.Tag;
 
-        public override async Task<DBClan> CreateNewAsync(Clan entity, DateTime dateTime)
-        {
-            var dbclan = new DBClan
-            {
-                Tag = entity.Tag,
-            };
-
-            await context.Clans.AddAsync(dbclan);
-            return dbclan;
-        }
 
         public override async Task<DBClan> FindExistingAsync(Clan entity)
         {
-            var dbEntity = await context.Clans.Include(clan => clan.Members)
+            var dbEntity = await context.Clans
+                .Include(clan => clan.Members.Where(member => member.IsMember))
                 .FirstOrDefaultAsync(clan => clan.Tag == entity.Tag);
 
             return dbEntity;
@@ -36,31 +39,29 @@ namespace CoL.Service.Importer
 
         public override void UpdateChildren(DBClan tDBEntity, Clan entity, DateTime dateTime)
         {
-            foreach (var m in tDBEntity.Members)
+            foreach (var member in tDBEntity.Members)
             {
+                if (!entity.Members.Any(m => string.Equals(m.Tag, member.Tag, StringComparison.OrdinalIgnoreCase)))
+                {
+                    member.LastLeft = dateTime;
+                    member.IsMember = false;
+                }
+
 
             }
         }
 
-        public override void UpdateProperties(DBClan tDBEntity, Clan entity, DateTime dateTime)
-        {
-            tDBEntity.Name = entity.Name;
-            tDBEntity.Type = entity.Type;
-            tDBEntity.Description = entity.Description;
-            tDBEntity.ClanLevel = entity.ClanLevel;
-            tDBEntity.ClanPoints = entity.ClanPoints;
-            tDBEntity.ClanVersusPoints = entity.ClanVersusPoints;
-            tDBEntity.RequiredTrophies = entity.RequiredTrophies;
-            tDBEntity.WarFrequency = entity.WarFrequency;
-            tDBEntity.WarWinStreak = entity.WarWinStreak;
-            tDBEntity.WarWins = entity.WarWins;
-            tDBEntity.WarTies = entity.WarTies;
-            tDBEntity.WarLosses = entity.WarLosses;
-            tDBEntity.IsWarLogPublic = entity.IsWarLogPublic;
-            tDBEntity.RequiredVersusTrophies = entity.RequiredVersusTrophies;
-            tDBEntity.RequiredTownhallLevel = entity.RequiredTownhallLevel;
 
-            tDBEntity.UpdatedAt = dateTime;
+        public override async Task<DBClan> CreateNewAsync(Clan entity, DateTime timeStamp)
+        {
+            var dbclan = clanMapper.CreateEntity(entity, timeStamp);
+            await context.Clans.AddAsync(dbclan);
+            return dbclan;
+        }
+
+        public override void UpdateProperties(DBClan entity, Clan model, DateTime timeStamp)
+        {
+            clanMapper.UpdateEntity(entity, model, timeStamp);
         }
     }
 }
