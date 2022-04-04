@@ -57,10 +57,10 @@ namespace ClashOfLogs.Shared
         public WarLeague WarLeague { get; set; }
 
         [JsonPropertyName("members")]
-        public int Members { get; set; }
+        public int MemberCount { get; set; }
 
         [JsonPropertyName("memberList")]
-        public List<ClanMember> MemberList { get; set; } // = new List<ClanMember>();
+        public List<Member> Members { get; set; } // = new List<ClanMember>();
 
         [JsonPropertyName("labels")]
         public List<Label> Labels { get; set; } //= new List<Label>();

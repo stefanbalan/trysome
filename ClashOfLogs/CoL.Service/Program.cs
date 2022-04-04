@@ -1,7 +1,16 @@
 global using System;
 global using System.Threading.Tasks;
+global using DBClan = CoL.DB.Entities.Clan;
+global using DBMember = CoL.DB.Entities.Member;
+global using DBWar = CoL.DB.Entities.War;
+global using DBWarClan = CoL.DB.Entities.WarClan;
+global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
+
+using ClashOfLogs.Shared;
 
 using CoL.DB.mssql;
+using CoL.Service.Mappers;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -53,6 +62,8 @@ namespace CoL.Service
 
                     //services.AddSingleton<IImportDataProvider, FileImportDataProvider>();
                     services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+
+                    services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
 
                     services.AddHostedService<Worker>();
                 });

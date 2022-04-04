@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace CoL.Service
 {
-    public class Worker : BackgroundService
+    public class OldWorker : BackgroundService
     {
         private readonly IHostApplicationLifetime hostApplicationLifetime;
         private readonly ILogger<Worker> _logger;
@@ -23,7 +23,7 @@ namespace CoL.Service
         private readonly IJsonDataProvider importDataProvider;
         private readonly EntityImporter<DBClan, Clan, string> clanDataImporter;
 
-        public Worker(
+        public OldWorker(
             IHostApplicationLifetime hostApplicationLifetime,
             ILogger<Worker> logger,
             IConfiguration config,
@@ -164,7 +164,27 @@ namespace CoL.Service
                 };
             }
 
+
+            dbMember.Name = member.Name;
+            dbMember.Role = member.Role;
+            dbMember.ExpLevel = member.ExpLevel;
+            dbMember.Trophies = member.Trophies;
+            dbMember.VersusTrophies = member.VersusTrophies;
+            dbMember.ClanRank = member.ClanRank;
+            dbMember.PreviousClanRank = member.PreviousClanRank;
             dbMember.TimeLastSeen = date;
+
+            if (member.Donations < dbMember.Donations)
+            {
+                //new season
+                dbMember.DonationsPreviousSeason = dbMember.Donations;
+                dbMember.DonationsReceivedPreviousSeason = dbMember.DonationsReceived;
+            }
+            else
+            {
+                dbMember.Donations = member.Donations;
+                dbMember.DonationsReceived = member.DonationsReceived;
+            }
             dbclan.Members.Add(dbMember);
 
             var saved = await context.SaveChangesAsync();
