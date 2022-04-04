@@ -1,10 +1,12 @@
-﻿using CoL.DB.mssql;
+﻿using CoL.DB.Entities;
+using CoL.DB.mssql;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service
 {
     public abstract class EntityImporter<TDBEntity, TEntity, TKey>
-        where TDBEntity : class
+        where TDBEntity : BaseEntity
         where TEntity : class
     {
         protected readonly CoLContext context;

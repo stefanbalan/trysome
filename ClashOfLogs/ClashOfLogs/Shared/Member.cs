@@ -2,7 +2,7 @@
 
 namespace ClashOfLogs.Shared
 {
-    public class ClanMember
+    public class Member
     {
         [JsonPropertyName("tag")]
         public string Tag { get; set; }
