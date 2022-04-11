@@ -7,20 +7,21 @@ using Microsoft.EntityFrameworkCore;
 
 using System.Linq;
 
-
-
 namespace CoL.Service.Importer
 {
     internal class ClanImporter : EntityImporter<DBClan, Clan, string>
     {
         private readonly IMapper<DBClan, Clan> clanMapper;
+        private readonly IMapper<DB.Entities.Member, Member> memberMapper;
 
         public ClanImporter(
             CoLContext context,
-            IMapper<DBClan, Clan> clanMapper
+            IMapper<DBClan, Clan> clanMapper,
+            IMapper<DBMember, Member> memberMapper
             ) : base(context)
         {
             this.clanMapper = clanMapper;
+            this.memberMapper = memberMapper;
         }
 
         public override Func<Clan, string> GetKey => (clan) => clan.Tag;
@@ -37,17 +38,43 @@ namespace CoL.Service.Importer
 
         public override DbSet<DBClan> GetDbSet() => context.Clans;
 
-        public override void UpdateChildren(DBClan tDBEntity, Clan entity, DateTime dateTime)
+        public override void UpdateChildren(DBClan dbClan, Clan clan, DateTime timeStamp)
         {
-            foreach (var member in tDBEntity.Members)
+            foreach (var dbMember in dbClan.Members)
             {
-                if (!entity.Members.Any(m => string.Equals(m.Tag, member.Tag, StringComparison.OrdinalIgnoreCase)))
+                var member = clan.Members.Find(memberEntity => TagsAreEqual(memberEntity.Tag, dbMember.Tag));
+                if (member is null)
                 {
-                    member.LastLeft = dateTime;
-                    member.IsMember = false;
+                    dbMember.LastLeft = timeStamp;
+                    dbMember.IsMember = false;
                 }
+                else
+                {
+                    memberMapper.UpdateEntity(dbMember, member, timeStamp);
+                }
+            }
+            var nonMembers = clan.Members
+                .Where(member => !dbClan.Members.Any(dbMember => TagsAreEqual(dbMember.Tag, member.Tag)));
+            var nonMembersTags = nonMembers.Select(member => member.Tag);
+            var existingNonMembers = context.ClanMembers
+                .Where(member => member.ClanTag == dbClan.Tag && nonMembersTags.Contains(member.Tag));
 
-
+            foreach (var member in nonMembers)
+            {
+                var exisingNonMember = existingNonMembers.FirstOrDefault(dbMember => TagsAreEqual(dbMember.Tag, member.Tag));
+                if (exisingNonMember is null)
+                {
+                    var newMember = memberMapper.CreateEntity(member, timeStamp);
+                    newMember.ClanTag = dbClan.Tag;
+                    dbClan.Members.Add(newMember);
+                }
+                else
+                {
+                    memberMapper.UpdateEntity(exisingNonMember, member, timeStamp);
+                    exisingNonMember.IsMember = true;
+                    exisingNonMember.LastJoined = timeStamp;
+                    dbClan.Members.Add(exisingNonMember);
+                }
             }
         }
 

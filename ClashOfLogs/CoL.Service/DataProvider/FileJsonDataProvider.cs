@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CoL.Service
 {
@@ -18,6 +16,7 @@ namespace CoL.Service
         public FileJsonDataProvider(IConfiguration config, ILogger<FileJsonDataProvider> logger)
         {
             var importPath = config.GetValue(typeof(string), "JSONdirectory", ".") as string;
+            if (string.IsNullOrWhiteSpace(importPath)) throw new Exception("Invalid configuration, import directory is empty");
             directory = new DirectoryInfo(importPath);
             if (!directory.Exists) throw new Exception("Invalid configuration, import directory does not exist");
             this.config = config;
