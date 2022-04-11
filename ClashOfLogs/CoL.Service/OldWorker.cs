@@ -1,4 +1,4 @@
-
+#nullable disable
 using ClashOfLogs.Shared;
 
 using CoL.DB.mssql;

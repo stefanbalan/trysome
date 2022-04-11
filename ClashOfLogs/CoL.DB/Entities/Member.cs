@@ -20,9 +20,8 @@ namespace CoL.DB.Entities
         public int DonationsReceived { get; set; }
         public int DonationsPreviousSeason { get; set; }
         public int DonationsReceivedPreviousSeason { get; set; }
-        public DateTime TimeFirstSeen { get; set; }
-        public DateTime TimeLastSeen { get; set; }
         public DateTime? LastLeft { get; set; }
+        public DateTime? LastJoined { get; set; }
         public bool IsMember { get; set; }
     }
 

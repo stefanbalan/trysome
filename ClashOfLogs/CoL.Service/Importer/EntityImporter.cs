@@ -31,5 +31,7 @@ namespace CoL.Service
         public abstract Task<TDBEntity> CreateNewAsync(TEntity entity, DateTime dateTime);
         public abstract void UpdateProperties(TDBEntity tDBEntity, TEntity entity, DateTime dateTime);
         public abstract void UpdateChildren(TDBEntity tDBEntity, TEntity entity, DateTime dateTime);
+
+        protected bool TagsAreEqual(string tag1, string tag2) => string.Equals(tag1, tag2, StringComparison.OrdinalIgnoreCase);
     }
 }
