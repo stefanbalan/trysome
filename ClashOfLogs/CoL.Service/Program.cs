@@ -5,6 +5,7 @@ global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
 global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
+global using DBLeague = CoL.DB.Entities.League;
 
 using ClashOfLogs.Shared;
 

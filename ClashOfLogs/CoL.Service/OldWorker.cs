@@ -160,7 +160,7 @@ namespace CoL.Service
                 {
                     Tag = member.Tag,
                     ClanTag = dbclan.Tag,
-                    TimeFirstSeen = date
+                    CreatedAt = date
                 };
             }
 
@@ -172,7 +172,7 @@ namespace CoL.Service
             dbMember.VersusTrophies = member.VersusTrophies;
             dbMember.ClanRank = member.ClanRank;
             dbMember.PreviousClanRank = member.PreviousClanRank;
-            dbMember.TimeLastSeen = date;
+            dbMember.CreatedAt = date;
 
             if (member.Donations < dbMember.Donations)
             {

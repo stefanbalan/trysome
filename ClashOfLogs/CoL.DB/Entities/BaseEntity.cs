@@ -16,8 +16,6 @@ namespace CoL.DB.Entities
     {
         public string Tag { get; set; }
 
-
-
         public class Configuration<T> :
             IEntityTypeConfiguration<T> where T : BaseEntityWithTag
         {

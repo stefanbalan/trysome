@@ -160,11 +160,11 @@ namespace CoL.Service
                 {
                     Tag = member.Tag,
                     ClanTag = dbclan.Tag,
-                    TimeFirstSeen = date
+                    CreatedAt = date
                 };
             }
 
-            dbMember.TimeLastSeen = date;
+            dbMember.UpdatedAt = date;
             dbclan.Members.Add(dbMember);
 
             var saved = await context.SaveChangesAsync();
