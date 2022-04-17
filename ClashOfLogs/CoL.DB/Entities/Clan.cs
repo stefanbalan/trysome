@@ -43,8 +43,6 @@ namespace CoL.DB.Entities
         public int RequiredTownhallLevel { get; set; }
     }
 
-
-
     public class ClanConfiguration : BaseEntityWithTag.Configuration<Clan>
     {
         public new void Configure(EntityTypeBuilder<Clan> builder)
@@ -52,9 +50,6 @@ namespace CoL.DB.Entities
             base.Configure(builder);
 
             builder.HasMany(clan => clan.Members);
-
         }
-
-
     }
 }

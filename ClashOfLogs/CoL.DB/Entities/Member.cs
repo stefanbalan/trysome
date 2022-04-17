@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
 
 using System;
 
@@ -11,7 +11,7 @@ namespace CoL.DB.Entities
         public string Name { get; set; }
         public string Role { get; set; }
         public int ExpLevel { get; set; }
-        //public League League { get; set; }
+        public League League { get; set; }
         public int Trophies { get; set; }
         public int VersusTrophies { get; set; }
         public int ClanRank { get; set; }
@@ -20,19 +20,20 @@ namespace CoL.DB.Entities
         public int DonationsReceived { get; set; }
         public int DonationsPreviousSeason { get; set; }
         public int DonationsReceivedPreviousSeason { get; set; }
+        
+        //
         public DateTime? LastLeft { get; set; }
         public DateTime? LastJoined { get; set; }
         public bool IsMember { get; set; }
     }
 
-
-    public class ClanMemberConfiguration : BaseEntityWithTag.Configuration<Member>
+    [Owned]
+    public class IconUrls
     {
-        public new void Configure(EntityTypeBuilder<Member> builder)
-        {
-            base.Configure(builder);
+        public string Small { get; set; }
 
-            builder.HasKey(clan => clan.Tag);
-        }
+        public string Tiny { get; set; }
+
+        public string Medium { get; set; }
     }
 }
