@@ -1,0 +1,8 @@
+.content__dog-list__container {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+
+    padding: 5px;
+  }

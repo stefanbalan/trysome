@@ -1,0 +1,11 @@
+footer {
+  padding: 20px;
+  background: #ffe3a9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer p {
+  margin-right: 10px;
+}
