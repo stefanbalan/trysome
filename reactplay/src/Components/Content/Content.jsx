@@ -11,6 +11,7 @@ export const Content = () => {
   return (
     <main>
       <DogBreedList setDog={setDogViewUrl}></DogBreedList>
+      
     </main>
   );
 };
