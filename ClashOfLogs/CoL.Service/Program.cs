@@ -1,15 +1,17 @@
 global using System;
 global using System.Threading.Tasks;
+
+global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
 global using DBClan = CoL.DB.Entities.Clan;
+global using DBLeague = CoL.DB.Entities.League;
 global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
-global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
-global using DBLeague = CoL.DB.Entities.League;
 
 using ClashOfLogs.Shared;
 
 using CoL.DB.mssql;
+using CoL.Service.Importer;
 using CoL.Service.Mappers;
 
 using Microsoft.Extensions.Configuration;
@@ -17,29 +19,53 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using Serilog;
+using Serilog.Debugging;
+using Serilog.Events;
+using Serilog.Extensions.Logging;
+
 namespace CoL.Service
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            var config = BuildConfiguration(); // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
+            var config = BuildConfiguration(); /// access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
 
-            CreateHostBuilder(config, args).Build().Run();
+            Log.Logger = new LoggerConfiguration() //todo: study if it is better to use a separate logger for the bootstrapper part
+                .ReadFrom.Configuration(config)
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .Enrich.FromLogContext()
+                //.WriteTo.Console()
+                //.WriteTo.File("col.log")
+                .CreateLogger();
 
-            //ClanMapper.Map(dbclan => dbclan.Name, clan => clan.Name);
+            try
+            {
+                Log.Information("Starting host");
+                CreateHostBuilder(config, args).Build().Run();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
-
-
-
 
         private static IConfigurationRoot BuildConfiguration()
         {
 
             var env = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
-            var builder = new ConfigurationBuilder().AddJsonFile($"appsettings.json", true, true)
-                                                    .AddJsonFile($"appsettings.{env}.json", true, true)
-                                                    .AddEnvironmentVariables();
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env}.json", true, true)
+                .AddEnvironmentVariables();
 
             return builder.Build();
         }
@@ -50,24 +76,30 @@ namespace CoL.Service
         {
 
             return Host.CreateDefaultBuilder(args)
+                .ConfigureHostConfiguration(builder => { /* Host configuration */ })
+                .ConfigureAppConfiguration(builder => { /* App configuration */ })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddLogging(lb =>
-                    {
-                        lb.AddConsole();
-                        lb.AddConfiguration(configuration);
-                    });
+                            {
+                                lb.AddConsole();
+                                lb.AddConfiguration(configuration);
+                            });
 
 
                     services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
 
-                    //services.AddSingleton<IImportDataProvider, FileImportDataProvider>();
+                    services.AddTransient<EntityImporter<DBClan, Clan, string>, ClanImporter>();
                     services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
 
                     services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
+                    services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
 
                     services.AddHostedService<Worker>();
-                });
+                })
+                .UseSerilog()
+                ;
+
         }
     }
 }
