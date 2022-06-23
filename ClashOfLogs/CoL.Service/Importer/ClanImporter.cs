@@ -4,6 +4,7 @@ using CoL.DB.mssql;
 using CoL.Service.Mappers;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using System.Linq;
 
@@ -17,8 +18,9 @@ namespace CoL.Service.Importer
         public ClanImporter(
             CoLContext context,
             IMapper<DBClan, Clan> clanMapper,
-            IMapper<DBMember, Member> memberMapper
-            ) : base(context)
+            IMapper<DBMember, Member> memberMapper,
+            ILogger<ClanImporter> logger
+            ) : base(context, logger)
         {
             this.clanMapper = clanMapper;
             this.memberMapper = memberMapper;

@@ -2,6 +2,7 @@
 using CoL.DB.mssql;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CoL.Service
 {
@@ -10,19 +11,32 @@ namespace CoL.Service
         where TEntity : class
     {
         protected readonly CoLContext context;
+        private readonly ILogger<EntityImporter<TDBEntity, TEntity, TKey>> logger;
 
-        protected EntityImporter(CoLContext context)
+        protected EntityImporter(CoLContext context,
+            ILogger<EntityImporter<TDBEntity, TEntity, TKey>> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
-        public async Task ImportAsync(TEntity entity, DateTime dateTime)
+        public async Task<bool> ImportAsync(TEntity entity, DateTime dateTime)
         {
-            var dbEntity = await FindExistingAsync(entity);
-            if (dbEntity != null) dbEntity = await CreateNewAsync(entity, dateTime);
-            UpdateProperties(dbEntity, entity, dateTime);
-            UpdateChildren(dbEntity, entity, dateTime);
-            await context.SaveChangesAsync();
+            try
+            {
+                var dbEntity = await FindExistingAsync(entity);
+                if (dbEntity != null) dbEntity = await CreateNewAsync(entity, dateTime);
+                UpdateProperties(dbEntity, entity, dateTime);
+                UpdateChildren(dbEntity, entity, dateTime);
+                await context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return false;
+            }
         }
 
         public abstract Task<TDBEntity> FindExistingAsync(TEntity entity);
