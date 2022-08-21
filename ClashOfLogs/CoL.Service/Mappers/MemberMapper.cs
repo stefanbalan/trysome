@@ -1,10 +1,17 @@
 ﻿using ClashOfLogs.Shared;
 
+using CoL.Service.Importer;
 
 namespace CoL.Service.Mappers
 {
     internal class MemberMapper : IMapper<DBMember, Member>
     {
+        private readonly EntityProviderBase<DBLeague,int, League> leagueProvider;
+        public MemberMapper(EntityProviderBase<DBLeague, int, League> leagueProvider)
+        {
+            this.leagueProvider = leagueProvider;
+        }
+
         public DBMember CreateEntity(Member entity, DateTime timeStamp)
         {
             return new DBMember
@@ -14,7 +21,7 @@ namespace CoL.Service.Mappers
             };
         }
 
-        public void UpdateEntity(DBMember entity, Member model, DateTime timeStamp)
+        public async Task UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
         {
             entity.Name = model.Name;
             entity.Role = model.Role;
@@ -36,7 +43,10 @@ namespace CoL.Service.Mappers
                 entity.DonationsReceived = model.DonationsReceived;
             }
 
+            entity.League = await leagueProvider.GetOrCreateAsync(model.League);
+
             entity.UpdatedAt = timeStamp;
         }
+
     }
 }

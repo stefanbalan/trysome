@@ -4,22 +4,28 @@ namespace CoL.Service.Mappers
 {
     class LeagueMapper : IMapper<DBLeague, League>
     {
-        public DBLeague CreateEntity(League entity, DateTime timeStamp)
+        public DBLeague CreateEntity(League league, DateTime timeStamp)
         {
-            var league = new DB.Entities.League
+            var dbLeague = new DBLeague
             {
-                Id = entity.Id,
-                Name = entity.Name,
-                CreatedAt = timeStamp
+                Id = league.Id,
             };
-            return league;
+            return dbLeague;
         }
 
-        public void UpdateEntity(DB.Entities.League entity, League model, DateTime timeStamp)
+        public Task UpdateEntityAsync(DBLeague dbLeague, League league, DateTime timeStamp)
         {
-            entity.Name = model.Name;
+            dbLeague.Name = league.Name;
 
-            entity.UpdatedAt = timeStamp;
+            dbLeague.IconUrls = new DB.Entities.IconUrls
+            {
+                Small = league.IconUrls.Small,
+                Medium = league.IconUrls.Medium,
+                Tiny = league.IconUrls.Tiny,
+            };
+
+            dbLeague.UpdatedAt = timeStamp;
+            return Task.CompletedTask;
         }
     }
 }

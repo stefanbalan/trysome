@@ -6,8 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service
 {
-    public abstract class EntityImporter<TDBEntity, TEntity, TKey>
-        where TDBEntity : BaseEntity
+    public abstract class EntityImporter<TDbEntity, TEntity, TKey>
+        where TDbEntity : BaseEntity
         where TEntity : class
     {
         protected readonly CoLContext context;
@@ -27,7 +27,7 @@ namespace CoL.Service
                 var dbEntity = await FindExistingAsync(entity);
                 if (dbEntity != null) dbEntity = await CreateNewAsync(entity, dateTime);
                 UpdateProperties(dbEntity, entity, dateTime);
-                UpdateChildren(dbEntity, entity, dateTime);
+                await UpdateChildrenAsync(dbEntity, entity, dateTime);
                 await context.SaveChangesAsync();
 
                 return true;
@@ -39,12 +39,12 @@ namespace CoL.Service
             }
         }
 
-        public abstract Task<TDBEntity> FindExistingAsync(TEntity entity);
-        public abstract DbSet<TDBEntity> GetDbSet();
-        public abstract Func<TEntity, TKey> GetKey { get; }
-        public abstract Task<TDBEntity> CreateNewAsync(TEntity entity, DateTime dateTime);
-        public abstract void UpdateProperties(TDBEntity tDBEntity, TEntity entity, DateTime dateTime);
-        public abstract void UpdateChildren(TDBEntity tDBEntity, TEntity entity, DateTime dateTime);
+        protected abstract Task<TDbEntity> FindExistingAsync(TEntity entity);
+        protected abstract DbSet<TDbEntity> GetDbSet();
+        protected abstract Func<TEntity, TKey> GetKey { get; }
+        protected abstract Task<TDbEntity> CreateNewAsync(TEntity entity, DateTime dateTime);
+        protected abstract void UpdateProperties(TDbEntity tDBEntity, TEntity entity, DateTime dateTime);
+        protected abstract Task UpdateChildrenAsync(TDbEntity tDBEntity, TEntity entity, DateTime dateTime);
 
         protected bool TagsAreEqual(string tag1, string tag2) => string.Equals(tag1, tag2, StringComparison.OrdinalIgnoreCase);
     }

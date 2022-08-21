@@ -1,4 +1,3 @@
-
 using ClashOfLogs.Shared;
 
 using CoL.DB.mssql;
@@ -6,6 +5,7 @@ using CoL.DB.mssql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
@@ -101,9 +101,14 @@ namespace CoL.Service
             catch (Exception ex) { _logger.LogError(ex, $"Failed to deserialize {file.FullName}"); }
             finally
             {
-                stream.Close();
+                stream?.Close();
             }
 
+            if (clan is null)
+            {
+                _logger.LogError($"Cannot find clan in {file.Name}");
+                return;
+            }
             var dbclan = await context.Clans.FindAsync(clan.Tag);
 
 
@@ -187,7 +192,13 @@ namespace CoL.Service
                 _logger.LogError(ex, $"Failed to deserialize {file.FullName}");
                 return;
             }
-            finally { stream.Close(); }
+            finally { stream?.Close(); }
+
+            if (warlog is null)
+            {
+                _logger.LogError($"Cannot find warlog in {file.Name}");
+                return;
+            }
 
             foreach (var warSummary in warlog.Items)
             {
@@ -272,7 +283,13 @@ namespace CoL.Service
                 _logger.LogError(ex, $"Failed to deserialize {file.FullName}");
                 return;
             }
-            finally { stream.Close(); }
+            finally { stream?.Close(); }
+
+            if (wardetail is null)
+            {
+                _logger.LogError($"Cannot find wardetail in {file.Name}");
+                return;
+            }
 
             await AddOrUpdateWarDetail(wardetail);
         }
