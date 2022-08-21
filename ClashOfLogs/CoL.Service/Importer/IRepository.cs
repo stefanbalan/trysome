@@ -7,7 +7,6 @@ namespace CoL.Service.Importer
     internal interface IRepository<TDbEntity, TKey> where TDbEntity : BaseEntity
     {
         Task<TDbEntity> GetByIdAsync(TKey id);
-        void Save(TDbEntity dbLeague);
     }
 
 
@@ -29,7 +28,5 @@ namespace CoL.Service.Importer
         {
             return await DbSet.FindAsync(id);
         }
-
-        public abstract void Save(TDbEntity dbLeague);
     }
 }

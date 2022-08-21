@@ -25,4 +25,8 @@
     <ProjectReference Include="..\ClashOfLogs\Shared\ClashOfLogs.Shared.csproj" />
     <ProjectReference Include="..\CoL.DB\CoL.DB.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
 </Project>

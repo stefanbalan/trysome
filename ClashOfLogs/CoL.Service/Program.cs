@@ -94,6 +94,7 @@ namespace CoL.Service
 
                     services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
                     services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
+                    services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
 
                     services.AddHostedService<Worker>();
                 })

@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-using System;
+﻿using System;
 
 namespace CoL.DB.Entities
 {
     public class Member : BaseEntityWithTag
     {
-
         public string ClanTag { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
@@ -20,20 +17,10 @@ namespace CoL.DB.Entities
         public int DonationsReceived { get; set; }
         public int DonationsPreviousSeason { get; set; }
         public int DonationsReceivedPreviousSeason { get; set; }
-        
+
         //
         public DateTime? LastLeft { get; set; }
         public DateTime? LastJoined { get; set; }
         public bool IsMember { get; set; }
-    }
-
-    [Owned]
-    public class IconUrls
-    {
-        public string Small { get; set; }
-
-        public string Tiny { get; set; }
-
-        public string Medium { get; set; }
     }
 }

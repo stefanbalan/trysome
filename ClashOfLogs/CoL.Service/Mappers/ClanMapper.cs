@@ -15,7 +15,7 @@ namespace CoL.Service.Mappers
             };
         }
 
-        public void UpdateEntity(DB.Entities.Clan entity, Clan model, DateTime timeStamp)
+        public Task  UpdateEntityAsync(DBClan entity, Clan model, DateTime timeStamp)
         {
             entity.Name = model.Name;
             entity.Type = model.Type;
@@ -34,6 +34,8 @@ namespace CoL.Service.Mappers
             entity.RequiredTownhallLevel = model.RequiredTownhallLevel;
 
             entity.UpdatedAt = timeStamp;
+
+            return Task.CompletedTask;
         }
     }
 }

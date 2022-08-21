@@ -14,6 +14,7 @@ namespace CoL.Service.Importer
     {
         private readonly IMapper<DBClan, Clan> clanMapper;
         private readonly IMapper<DB.Entities.Member, Member> memberMapper;
+        private readonly EntityProviderBase<DBMember, string, Member> memberProvider;
 
         public ClanImporter(
             CoLContext context,
@@ -26,10 +27,10 @@ namespace CoL.Service.Importer
             this.memberMapper = memberMapper;
         }
 
-        public override Func<Clan, string> GetKey => (clan) => clan.Tag;
+        protected override Func<Clan, string> GetKey => (clan) => clan.Tag;
 
 
-        public override async Task<DBClan> FindExistingAsync(Clan entity)
+        protected override async Task<DBClan> FindExistingAsync(Clan entity)
         {
             var dbEntity = await context.Clans
                 .Include(clan => clan.Members.Where(member => member.IsMember))
@@ -38,9 +39,15 @@ namespace CoL.Service.Importer
             return dbEntity;
         }
 
-        public override DbSet<DBClan> GetDbSet() => context.Clans;
+        protected override DbSet<DBClan> GetDbSet() => context.Clans;
 
-        public override void UpdateChildren(DBClan dbClan, Clan clan, DateTime timeStamp)
+        protected override async Task UpdateChildrenAsync(DBClan dbClan, Clan clan, DateTime timeStamp)
+        {
+            foreach (Member member in clan.Members)
+                await memberProvider.GetOrCreateAsync(member);
+        }
+
+        protected void UpdateChildren1(DBClan dbClan, Clan clan, DateTime timeStamp)
         {
             foreach (var dbMember in dbClan.Members)
             {
@@ -52,7 +59,7 @@ namespace CoL.Service.Importer
                 }
                 else
                 {
-                    memberMapper.UpdateEntity(dbMember, member, timeStamp);
+                    memberMapper.UpdateEntityAsync(dbMember, member, timeStamp);
                 }
             }
             var nonMembers = clan.Members
@@ -72,7 +79,7 @@ namespace CoL.Service.Importer
                 }
                 else
                 {
-                    memberMapper.UpdateEntity(exisingNonMember, member, timeStamp);
+                    memberMapper.UpdateEntityAsync(exisingNonMember, member, timeStamp);
                     exisingNonMember.IsMember = true;
                     exisingNonMember.LastJoined = timeStamp;
                     dbClan.Members.Add(exisingNonMember);
@@ -81,16 +88,16 @@ namespace CoL.Service.Importer
         }
 
 
-        public override async Task<DBClan> CreateNewAsync(Clan entity, DateTime timeStamp)
+        protected override async Task<DBClan> CreateNewAsync(Clan entity, DateTime timeStamp)
         {
             var dbclan = clanMapper.CreateEntity(entity, timeStamp);
             await context.Clans.AddAsync(dbclan);
             return dbclan;
         }
 
-        public override void UpdateProperties(DBClan entity, Clan model, DateTime timeStamp)
+        protected override void UpdateProperties(DBClan entity, Clan model, DateTime timeStamp)
         {
-            clanMapper.UpdateEntity(entity, model, timeStamp);
+            clanMapper.UpdateEntityAsync(entity, model, timeStamp);
         }
     }
 }
