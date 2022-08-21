@@ -11,10 +11,10 @@ namespace CoL.Service
         where TEntity : class
     {
         protected readonly CoLContext context;
-        private readonly ILogger<EntityImporter<TDBEntity, TEntity, TKey>> logger;
+        private readonly ILogger<EntityImporter<TDbEntity, TEntity, TKey>> logger;
 
         protected EntityImporter(CoLContext context,
-            ILogger<EntityImporter<TDBEntity, TEntity, TKey>> logger)
+            ILogger<EntityImporter<TDbEntity, TEntity, TKey>> logger)
         {
             this.context = context;
             this.logger = logger;
