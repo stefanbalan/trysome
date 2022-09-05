@@ -13,6 +13,7 @@ using ClashOfLogs.Shared;
 using CoL.DB.mssql;
 using CoL.Service.Importer;
 using CoL.Service.Mappers;
+using CoL.Service.Repository;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -95,6 +96,17 @@ namespace CoL.Service
                     services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
                     services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
                     services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
+
+
+                    //entity providers
+                    services.AddSingleton<EntityProviderBase<DBMember, string, Member>, MemberProvider>();
+                    services.AddSingleton<EntityProviderBase<DBLeague, int, League>, LeagueCatalogProvider>();
+
+                    // repositories
+                    services.AddSingleton<IRepository<DBMember, string>, MemberRepository>();
+                    services.AddSingleton<IRepository<DBLeague, int>, LeagueRepository>();
+
+
 
                     services.AddHostedService<Worker>();
                 })

@@ -1,6 +1,7 @@
 ﻿using ClashOfLogs.Shared;
 
 using CoL.Service.Mappers;
+using CoL.Service.Repository;
 
 namespace CoL.Service.Importer
 {
@@ -10,17 +11,7 @@ namespace CoL.Service.Importer
         {
         }
 
-
-        public override async Task<DBLeague> GetOrCreateAsync(League league)
-        {
-            var dbLeague = await repository.GetByIdAsync(league.Id);
-            if (dbLeague is null)
-            {
-                dbLeague = mapper.CreateEntity(league, DateTime.Now);
-            }
-            await mapper.UpdateEntityAsync(dbLeague, league, DateTime.Now);
-            return dbLeague;
-        }
+        public override int EntityKey(League entity) => entity.Id;
     }
 
 
@@ -30,24 +21,34 @@ namespace CoL.Service.Importer
         {
         }
 
-        public override Task<DBMember> GetOrCreateAsync(Member entity)
-        {
-            throw new NotImplementedException();
-        }
+        public override string EntityKey(Member model) => model.Tag;
     }
 
 
-    internal abstract class EntityProviderBase<TEntity, TKey, TModel> where TEntity : DB.Entities.BaseEntity
+    internal abstract class EntityProviderBase<TDbEntity, TKey, TEntity>
+        where TDbEntity : DB.Entities.BaseEntity
     {
-        protected readonly IRepository<TEntity, TKey> repository;
-        protected readonly IMapper<TEntity, TModel> mapper;
+        protected readonly IRepository<TDbEntity, TKey> repository;
+        protected readonly IMapper<TDbEntity, TEntity> mapper;
 
-        public EntityProviderBase(IRepository<TEntity, TKey> repository, IMapper<TEntity, TModel> mapper)
+
+        public abstract TKey EntityKey(TEntity entity);
+
+        public EntityProviderBase(IRepository<TDbEntity, TKey> repository, IMapper<TDbEntity, TEntity> mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
         }
 
-        public abstract Task<TEntity> GetOrCreateAsync(TModel entity);
+        public virtual async Task<TDbEntity> GetOrCreateAsync(TEntity entity)
+        {
+            var dbEntity = await repository.GetByIdAsync(EntityKey(entity));
+            if (dbEntity is null)
+            {
+                dbEntity = mapper.CreateEntity(entity, DateTime.Now);
+            }
+            await mapper.UpdateEntityAsync(dbEntity, entity, DateTime.Now);
+            return dbEntity;
+        }
     }
 }
