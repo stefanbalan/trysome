@@ -12,14 +12,11 @@ namespace CoL.Service.Mappers
             this.leagueProvider = leagueProvider;
         }
 
-        public DBMember CreateEntity(Member entity, DateTime timeStamp)
-        {
-            return new DBMember
-            {
+        public DBMember CreateEntity(Member entity, DateTime timeStamp) =>
+            new() {
                 Tag = entity.Tag,
                 CreatedAt = timeStamp
             };
-        }
 
         public async Task UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
         {
@@ -43,7 +40,7 @@ namespace CoL.Service.Mappers
                 entity.DonationsReceived = model.DonationsReceived;
             }
 
-            entity.League = await leagueProvider.GetOrCreateAsync(model.League);
+            entity.League = await leagueProvider.GetOrCreateAsync(model.League, timeStamp);//todo cannot find table Leagues
 
             entity.UpdatedAt = timeStamp;
         }
