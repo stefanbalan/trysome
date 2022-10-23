@@ -24,8 +24,7 @@ namespace CoL.Service
         {
             try
             {
-                var dbEntity = await FindExistingAsync(entity);
-                if (dbEntity != null) dbEntity = await CreateNewAsync(entity, dateTime);
+                var dbEntity = await FindExistingAsync(entity) ?? await CreateNewAsync(entity, dateTime);
                 UpdateProperties(dbEntity, entity, dateTime);
                 await UpdateChildrenAsync(dbEntity, entity, dateTime);
                 await context.SaveChangesAsync();
@@ -41,8 +40,8 @@ namespace CoL.Service
 
         protected abstract Task<TDbEntity> FindExistingAsync(TEntity entity);
         protected abstract DbSet<TDbEntity> GetDbSet();
-        protected abstract Func<TEntity, TKey> GetKey { get; }
         protected abstract Task<TDbEntity> CreateNewAsync(TEntity entity, DateTime dateTime);
+        protected abstract Func<TEntity, TKey> GetKey { get; }
         protected abstract void UpdateProperties(TDbEntity tDBEntity, TEntity entity, DateTime dateTime);
         protected abstract Task UpdateChildrenAsync(TDbEntity tDBEntity, TEntity entity, DateTime dateTime);
 
