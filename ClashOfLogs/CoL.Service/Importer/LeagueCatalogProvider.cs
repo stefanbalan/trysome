@@ -11,6 +11,6 @@ namespace CoL.Service.Importer
         {
         }
 
-        public override int EntityKey(League entity) => entity.Id;
+        protected override int EntityKey(League entity) => entity.Id;
     }
 }

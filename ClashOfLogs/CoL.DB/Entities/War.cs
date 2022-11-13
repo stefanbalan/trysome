@@ -1,9 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace CoL.DB.Entities
 {
+    /// <summary>
+    /// Map from WarDetail model
+    /// </summary>
     public class War
     {
         public int Id { get; set; }

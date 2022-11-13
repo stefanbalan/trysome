@@ -1,34 +1,32 @@
 ﻿using CoL.DB.Entities;
 using CoL.DB.mssql;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service.Repository
 {
     internal interface IRepository<TDbEntity, TKey> where TDbEntity : BaseEntity
     {
+        Task Add(TDbEntity entity);
         Task<TDbEntity> GetByIdAsync(TKey id);
     }
-
 
 
     public abstract class BaseRepository<TContext, TDbEntity, TKey> : IRepository<TDbEntity, TKey>
         where TDbEntity : BaseEntity
         where TContext : DbContext
     {
-        protected readonly TContext context;
+        protected readonly TContext Context;
 
-        public BaseRepository(TContext context)
+        protected BaseRepository(TContext context)
         {
-            this.context = context;
+            this.Context = context;
         }
 
-        public abstract DbSet<TDbEntity> DbSet { get; }
+        protected abstract DbSet<TDbEntity> DbSet { get; }
 
-        public virtual async Task<TDbEntity> GetByIdAsync(TKey id)
-        {
-            return await DbSet.FindAsync(id);
-        }
+        public async Task Add(TDbEntity entity) => await DbSet.AddAsync(entity);
+
+        public async virtual Task<TDbEntity> GetByIdAsync(TKey id) => await DbSet.FindAsync(id);
     }
 
 
@@ -38,7 +36,7 @@ namespace CoL.Service.Repository
         {
         }
 
-        public override DbSet<DBMember> DbSet => context.ClanMembers;
+        protected override DbSet<DBMember> DbSet => Context.ClanMembers;
     }
 
     public class LeagueRepository : BaseRepository<CoLContext, DBLeague, int>
@@ -47,6 +45,6 @@ namespace CoL.Service.Repository
         {
         }
 
-        public override DbSet<DBLeague> DbSet => context.Leagues;
+        protected override DbSet<DBLeague> DbSet => Context.Leagues;
     }
 }

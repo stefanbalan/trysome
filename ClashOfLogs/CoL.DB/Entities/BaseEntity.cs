@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +18,7 @@ namespace CoL.DB.Entities
         public class Configuration<T> :
             IEntityTypeConfiguration<T> where T : BaseEntityWithTag
         {
-            public void Configure(EntityTypeBuilder<T> builder)
+            public virtual void Configure(EntityTypeBuilder<T> builder)
             {
                 builder.HasKey(clan => clan.Tag);
                 builder.Property(clan => clan.Tag)

@@ -1,21 +1,13 @@
 ﻿using ClashOfLogs.Shared;
 
-
 namespace CoL.Service.Mappers
 {
-
     internal class ClanMapper : IMapper<DBClan, Clan>
     {
-        public DBClan CreateEntity(Clan entity, DateTime timeStamp)
-        {
-            return new DBClan
-            {
-                Tag = entity.Tag,
-                CreatedAt = timeStamp,
-            };
-        }
+        public DBClan CreateEntity(Clan entity, DateTime timeStamp) =>
+            new() { Tag = entity.Tag, CreatedAt = timeStamp };
 
-        public Task  UpdateEntityAsync(DBClan entity, Clan model, DateTime timeStamp)
+        public Task UpdateEntityAsync(DBClan entity, Clan model, DateTime timeStamp)
         {
             entity.Name = model.Name;
             entity.Type = model.Type;
@@ -32,6 +24,10 @@ namespace CoL.Service.Mappers
             entity.IsWarLogPublic = model.IsWarLogPublic;
             entity.RequiredVersusTrophies = model.RequiredVersusTrophies;
             entity.RequiredTownhallLevel = model.RequiredTownhallLevel;
+
+            entity.BadgeUrls = new DBBadgeUrls {
+                Small = model.BadgeUrls.Small, Medium = model.BadgeUrls.Medium, Large = model.BadgeUrls.Large
+            };
 
             entity.UpdatedAt = timeStamp;
 

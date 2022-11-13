@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoL.DB.Migrations
 {
     [DbContext(typeof(CoLContext))]
-    [Migration("20220529070309_Something")]
-    partial class Something
+    [Migration("20221113172112_20221113_League_Table_etc")]
+    partial class _20221113_League_Table_etc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,10 +91,7 @@ namespace CoL.DB.Migrations
             modelBuilder.Entity("CoL.DB.Entities.League", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -107,7 +104,7 @@ namespace CoL.DB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("League");
+                    b.ToTable("Leagues");
                 });
 
             modelBuilder.Entity("CoL.DB.Entities.Member", b =>
@@ -148,7 +145,7 @@ namespace CoL.DB.Migrations
                     b.Property<DateTime?>("LastLeft")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LeagueId")
+                    b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -251,6 +248,7 @@ namespace CoL.DB.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Small")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Tiny")
@@ -258,7 +256,7 @@ namespace CoL.DB.Migrations
 
                             b1.HasKey("LeagueId");
 
-                            b1.ToTable("League");
+                            b1.ToTable("Leagues");
 
                             b1.WithOwner()
                                 .HasForeignKey("LeagueId");
@@ -275,7 +273,9 @@ namespace CoL.DB.Migrations
 
                     b.HasOne("CoL.DB.Entities.League", "League")
                         .WithMany()
-                        .HasForeignKey("LeagueId");
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("League");
                 });
