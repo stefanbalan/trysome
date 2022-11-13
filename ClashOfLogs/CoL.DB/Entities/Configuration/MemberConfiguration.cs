@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CoL.DB.Entities
+namespace CoL.DB.Entities.Configuration
 {
     public class MemberConfiguration : BaseEntityWithTag.Configuration<Member>
     {
-        public new void Configure(EntityTypeBuilder<Member> builder)
+        public override void Configure(EntityTypeBuilder<Member> builder)
         {
             base.Configure(builder);
 
-            builder.HasKey(clan => clan.Tag);
-
-            builder.HasOne<League>();
+            builder.HasOne(cm => cm.League).WithMany();
         }
     }
 }

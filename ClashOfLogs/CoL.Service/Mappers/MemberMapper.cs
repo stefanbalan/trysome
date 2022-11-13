@@ -27,6 +27,7 @@ namespace CoL.Service.Mappers
             entity.VersusTrophies = model.VersusTrophies;
             entity.ClanRank = model.ClanRank;
             entity.PreviousClanRank = model.PreviousClanRank;
+            entity.IsMember = true;
 
             if (entity.Donations > model.Donations)
             {

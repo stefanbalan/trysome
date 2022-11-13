@@ -2,7 +2,7 @@
 
 namespace CoL.Service.Mappers
 {
-    class LeagueMapper : IMapper<DBLeague, League>
+    internal class LeagueMapper : IMapper<DBLeague, League>
     {
         public DBLeague CreateEntity(League league, DateTime timeStamp)
         {

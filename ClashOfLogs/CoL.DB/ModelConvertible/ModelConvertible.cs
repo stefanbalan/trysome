@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CoL.DB
 {
     public class ModelConvertible<TEntity, TModel>
+        where TModel : new()
     {
-        private static Dictionary<string, IModelConvertible<TEntity,  TModel>> ClassMappings { get; } 
-            = new Dictionary<string, IModelConvertible<TEntity, TModel>>();
+        private static Dictionary<string, IModelConvertible<TEntity, TModel>> ClassMappings { get; } = new();
 
-        public static void MapClasses<TEntity, TModel>(Action<ConvertibleBuilder> builder) where TModel : new()
+        public static void MapClasses(Action<ConvertibleBuilder> builder)
         {
             //var classMapping = new ModelConvertibleBase<TEntity, TModel>();
             //ClassMappings.Add(""/*classMapping.Key*/, (IModelConvertible<TEntity, TModel>)classMapping);
         }
     }
 
-    public class ConvertibleBuilder { }
+    public class ConvertibleBuilder
+    {
+    }
 }

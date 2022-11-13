@@ -10,6 +10,6 @@ namespace CoL.Service.Importer
         {
         }
 
-        public override string EntityKey(Member model) => model.Tag;
+        protected override string EntityKey(Member model) => model.Tag;
     }
 }

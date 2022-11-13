@@ -40,16 +40,23 @@ namespace CoL.Service
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                logger.LogInformation("Importing new data at: {Time}", DateTimeOffset.Now);
 
                 if (importDataProvider.HasImportData())
                 {
                     var jsonData = await importDataProvider.GetImportDataAsync();
 
-                    await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
+                    //todo test multiple import set and check updated properties
+                    var success = await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
+                    if (!importDataProvider.SetImported(success))
+                    {
+                        logger.LogError(
+                            "Failed to set data directory as processed, service will stop to avoid infinite loop");
+                        return;
+                    }
                 }
 
-                await Task.Delay(120_000, stoppingToken);
+                await Task.Delay(10_000, stoppingToken);
             }
         }
 

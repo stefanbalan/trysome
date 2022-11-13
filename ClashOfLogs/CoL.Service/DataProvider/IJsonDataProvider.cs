@@ -6,5 +6,6 @@ namespace CoL.Service
     {
         bool HasImportData();
         Task<JsonData> GetImportDataAsync();
+        bool SetImported(bool success);
     }
 }

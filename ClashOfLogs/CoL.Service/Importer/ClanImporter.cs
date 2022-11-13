@@ -44,8 +44,21 @@ namespace CoL.Service.Importer
 
         protected async override Task UpdateChildrenAsync(DBClan dbClan, Clan clan, DateTime timeStamp)
         {
+            var previousMembers = dbClan.Members.ToList();
+            dbClan.Members.Clear();
+
             foreach (var member in clan.Members)
-                await memberProvider.GetOrCreateAsync(member, timeStamp);
+            {
+                var dbMember = await memberProvider.GetOrCreateAsync(member, timeStamp);
+                dbClan.Members.Add(dbMember);
+                previousMembers.RemoveAll(m => m.Tag.Equals(dbMember.Tag));
+            }
+
+            foreach(var pm in previousMembers)
+            {
+                pm.LastLeft = timeStamp;
+                pm.IsMember = false;
+            };
         }
 
         protected async override Task<DBClan> CreateNewAsync(Clan entity, DateTime timeStamp)

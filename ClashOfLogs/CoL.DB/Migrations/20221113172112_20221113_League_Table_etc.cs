@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CoL.DB.Migrations
 {
-    public partial class Something : Migration
+    public partial class _20221113_League_Table_etc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,14 +61,14 @@ namespace CoL.DB.Migrations
                 name: "LeagueId",
                 table: "ClanMembers",
                 type: "int",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "League",
+                name: "Leagues",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IconUrls_Small = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IconUrls_Tiny = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -78,7 +78,7 @@ namespace CoL.DB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_League", x => x.Id);
+                    table.PrimaryKey("PK_Leagues", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
@@ -87,21 +87,22 @@ namespace CoL.DB.Migrations
                 column: "LeagueId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ClanMembers_League_LeagueId",
+                name: "FK_ClanMembers_Leagues_LeagueId",
                 table: "ClanMembers",
                 column: "LeagueId",
-                principalTable: "League",
-                principalColumn: "Id");
+                principalTable: "Leagues",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ClanMembers_League_LeagueId",
+                name: "FK_ClanMembers_Leagues_LeagueId",
                 table: "ClanMembers");
 
             migrationBuilder.DropTable(
-                name: "League");
+                name: "Leagues");
 
             migrationBuilder.DropIndex(
                 name: "IX_ClanMembers_LeagueId",

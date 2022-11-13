@@ -2,7 +2,6 @@
 
 namespace CoL.DB.Entities
 {
-    [Owned]
     public class IconUrls
     {
         public string Small { get; set; }
