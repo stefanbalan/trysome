@@ -66,15 +66,31 @@ namespace AdventOfCode2022
         }
     }
 
-    public class InputTextLine
+    public class InputTextLine : Token
     {
-        public InputTextLine(string line)
+        private readonly string[] _lineSegments;
+
+        public InputTextLine(string line) : base(line)
         {
-            StringValue = line;
+            _lineSegments = line.Split(' ');
         }
 
-        public bool IsEmpty => string.IsNullOrWhiteSpace(StringValue);
-        public string StringValue { get; }
-        public int? NumericValue => int.TryParse(StringValue, out var result) ? result : (int?)null;
+        public Token this[int index] => new Token(_lineSegments[index]);
+
+
+    }
+    public class Token
+    {
+        private readonly string _segment;
+
+        public Token(string segment)
+        {
+            _segment = segment;
+        }
+
+        public bool IsEmpty => string.IsNullOrWhiteSpace(_segment);
+
+        public string StringValue => _segment;
+        public int? NumericValue => int.TryParse(_segment, out var result) ? result : (int?)null;
     }
 }
