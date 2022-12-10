@@ -6,7 +6,7 @@ namespace AdventOfCode2022
     {
         public static void Main(string[] args)
         {
-            Day day = new Day1();
+            Day day = new Day2();
             day.Execute();
 
             Console.WriteLine("Result1 {0}", day.Result1);
