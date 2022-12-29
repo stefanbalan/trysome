@@ -31,7 +31,7 @@ Uppercase item types A through Z have priorities 27 through 52.
 In the above example, the priority of the item type that appears in both compartments of each rucksack is 16 (p), 38 (L), 42 (P), 22 (v), 20 (t), and 19 (s); the sum of these is 157.
 
 Find the item type that appears in both compartments of each rucksack. What is the sum of the priorities of those item types?
-     */
+*/
 
 /*
 As you finish identifying the misplaced items, the Elves come to you with another issue.
@@ -92,7 +92,7 @@ public class Day3 : Day
         return common;
     }
 
-    protected override void LineAction(InputTextLine line)
+    protected override void LineAction(Token line)
     {
         var l = line.StringValue.Length / 2;
         var match = FindCommon(line.StringValue[..l], line.StringValue[l..]);
