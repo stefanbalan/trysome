@@ -1,6 +1,6 @@
 ﻿using AdventOfCode2022;
 
-Day day = new Day3();
+Day day = new Day4();
 day.Execute();
 
 Console.WriteLine("Result1 {0}", day.Result1);

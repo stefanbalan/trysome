@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace AdventOfCode2022;
 
-public class InputReader : IEnumerable<InputTextLine>
+public class InputReader : IEnumerable<Token>
 {
     private readonly FileInfo _file;
 
@@ -11,7 +11,7 @@ public class InputReader : IEnumerable<InputTextLine>
         _file = new FileInfo($"{filename}.txt");
     }
 
-    IEnumerator<InputTextLine> IEnumerable<InputTextLine>.GetEnumerator()
+    IEnumerator<Token> IEnumerable<Token>.GetEnumerator()
     {
         return new InputLineEnumerator(_file);
     }
@@ -21,13 +21,13 @@ public class InputReader : IEnumerable<InputTextLine>
         return new InputLineEnumerator(_file);
     }
 
-    private class InputLineEnumerator : IEnumerator<InputTextLine>
+    private class InputLineEnumerator : IEnumerator<Token>
     {
-        public InputTextLine Current => _current!;
+        public Token Current => _current!;
 
 
         private readonly StreamReader _reader;
-        private InputTextLine? _current;
+        private Token? _current;
 
         public InputLineEnumerator(FileInfo file)
         {
@@ -51,7 +51,7 @@ public class InputReader : IEnumerable<InputTextLine>
 
             if (line == null) return false;
 
-            _current = new InputTextLine(line);
+            _current = new Token(line);
             return true;
         }
 
@@ -70,18 +70,6 @@ public class InputReader : IEnumerable<InputTextLine>
     }
 }
 
-public class InputTextLine : Token
-{
-    private readonly string[] _lineSegments;
-
-    public InputTextLine(string line) : base(line)
-    {
-        _lineSegments = line.Split(' ');
-    }
-
-    public Token this[int index] => new(_lineSegments[index]);
-}
-
 public class Token
 {
     private readonly string _segment;
@@ -90,6 +78,8 @@ public class Token
     {
         _segment = segment;
     }
+
+    public Token[] GetChildTokens(params char[] separators) => _segment.Split(separators).Select(s => new Token(s)).ToArray();
 
     public bool IsEmpty => string.IsNullOrWhiteSpace(_segment);
 

@@ -1,8 +1,6 @@
-using System.Collections.Generic;
+namespace AdventOfCode2022;
 
-namespace AdventOfCode2022
-{
-    /*
+/*
 The Elves begin to set up camp on the beach. To decide whose tent gets to be closest to the snack storage, a giant Rock Paper Scissors tournament is already in progress.
 
 Rock Paper Scissors is a game between two players. Each game contains many rounds; in each round, the players each simultaneously choose one of Rock, Paper, or Scissors using a hand shape. Then, a winner for that round is selected: Rock defeats Scissors, Scissors defeats Paper, and Paper defeats Rock. If both players choose the same shape, the round instead ends in a draw.
@@ -28,9 +26,10 @@ The third round is a draw with both players choosing Scissors, giving you a scor
 In this example, if you were to follow the strategy guide, you would get a total score of 15 (8 + 1 + 6).
 
 What would your total score be if everything goes exactly according to your strategy guide?
-         */
-    /*
-     The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
+*/
+
+/*
+ The Elf finishes helping with the tent and sneaks back over to you. "Anyway, the second column says how the round needs to end: X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win. Good luck!"
 
 The total score is still calculated in the same way, but now you need to figure out what shape to choose so the round ends as indicated. The example above now goes like this:
 
@@ -40,48 +39,46 @@ In the third round, you will defeat your opponent's Scissors with Rock for a sco
 Now that you're correctly decrypting the ultra top secret strategy guide, you would get a total score of 12.
 
 Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
-     */
-    public class Day2 : Day
+ */
+public class Day2 : Day
+{
+    private int GetScore1(string round)
     {
-
-        private int GetScore1(string round)
+        var rules = new Dictionary<string, int>()
         {
-            var rules = new Dictionary<string, int>()
-            {
-                { "A X", 4 }, // 1 + 3
-                { "A Y", 8 }, // 2 + 6
-                { "A Z", 3 }, // 3 + 0
-                { "B X", 1 }, // 1 + 0
-                { "B Y", 5 }, // 2 + 3
-                { "B Z", 9 }, // 3 + 6
-                { "C X", 7 }, // 1 + 6
-                { "C Y", 2 }, // 2 + 0
-                { "C Z", 6 } // 3 + 3
-            };
-            return rules[round];
-        }
+            { "A X", 4 }, // 1 + 3
+            { "A Y", 8 }, // 2 + 6
+            { "A Z", 3 }, // 3 + 0
+            { "B X", 1 }, // 1 + 0
+            { "B Y", 5 }, // 2 + 3
+            { "B Z", 9 }, // 3 + 6
+            { "C X", 7 }, // 1 + 6
+            { "C Y", 2 }, // 2 + 0
+            { "C Z", 6 } // 3 + 3
+        };
+        return rules[round];
+    }
 
-        private int GetScore2(string round)
+    private int GetScore2(string round)
+    {
+        var rules = new Dictionary<string, int>()
         {
-            var rules = new Dictionary<string, int>()
-            {
-                { "A X", 3 }, // 3 + 0 Z
-                { "A Y", 4 }, // 1 + 3 X
-                { "A Z", 8 }, // 2 + 6 Y
-                { "B X", 1 }, // 1 + 0
-                { "B Y", 5 }, // 2 + 3
-                { "B Z", 9 }, // 3 + 6
-                { "C X", 2 }, // 2 + 0
-                { "C Y", 6 }, // 3 + 3
-                { "C Z", 7 }  // 1 + 6
-            };
-            return rules[round];
-        }
+            { "A X", 3 }, // 3 + 0 Z
+            { "A Y", 4 }, // 1 + 3 X
+            { "A Z", 8 }, // 2 + 6 Y
+            { "B X", 1 }, // 1 + 0
+            { "B Y", 5 }, // 2 + 3
+            { "B Z", 9 }, // 3 + 6
+            { "C X", 2 }, // 2 + 0
+            { "C Y", 6 }, // 3 + 3
+            { "C Z", 7 } // 1 + 6
+        };
+        return rules[round];
+    }
 
-        protected override void LineAction(InputTextLine line)
-        {
-            Result1 += GetScore1(line.StringValue);
-            Result2 += GetScore2(line.StringValue);
-        }
+    protected override void LineAction(Token line)
+    {
+        Result1 += GetScore1(line.StringValue);
+        Result2 += GetScore2(line.StringValue);
     }
 }
