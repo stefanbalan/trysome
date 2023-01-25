@@ -1,0 +1,65 @@
+@page "/EmailTemplate/Edit/{TemplateId:int}"
+@using Lazy.Shared
+@inject HttpClient HttpClient
+
+<PageTitle>Edit template</PageTitle>
+<h3>Editor</h3>
+
+<RadzenHtmlEditor @bind-Value=@htmlString style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image" Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
+    <RadzenHtmlEditorUndo />
+    <RadzenHtmlEditorRedo />
+    <RadzenHtmlEditorSeparator />
+    <RadzenHtmlEditorBold />
+    <RadzenHtmlEditorItalic />
+    <RadzenHtmlEditorUnderline />
+    <RadzenHtmlEditorStrikeThrough />
+    <RadzenHtmlEditorSeparator />
+    <RadzenHtmlEditorColor />
+    <RadzenHtmlEditorBackground />
+    <RadzenHtmlEditorRemoveFormat />
+</RadzenHtmlEditor>
+
+<div>param @TemplateId</div>
+
+<EventConsole @ref=@console Class="mt-4" />
+
+@code {
+
+    [Parameter]
+    public int? TemplateId { get; set; }
+
+    private string htmlString = "<h1>Hello World!!!</h1>";
+    private EmailTemplateModel? _emailTemplate;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _emailTemplate = await HttpClient.GetFromJsonAsync<EmailTemplateModel>($"/api/EmailTemplate/{TemplateId}");
+            htmlString = _emailTemplate?.Text;
+        }
+        catch (Exception e)
+        {
+        }
+        htmlString = _emailTemplate?.Text ?? "<h1>Hello World!!!</h1>";
+    }
+
+    EventConsole console;
+
+    void OnPaste(HtmlEditorPasteEventArgs args)
+    {
+        console.Log($"Paste: {args.Html}");
+    }
+
+    void OnChange(string html)
+    {
+        console.Log($"Change: {html}");
+    }
+
+    void OnExecute(HtmlEditorExecuteEventArgs args)
+    {
+        console.Log($"Execute: {args.CommandName}");
+    }
+
+}
