@@ -1,4 +1,8 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Lazy.DB;
+using Lazy.DB.Entities;
+using Lazy.DB.EntityModelMapper;
+using Lazy.Server.Mappers;
+using Lazy.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDb(builder.Configuration.GetConnectionString("LazyConStr"));
+
+AddClassMapings(builder.Services);
+
 
 var app = builder.Build();
 
@@ -34,3 +43,10 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+
+
+
+void AddClassMapings(IServiceCollection services)
+{
+    services.AddSingleton(typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>), new EmailTemplateMapper());
+}

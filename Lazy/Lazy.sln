@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.Client", "Lazy\Client\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.Shared", "Lazy\Shared\Lazy.Shared.csproj", "{A716C475-7543-4D23-8B04-5F17E05AC0E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lazy.DB", "Lazy.DB\Lazy.DB.csproj", "{52962706-4D28-4B8C-B494-B57574AEA357}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{A716C475-7543-4D23-8B04-5F17E05AC0E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A716C475-7543-4D23-8B04-5F17E05AC0E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A716C475-7543-4D23-8B04-5F17E05AC0E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52962706-4D28-4B8C-B494-B57574AEA357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52962706-4D28-4B8C-B494-B57574AEA357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52962706-4D28-4B8C-B494-B57574AEA357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52962706-4D28-4B8C-B494-B57574AEA357}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
