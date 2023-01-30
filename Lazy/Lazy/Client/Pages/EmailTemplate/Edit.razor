@@ -3,7 +3,7 @@
 @inject HttpClient HttpClient
 
 <PageTitle>Edit template</PageTitle>
-<h3>Editor</h3>
+<h2>Editor</h2>
 
 <RadzenHtmlEditor @bind-Value=@htmlString style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image" Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
     <RadzenHtmlEditorUndo />
@@ -37,10 +37,11 @@
         try
         {
             _emailTemplate = await HttpClient.GetFromJsonAsync<EmailTemplateModel>($"/api/EmailTemplate/{TemplateId}");
-            htmlString = _emailTemplate?.Text;
+            htmlString = _emailTemplate?.Text??string.Empty;
         }
         catch (Exception e)
         {
+            //log
         }
         htmlString = _emailTemplate?.Text ?? "<h1>Hello World!!!</h1>";
     }
