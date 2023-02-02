@@ -5,5 +5,8 @@
         static abstract TModel ToModel(TEntity entity);
 
         static abstract TEntity ToEntity(TModel model);
+
+        TModel GetModelFrom(TEntity entity);
+        TEntity GetEntityFrom(TModel model);
     }
 }

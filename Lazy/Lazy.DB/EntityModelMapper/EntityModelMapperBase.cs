@@ -40,6 +40,11 @@ public abstract class EntityModelMapperBase<TEntity, TModel> : IEntityModelMappe
         return result;
     }
 
+    public TModel GetModelFrom(TEntity entity) => ToModel(entity);
+
+    public TEntity GetEntityFrom(TModel model) => ToEntity(model);
+    
+
     public abstract void BuildMappings();
 
 
