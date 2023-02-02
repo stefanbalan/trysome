@@ -1,3 +1,6 @@
+using Lazy.DB;
+using Lazy.DB.Entities;
+using Lazy.DB.EntityModelMapper;
 using Lazy.Shared;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,30 +10,41 @@ namespace Lazy.Server.Controllers
     [ApiController]
     public class EmailTemplateController : ControllerBase
     {
+        private readonly LazyContext _context;
+        private readonly IEntityModelMapper<EmailTemplate, EmailTemplateModel> _emailTemplateMapper;
+
+        public EmailTemplateController(LazyContext context, IEntityModelMapper<EmailTemplate, EmailTemplateModel> emailTemplateMapper)
+        {
+            _context = context;
+            _emailTemplateMapper = emailTemplateMapper;
+        }
+
         [HttpGet("")]
-        public ActionResult<PagedResult<EmailTemplateModel>> Get([FromQuery] int? pageSize, [FromQuery] int? pageNumber,
+        public ActionResult<PagedResult<EmailTemplateModel>> Get(
+            [FromQuery] int? pageSize,
+            [FromQuery] int? pageNumber,
             [FromQuery] string? searchString)
         {
-            var r = new List<EmailTemplateModel>()
+            var ps = pageSize ?? 10; //todo what defaults?
+            var pn = pageNumber ?? 1; //todo sanitize?
+            var query = _context.EmailTemplates as IQueryable<EmailTemplate>;
+            if (!string.IsNullOrWhiteSpace(searchString))
             {
-                new() { Id = 1, Name = "Template 1" },
-                new() { Id = 2, Name = "Template 2" },
-                new() { Id = 3, Name = "Template 3" },
-                new() { Id = 4, Name = "Template 4" },
-                new() { Id = 5, Name = "Template 5" },
-                new() { Id = 6, Name = "Template 6" },
-                new() { Id = 7, Name = "Template 7" },
-                new() { Id = 8, Name = "Template 8" },
-                new() { Id = 9, Name = "Template 9" },
-                new() { Id = 10, Name = "Template 10" },
-                new() { Id = 11, Name = "Template 11" },
-            };
+                var ss = searchString.Replace(" ", "%");
+                query = query.Where(et => et.Name.Contains(searchString));
+            }
+
+            var count = query.Count();
+            var list = query.Skip((pn-1)*ps).Take(ps)
+                .Select(et => _emailTemplateMapper.GetModelFrom(et))
+                .ToList();
+
             var result = new PagedResult<EmailTemplateModel>()
             {
-                PageSize = pageSize ?? 10, //todo what defaults?
-                PageNumber = pageNumber ?? 1,
+                PageSize = ps, 
+                PageNumber = pn,
                 SearchString = searchString ?? string.Empty,
-                Results = r
+                Results = list
             };
             return Ok(result);
         }
