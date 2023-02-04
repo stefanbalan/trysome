@@ -1,4 +1,4 @@
-namespace Lazy.Shared;
+namespace Lazy.Model;
 
 public record EmailTemplateModel
 {

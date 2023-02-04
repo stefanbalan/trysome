@@ -1,4 +1,4 @@
-﻿namespace Lazy.DB.EntityModelMapper
+﻿namespace Lazy.Util.EntityModelMapper
 {
     public interface IEntityModelMapper<TEntity, TModel>
     {
@@ -6,7 +6,7 @@
 
         static abstract TEntity ToEntity(TModel model);
 
-        TModel GetModelFrom(TEntity entity);
-        TEntity GetEntityFrom(TModel model);
+        TModel? GetModelFrom(TEntity? entity);
+        TEntity? GetEntityFrom(TModel? model);
     }
 }

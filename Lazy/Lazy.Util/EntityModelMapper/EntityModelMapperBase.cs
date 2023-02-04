@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Lazy.DB.EntityModelMapper;
+namespace Lazy.Util.EntityModelMapper;
 
 public abstract class EntityModelMapperBase<TEntity, TModel> : IEntityModelMapper<TEntity, TModel>
     where TEntity : new()
@@ -73,7 +73,7 @@ public abstract class EntityModelMapperBase<TEntity, TModel> : IEntityModelMappe
             var memberExpression = expression.Body as MemberExpression ??
                                    ((UnaryExpression)expression.Body).Operand as MemberExpression;
 
-            var type = typeof(TP);
+            var type = typeof(T);
             if (memberExpression == null)
                 throw new ArgumentException($"Expression '{expression.Name}' refers to a method, not a property.");
 

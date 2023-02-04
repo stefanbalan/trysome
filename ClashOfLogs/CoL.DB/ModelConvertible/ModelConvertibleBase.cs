@@ -76,7 +76,7 @@ namespace CoL.DB
         {
             var memberExpression = expression.Body as MemberExpression ?? ((UnaryExpression)expression.Body).Operand as MemberExpression;
 
-            var type = typeof(TP);
+            var type = typeof(T);
             if (memberExpression == null)
                 throw new ArgumentException($"Expression '{expression.Name}' refers to a method, not a property.");
 

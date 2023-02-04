@@ -1,7 +1,7 @@
-﻿using Lazy.DB.Entities;
+﻿using Lazy.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lazy.DB
+namespace Lazy.EF
 {
     public class LazyContext : DbContext
     {

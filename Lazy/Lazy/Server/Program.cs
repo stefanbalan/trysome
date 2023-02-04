@@ -1,8 +1,10 @@
-using Lazy.DB;
-using Lazy.DB.Entities;
-using Lazy.DB.EntityModelMapper;
+using Lazy.Data;
+using Lazy.EF;
+using Lazy.Data.Entities;
+using Lazy.EF.Repository;
+using Lazy.Model;
 using Lazy.Server.Mappers;
-using Lazy.Shared;
+using Lazy.Util.EntityModelMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,12 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDb(builder.Configuration.GetConnectionString("LazyConStr"));
 
-AddClassMapings(builder.Services);
+
+// mappers
+builder.Services.AddSingleton(typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>), new EmailTemplateMapper());
+
+// repositories
+builder.Services.AddScoped<IRepository<EmailTemplate, int>, EmailTemplateRepository>();
 
 
 var app = builder.Build();
@@ -43,10 +50,3 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
-
-
-
-void AddClassMapings(IServiceCollection services)
-{
-    services.AddSingleton(typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>), new EmailTemplateMapper());
-}

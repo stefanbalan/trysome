@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Lazy.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Lazy.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
