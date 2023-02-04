@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lazy.DB
+namespace Lazy.EF
 {
     public static class Config
     {

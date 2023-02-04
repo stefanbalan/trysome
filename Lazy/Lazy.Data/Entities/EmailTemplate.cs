@@ -1,6 +1,6 @@
-﻿namespace Lazy.DB.Entities
+﻿namespace Lazy.Data.Entities
 {
-    public class EmailTemplate
+    public record EmailTemplate
     {
         public int Id { get; set; }
         public string Text { get; set; } = string.Empty;

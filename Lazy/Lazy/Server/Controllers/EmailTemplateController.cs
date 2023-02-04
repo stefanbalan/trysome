@@ -1,8 +1,9 @@
-using Lazy.DB;
-using Lazy.DB.Entities;
-using Lazy.DB.EntityModelMapper;
-using Lazy.Shared;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
+using Lazy.Data;
+using Lazy.Data.Entities;
+using Lazy.Model;
+
 
 namespace Lazy.Server.Controllers
 {
@@ -10,13 +11,12 @@ namespace Lazy.Server.Controllers
     [ApiController]
     public class EmailTemplateController : ControllerBase
     {
-        private readonly LazyContext _context;
-        private readonly IEntityModelMapper<EmailTemplate, EmailTemplateModel> _emailTemplateMapper;
+        private readonly IRepository<EmailTemplate, int> _repository;
 
-        public EmailTemplateController(LazyContext context, IEntityModelMapper<EmailTemplate, EmailTemplateModel> emailTemplateMapper)
+
+        public EmailTemplateController(IRepository<EmailTemplate, int> repository)
         {
-            _context = context;
-            _emailTemplateMapper = emailTemplateMapper;
+            _repository = repository;
         }
 
         [HttpGet("")]
@@ -27,25 +27,15 @@ namespace Lazy.Server.Controllers
         {
             var ps = pageSize ?? 10; //todo what defaults?
             var pn = pageNumber ?? 1; //todo sanitize?
-            var query = _context.EmailTemplates as IQueryable<EmailTemplate>;
-            if (!string.IsNullOrWhiteSpace(searchString))
-            {
-                var ss = searchString.Replace(" ", "%");
-                query = query.Where(et => et.Name.Contains(searchString));
-            }
 
-            var count = query.Count();
-            var list = query.Skip((pn-1)*ps).Take(ps)
-                .Select(et => _emailTemplateMapper.GetModelFrom(et))
-                .ToList();
 
-            var result = new PagedResult<EmailTemplateModel>()
-            {
-                PageSize = ps, 
-                PageNumber = pn,
-                SearchString = searchString ?? string.Empty,
-                Results = list
-            };
+            Expression<Func<EmailTemplate, bool>>? filterExpression =
+                (!string.IsNullOrEmpty(searchString))
+                    ? etm => etm.Name.Contains(searchString)
+                    : null;
+
+            var result = _repository.GetPaged(ps, pn, filterExpression, null);
+
             return Ok(result);
         }
 

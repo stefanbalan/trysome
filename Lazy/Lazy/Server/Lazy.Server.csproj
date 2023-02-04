@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -22,9 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lazy.DB\Lazy.DB.csproj" />
+    <ProjectReference Include="..\..\Lazy.Data\Lazy.Data.csproj" />
+    <ProjectReference Include="..\..\Lazy.DB\Lazy.EF.csproj" />
+    <ProjectReference Include="..\..\Lazy.Util\Lazy.Util.csproj" />
     <ProjectReference Include="..\Client\Lazy.Client.csproj" />
-    <ProjectReference Include="..\Shared\Lazy.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Lazy.Model.csproj" />
   </ItemGroup>
 
 

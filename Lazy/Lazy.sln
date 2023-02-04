@@ -7,9 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.Server", "Lazy\Server\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.Client", "Lazy\Client\Lazy.Client.csproj", "{C0761A31-F748-4027-AA3A-699BEFF33443}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.Shared", "Lazy\Shared\Lazy.Shared.csproj", "{A716C475-7543-4D23-8B04-5F17E05AC0E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.Model", "Lazy\Shared\Lazy.Model.csproj", "{A716C475-7543-4D23-8B04-5F17E05AC0E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lazy.DB", "Lazy.DB\Lazy.DB.csproj", "{52962706-4D28-4B8C-B494-B57574AEA357}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lazy.EF", "Lazy.DB\Lazy.EF.csproj", "{52962706-4D28-4B8C-B494-B57574AEA357}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lazy.Util", "Lazy.Util\Lazy.Util.csproj", "{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lazy.Data", "Lazy.Data\Lazy.Data.csproj", "{B6106DAF-8CEC-433C-B56F-691ABF783FDD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{83EC67A9-34D0-4412-A050-D73ACB1F91EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,22 @@ Global
 		{52962706-4D28-4B8C-B494-B57574AEA357}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52962706-4D28-4B8C-B494-B57574AEA357}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52962706-4D28-4B8C-B494-B57574AEA357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6106DAF-8CEC-433C-B56F-691ABF783FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6106DAF-8CEC-433C-B56F-691ABF783FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6106DAF-8CEC-433C-B56F-691ABF783FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6106DAF-8CEC-433C-B56F-691ABF783FDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{52962706-4D28-4B8C-B494-B57574AEA357} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
+		{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
+		{B6106DAF-8CEC-433C-B56F-691ABF783FDD} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA3F694C-AF3B-48A6-8CAD-D22C42546C00}

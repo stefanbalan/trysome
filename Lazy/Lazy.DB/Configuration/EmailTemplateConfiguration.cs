@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Lazy.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Lazy.DB.Entities.Configuration
+namespace Lazy.EF.Configuration
 {
     internal class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate>
     {

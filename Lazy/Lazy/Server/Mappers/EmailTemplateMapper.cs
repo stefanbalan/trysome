@@ -1,6 +1,6 @@
-﻿using Lazy.DB.Entities;
-using Lazy.DB.EntityModelMapper;
-using Lazy.Shared;
+﻿using Lazy.Data.Entities;
+using Lazy.Model;
+using Lazy.Util.EntityModelMapper;
 
 namespace Lazy.Server.Mappers
 {
