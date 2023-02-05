@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20230202144615_1_EmailTemplates.cs" />
+    <Compile Remove="Migrations\20230202144615_1_EmailTemplates.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
 	    <PrivateAssets>all</PrivateAssets>

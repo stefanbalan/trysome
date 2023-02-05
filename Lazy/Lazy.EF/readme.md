@@ -21,9 +21,9 @@ dotnet ef migrations remove --project Lazy.DB
 
 // dotnet ef database update --project Lazy.DB
 
-dotnet ef database update --project Lazy.DB --startup-project .\Lazy\Server\
+dotnet ef database update --project Lazy.EF --startup-project .\Lazy\Server\
 
-dotnet ef database update 0 --project Lazy.DB --startup-project .\Lazy\Server\
+dotnet ef database update 0 --project Lazy.EF --startup-project .\Lazy\Server\
 
 
 
