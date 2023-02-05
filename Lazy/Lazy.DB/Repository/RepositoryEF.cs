@@ -45,7 +45,7 @@ namespace Lazy.EF.Repository
             Context.SaveChanges();
         }
 
-        public virtual PagedResult<TEntity> GetPaged(
+        public virtual PagedRepositoryResult<TEntity> GetPaged(
             int pageSize,
             int pageNumber,
             Expression<Func<TEntity, bool>>? filterExpression,
@@ -66,10 +66,10 @@ namespace Lazy.EF.Repository
             var count = q.Count();
             var list = q.ToList();
 
-            var result = new PagedResult<TEntity>
+            var result = new PagedRepositoryResult<TEntity>
             {
                 PageSize = pageSize,
-                PageNumber = pageNumber,
+                PageNumber = Math.Min(pageNumber, (int)Math.Ceiling(count / (decimal)pageSize)),
                 Count = count,
                 Results = list
             };

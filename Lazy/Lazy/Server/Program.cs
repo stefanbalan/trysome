@@ -17,7 +17,15 @@ builder.Services.AddDb(builder.Configuration.GetConnectionString("LazyConStr"));
 
 
 // mappers
-builder.Services.AddSingleton(typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>), new EmailTemplateMapper());
+builder.Services.AddSingleton(
+    typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>),
+    typeof(EmailTemplateMapper));
+
+builder.Services.AddSingleton(
+    typeof(IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>),
+    typeof(EmailTemplatePagedResultMapper));
+
+
 
 // repositories
 builder.Services.AddScoped<IRepository<EmailTemplate, int>, EmailTemplateRepository>();

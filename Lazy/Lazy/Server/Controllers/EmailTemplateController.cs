@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Mvc;
 using Lazy.Data;
 using Lazy.Data.Entities;
 using Lazy.Model;
+using Lazy.Util.EntityModelMapper;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Lazy.Server.Controllers
@@ -13,14 +14,20 @@ namespace Lazy.Server.Controllers
     {
         private readonly IRepository<EmailTemplate, int> _repository;
 
+        private readonly IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>
+            _mapper;
 
-        public EmailTemplateController(IRepository<EmailTemplate, int> repository)
+
+        public EmailTemplateController(
+            IRepository<EmailTemplate, int> repository,
+            IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>> mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet("")]
-        public ActionResult<PagedResult<EmailTemplateModel>> Get(
+        public ActionResult<PagedModelResult<EmailTemplateModel>> Get(
             [FromQuery] int? pageSize,
             [FromQuery] int? pageNumber,
             [FromQuery] string? searchString)
@@ -34,7 +41,8 @@ namespace Lazy.Server.Controllers
                     ? etm => etm.Name.Contains(searchString)
                     : null;
 
-            var result = _repository.GetPaged(ps, pn, filterExpression, null);
+            var repositoryResult = _repository.GetPaged(ps, pn, filterExpression, null);
+            var result = _mapper.GetModelFrom(repositoryResult);
 
             return Ok(result);
         }

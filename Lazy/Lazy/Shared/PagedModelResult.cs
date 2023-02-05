@@ -1,6 +1,6 @@
-﻿namespace Lazy.Data
+﻿namespace Lazy.Model
 {
-    public class PagedResult<T>
+    public record PagedModelResult<T>
     {
 
         public int PageSize { get; set; }

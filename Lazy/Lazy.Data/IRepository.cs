@@ -10,7 +10,7 @@ namespace Lazy.Data
         TEntity? Update(TEntity model);
         void Delete(TEntity model);
 
-        PagedResult<TEntity> GetPaged(
+        PagedRepositoryResult<TEntity> GetPaged(
             int pageSize,
             int pageNumber,
             Expression<Func<TEntity, bool>>? filterExpression,
