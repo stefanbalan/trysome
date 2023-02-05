@@ -9,15 +9,15 @@
 <h2>Email templates</h2>
 
 <div class="col-md-6 col-lg-4 p-3">
-    @* <RadzenCard> *@
-    @*     <RadzenTextBox  @oninput=@(args => OnChange(args.Value.ToString(), "TextBox with change on every input")) Class="w-100" /> *@
-    @* </RadzenCard> *@
-    @* *@
-    @* <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="5" AllowSorting="true"  *@
+    <RadzenCard>
+        <RadzenTextBox  @oninput=@(args => OnChange(args.Value.ToString(), "TextBox with change on every input")) Class="w-100" />
+    </RadzenCard>
+    
+    @* <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="5" AllowSorting="true" *@
     @*                 Data="@_list" TItem="EmailTemplateModel"> *@
     @*     <Columns> *@
     @*         <RadzenDataGridColumn Width="50px" TItem="EmailTemplateModel" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Property="Id"> *@
-    @*              *@
+    @* *@
     @*         </RadzenDataGridColumn> *@
     @*         <RadzenDataGridColumn TItem="Order" Property="Employee.LastName" Title="Employee"> *@
     @*             <Template Context="order"> *@
@@ -40,9 +40,6 @@
     @*         </RadzenDataGridColumn> *@
     @*     </Columns> *@
     @* </RadzenDataGrid> *@
-    
-    
-
 </div>
 
 

@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lazy.Data\Lazy.Data.csproj" />
-    <ProjectReference Include="..\..\Lazy.DB\Lazy.EF.csproj" />
+    <ProjectReference Include="..\..\Lazy.EF\Lazy.EF.csproj" />
     <ProjectReference Include="..\..\Lazy.Util\Lazy.Util.csproj" />
     <ProjectReference Include="..\Client\Lazy.Client.csproj" />
     <ProjectReference Include="..\Shared\Lazy.Model.csproj" />
