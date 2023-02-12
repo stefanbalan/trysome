@@ -5,6 +5,7 @@ using Lazy.EF.Repository;
 using Lazy.Model;
 using Lazy.Server.Mappers;
 using Lazy.Util.EntityModelMapper;
+using Lazy.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDb(builder.Configuration.GetConnectionString("LazyConStr"));
 
+builder.Services.AddScoped(typeof(UserSettingsService));
 
 // mappers
 builder.Services.AddSingleton(

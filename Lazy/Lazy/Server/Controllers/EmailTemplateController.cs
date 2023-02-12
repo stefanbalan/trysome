@@ -1,7 +1,9 @@
 using System.Linq.Expressions;
+using Lazy.Client.Services;
 using Lazy.Data;
 using Lazy.Data.Entities;
 using Lazy.Model;
+using Lazy.Server.Infra;
 using Lazy.Util.EntityModelMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +12,7 @@ namespace Lazy.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmailTemplateController : ControllerBase
+    public class EmailTemplateController : LazyPagingController
     {
         private readonly IRepository<EmailTemplate, int> _repository;
 
@@ -19,32 +21,32 @@ namespace Lazy.Server.Controllers
 
 
         public EmailTemplateController(
+            UserSettingsService userSettingsService,
             IRepository<EmailTemplate, int> repository,
             IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>> mapper)
+            : base(userSettingsService)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
         [HttpGet("")]
-        public ActionResult<PagedModelResult<EmailTemplateModel>> Get(
+        public async Task<ActionResult<PagedModelResult<EmailTemplateModel>>> Get(
             [FromQuery] int? pageSize,
             [FromQuery] int? pageNumber,
             [FromQuery] string? searchString)
         {
-            var ps = pageSize ?? 10; //todo what defaults?
-            var pn = pageNumber ?? 1; //todo sanitize?
-
+            var (ps, pn) = ValidatePaging(pageSize, pageNumber);
 
             Expression<Func<EmailTemplate, bool>>? filterExpression =
-                (!string.IsNullOrEmpty(searchString))
+                !string.IsNullOrEmpty(searchString)
                     ? etm => etm.Name.Contains(searchString)
                     : null;
 
-            var repositoryResult = _repository.GetPaged(ps, pn, filterExpression, null);
-            var result = _mapper.GetModelFrom(repositoryResult);
+            var repositoryResult = await _repository.GetPagedAsync(ps, pn, filterExpression, null);
+            var modelResult = _mapper.GetModelFrom(repositoryResult);
 
-            return Ok(result);
+            return Ok(modelResult);
         }
 
         // GET: api/Values/5

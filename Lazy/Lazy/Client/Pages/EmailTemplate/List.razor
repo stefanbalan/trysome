@@ -1,49 +1,52 @@
-﻿@page "/EmailTemplate/List/{PageSize:int?}/{PageNumber:int?}"
+﻿@page "/EmailTemplate/List"
+@inherits PagingComponent
+
 @using Lazy.Client.Services
 @using Lazy.Model
-@using Microsoft.AspNetCore.WebUtilities
 
+@inject DialogService DialogService
 @inject UserSettingsService UserSettings
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 <h2>Email templates</h2>
 
-<div class="col-md-6 col-lg-4 p-3">
+<div class="col-md-12 col-lg-8 p-3">
     <RadzenCard>
-        <RadzenTextBox  @oninput=@(args => OnChange(args.Value.ToString(), "TextBox with change on every input")) Class="w-100" />
+        <RadzenTextBox @oninput=@OnSearchTextChanged Class="w-100"/>
     </RadzenCard>
-    
-    @* <RadzenDataGrid @ref="ordersGrid" AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" AllowPaging="true" PageSize="5" AllowSorting="true" *@
-    @*                 Data="@_list" TItem="EmailTemplateModel"> *@
-    @*     <Columns> *@
-    @*         <RadzenDataGridColumn Width="50px" TItem="EmailTemplateModel" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Property="Id"> *@
-    @* *@
-    @*         </RadzenDataGridColumn> *@
-    @*         <RadzenDataGridColumn TItem="Order" Property="Employee.LastName" Title="Employee"> *@
-    @*             <Template Context="order"> *@
-    @*                 <RadzenImage Path="@order.Employee?.Photo" style="width: 40px; height: 40px; border-radius: 8px; margin-right: 8px; float: left;" /> *@
-    @*                 <RadzenText TextStyle="TextStyle.Subtitle2" Class="mb-0">@order.Employee?.FirstName @order.Employee?.LastName</RadzenText> *@
-    @*                 <RadzenText TextStyle="TextStyle.Caption">@order.Customer?.CompanyName</RadzenText> *@
-    @*             </Template> *@
-    @*         </RadzenDataGridColumn> *@
-    @*         <RadzenDataGridColumn TItem="Order" Property="OrderDate" Title="Order Date" FormatString="{0:d}" /> *@
-    @*         <RadzenDataGridColumn TItem="Order" Property="Freight" Title="Freight"> *@
-    @*             <Template Context="order"> *@
-    @*                 @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", order.Freight) *@
-    @*             </Template> *@
-    @*         </RadzenDataGridColumn> *@
-    @*         <RadzenDataGridColumn TItem="Order" Property="ShipCountry" Title="ShipCountry" /> *@
-    @*         <RadzenDataGridColumn Width="160px" TItem="Order" Property="OrderID" Title="Order Details"> *@
-    @*             <Template Context="data"> *@
-    @*                 <RadzenButton ButtonStyle="ButtonStyle.Info" Variant="Variant.Flat" Shade="Shade.Lighter" Icon="info" Class="m-1" Click=@(() => OpenOrder(data.OrderID)) Text="@data.OrderID.ToString()" /> *@
-    @*             </Template> *@
-    @*         </RadzenDataGridColumn> *@
-    @*     </Columns> *@
-    @* </RadzenDataGrid> *@
+
+    <RadzenDataGrid @ref="grid" TItem="EmailTemplateModel"
+                    AllowPaging="true" PageSize="@_pageSize" PageSizeOptions="@_pageSizeOptions"
+                    Data="@data" Count="count" IsLoading="@_isLoading" LoadData="@LoadData"
+                    ColumnWidth="200px">
+        <Columns>
+            <RadzenDataGridColumn Width="50px" TItem="EmailTemplateModel" Property="Id" Title="#" Filterable="false" Sortable="false" TextAlign="TextAlign.Center"/>
+
+            <RadzenDataGridColumn TItem="EmailTemplateModel" Property="Name" Title="Name" MinWidth="250px"/>
+
+            <RadzenDataGridColumn TItem="EmailTemplateModel" Property="Html" Title="Is HTML">
+                <Template Context="et">
+                    <RadzenCheckBox @bind-Value="@et.Html" Disabled="true"/>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="EmailTemplateModel" Property="ID" Title="Edit">
+                <Template Context="et">
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Shade="Shade.Lighter"
+                                  Icon="edit" Class="m-1" Click="@(() => EditTemplate(et.Id))" Text="Edit"/>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
 </div>
 
 
 @code {
+        const string apiUrl = "/api/EmailTemplate";
+    readonly IEnumerable<int> _pageSizeOptions = new[] { 5, 10, 20, 30 };
+    private int _pageSize;
+    private int _pageNumber;
+    private bool _isLoading;
 
     [Parameter]
     public int? PageSize { get; set; }
@@ -54,27 +57,56 @@
     [Parameter]
     public string? SearchString { get; set; }
 
-    RadzenDataGrid<EmailTemplateModel> ordersGrid = null!;
-    private List<EmailTemplateModel> _list = new();
+    RadzenDataGrid<EmailTemplateModel> grid = null!;
+    private List<EmailTemplateModel> data = new();
+    private int count;
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        PageSize ??= UserSettings.PageSize;
-        PageNumber ??= 0;
+        (_pageSize, _pageNumber) = SetPageSizeAndNumber(_pageSize, _pageNumber);
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        var url = $"/api/EmailTemplate/{PageSize}/{PageNumber}";
-        if(string.IsNullOrWhiteSpace(SearchString)) QueryHelpers.AddQueryString(url, "search", SearchString);
-
-        _list = await HttpClient.GetFromJsonAsync<List<EmailTemplateModel>>(url) ?? new List<EmailTemplateModel>();
+        (_pageSize, _pageNumber) = SetPageSizeAndNumber(_pageSize, _pageNumber);
+        await GetData();
     }
 
 
-    private void OnChange(string toString, string textboxWithChangeOnEveryInput)
+    private void OnSearchTextChanged(ChangeEventArgs changeEventArgs)
     {
-        
+    }
+
+    private void EditTemplate(int id)
+    {
+        NavigationManager.NavigateTo($"/EmailTemplate/Edit/{id}");
+    }
+
+    private async Task LoadData(LoadDataArgs arg)
+    {
+        (_pageSize, _pageNumber) = SetPageSizeAndNumber(arg.Top, arg.Skip / arg.Top);
+
+        await GetData();
+    }
+
+
+    private (int pageSize, int pageNumber) SetPageSizeAndNumber(int? ps, int? pn)
+    {
+        var pageSize = ps is null or 0 ? UserSettings.PageSize : ps.Value;
+        var pageNumber = pn is null or <0 ? 0 : pn.Value;
+        return (pageSize, pageNumber);
+    }
+
+    private async Task GetData()
+    {
+        _isLoading = true;
+        Dictionary<string, string>? search = null;
+        if (!string.IsNullOrWhiteSpace(SearchString))
+            search = new Dictionary<string, string> { { "search", SearchString } };
+        var pagedResult = await GetPageAsync<EmailTemplateModel>(apiUrl, _pageSize, _pageNumber, search);
+        data = pagedResult.Results;
+        count = pagedResult.Count;
+        _isLoading = false;
     }
 
 }
