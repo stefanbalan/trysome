@@ -45,8 +45,16 @@ namespace Lazy.EF.Repository
             Context.SaveChanges();
         }
 
-        public virtual PagedRepositoryResult<TEntity> GetPaged(
-            int pageSize,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNumber">Page numbers start at 0</param>
+        /// <param name="filterExpression"></param>
+        /// <param name="sortExpression"></param>
+        /// <param name="projection"></param>
+        /// <returns></returns>
+        public virtual async Task<PagedRepositoryResult<TEntity>> GetPagedAsync(int pageSize,
             int pageNumber,
             Expression<Func<TEntity, bool>>? filterExpression,
             Expression<Func<TEntity, bool>>? sortExpression,
@@ -56,15 +64,17 @@ namespace Lazy.EF.Repository
 
             if (filterExpression != null)
                 q = q.Where(filterExpression);
+            var count = await q.CountAsync();
+
+            var page = q;
             if (sortExpression != null)
-                q = q.OrderBy(sortExpression);
+                page = page.OrderBy(sortExpression);
 
-            q = q.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            page = page.Skip(pageNumber * pageSize).Take(pageSize);
 
-            if (projection != null) q = q.Select(projection);
-
-            var count = q.Count();
-            var list = q.ToList();
+            if (projection != null) page = page.Select(projection);
+            
+            var list = await page.ToListAsync();
 
             var result = new PagedRepositoryResult<TEntity>
             {

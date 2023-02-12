@@ -2,5 +2,5 @@ namespace Lazy.Client.Services;
 
 public class UserSettingsService
 {
-    public int PageSize { get; set; } = 10;
+    public int PageSize { get; set; } = 5;
 }

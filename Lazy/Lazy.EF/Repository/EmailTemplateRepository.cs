@@ -14,8 +14,7 @@ namespace Lazy.EF.Repository
 
         protected override DbSet<EmailTemplate> Set => Context.Set<EmailTemplate>();
 
-        public override PagedRepositoryResult<EmailTemplate> GetPaged(
-            int pageSize,
+        public override Task<PagedRepositoryResult<EmailTemplate>> GetPagedAsync(int pageSize,
             int pageNumber,
             Expression<Func<EmailTemplate, bool>>? filterExpression,
             Expression<Func<EmailTemplate, bool>>? sortExpression,
@@ -29,7 +28,7 @@ namespace Lazy.EF.Repository
                         Html = et.Html,
                     });
 
-            return base.GetPaged(pageSize, pageNumber, filterExpression, sortExpression, projection1);
+            return base.GetPagedAsync(pageSize, pageNumber, filterExpression, sortExpression, projection1);
         }
     }
 }
