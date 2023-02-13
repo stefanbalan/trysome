@@ -4,7 +4,7 @@ namespace Lazy.Data
 {
     public interface IRepository<TEntity, TKey>
     {
-        TEntity? Create(TEntity? model);
+        TEntity? Create(TEntity model);
         TEntity? Read(TKey id);
 
         TEntity? Update(TEntity model);

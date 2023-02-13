@@ -12,7 +12,7 @@ namespace Lazy.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmailTemplateController : LazyPagingController
+    public class EmailTemplateController : PagingController
     {
         private readonly IRepository<EmailTemplate, int> _repository;
 
@@ -21,10 +21,11 @@ namespace Lazy.Server.Controllers
 
 
         public EmailTemplateController(
+            ILogger<EmailTemplateController> logger,
             UserSettingsService userSettingsService,
             IRepository<EmailTemplate, int> repository,
             IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>> mapper)
-            : base(userSettingsService)
+            : base(logger, userSettingsService)
         {
             _repository = repository;
             _mapper = mapper;

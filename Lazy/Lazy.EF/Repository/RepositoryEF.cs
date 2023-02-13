@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Lazy.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Lazy.EF.Repository
 {
@@ -8,21 +9,28 @@ namespace Lazy.EF.Repository
         where TEntity : class
     {
         protected readonly LazyContext Context;
+        protected readonly ILogger<RepositoryEF<TEntity, TKey>> Logger;
 
-        protected RepositoryEF(LazyContext context)
+        protected RepositoryEF(ILogger<RepositoryEF<TEntity, TKey>> logger, LazyContext context)
         {
             Context = context;
+            Logger = logger;
         }
 
         protected abstract DbSet<TEntity> Set { get; }
 
-        public IQueryable<TEntity> All => Set;
-
-        public virtual TEntity Create(TEntity model)
+        public virtual TEntity? Create(TEntity model)
         {
-            Set.Add(model);
-            Context.SaveChanges();
-            return model;
+            try
+            {
+                Set.Add(model);
+                Context.SaveChanges();
+                return model;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public TEntity? Read(TKey id)
