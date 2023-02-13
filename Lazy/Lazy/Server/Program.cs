@@ -6,10 +6,23 @@ using Lazy.Model;
 using Lazy.Server.Mappers;
 using Lazy.Util.EntityModelMapper;
 using Lazy.Client.Services;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+        .MinimumLevel.Information()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+        .Enrich.FromLogContext()
+        //.WriteTo.Console()
+        //.WriteTo.File("col.log")
+        .CreateLogger();
+
+logger.Information("Hello, world!");
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -34,6 +47,7 @@ builder.Services.AddScoped<IRepository<EmailTemplate, int>, EmailTemplateReposit
 
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

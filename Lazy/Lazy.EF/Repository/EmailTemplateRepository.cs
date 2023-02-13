@@ -2,13 +2,14 @@
 using Lazy.Data;
 using Lazy.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Lazy.EF.Repository
 {
     public class EmailTemplateRepository : RepositoryEF<EmailTemplate, int>
     {
-        public EmailTemplateRepository(LazyContext context)
-            : base(context)
+        public EmailTemplateRepository(LazyContext context, ILogger<EmailTemplateRepository> logger)
+            : base(context, logger)
         {
         }
 

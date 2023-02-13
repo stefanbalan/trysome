@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Lazy.Server.Infra
 {
     [ApiController]
-    public class LazyPagingController : ControllerBase
+    public class PagingController : ControllerBase
     {
+        protected readonly ILogger<PagingController> Logger;
         private readonly UserSettingsService _userSettingsService;
 
-        public LazyPagingController(UserSettingsService userSettingsService)
+        public PagingController(ILogger<PagingController> logger, UserSettingsService userSettingsService)
         {
+            Logger = logger;
             _userSettingsService = userSettingsService;
         }
 
