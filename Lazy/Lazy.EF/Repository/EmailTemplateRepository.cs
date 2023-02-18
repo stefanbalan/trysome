@@ -9,13 +9,13 @@ namespace Lazy.EF.Repository
     public class EmailTemplateRepository : RepositoryEF<EmailTemplate, int>
     {
         public EmailTemplateRepository(LazyContext context, ILogger<EmailTemplateRepository> logger)
-            : base(context, logger)
+            : base(logger, context)
         {
         }
 
         protected override DbSet<EmailTemplate> Set => Context.Set<EmailTemplate>();
 
-        public override Task<PagedRepositoryResult<EmailTemplate>> GetPagedAsync(int pageSize,
+        public override Task<PagedRepositoryResult<EmailTemplate>> ReadPagedAsync(int pageSize,
             int pageNumber,
             Expression<Func<EmailTemplate, bool>>? filterExpression,
             Expression<Func<EmailTemplate, bool>>? sortExpression,
@@ -29,7 +29,7 @@ namespace Lazy.EF.Repository
                         Html = et.Html,
                     });
 
-            return base.GetPagedAsync(pageSize, pageNumber, filterExpression, sortExpression, projection1);
+            return base.ReadPagedAsync(pageSize, pageNumber, filterExpression, sortExpression, projection1);
         }
     }
 }
