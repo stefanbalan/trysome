@@ -90,10 +90,10 @@ namespace CoL.Service
                     services.AddTransient<EntityImporter<DBClan, Clan, string>, ClanImporter>();
                     services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
 
+                    // mappers
                     services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
                     services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
                     services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
-
 
                     //entity providers
                     services.AddSingleton<EntityProviderBase<DBMember, string, Member>, MemberProvider>();
