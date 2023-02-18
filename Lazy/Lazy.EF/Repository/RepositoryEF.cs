@@ -19,38 +19,62 @@ namespace Lazy.EF.Repository
 
         protected abstract DbSet<TEntity> Set { get; }
 
-        public virtual TEntity? Create(TEntity model)
+        public virtual async Task<TEntity> CreateAsync(TEntity entity)
         {
             try
             {
-                Set.Add(model);
-                Context.SaveChanges();
-                return model;
+                Set.Add(entity);
+                await Context.SaveChangesAsync();
+                return entity;
             }
             catch (Exception e)
             {
-                return null;
+                Logger.LogError("Error creating {tpye}: {message}", typeof(TEntity).Name, e.Message);
+                throw new RepositoryException(typeof(TEntity), "Error creating", e);
             }
         }
 
-        public TEntity? Read(TKey id)
+        public async Task<TEntity?> ReadAsync(TKey id)
         {
-            var entity = Set.Find(id);
-            return entity;
+            try
+            {
+                var entity = await Set.FindAsync(id);
+                return entity;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError("Error reading {tpye}: {message}", typeof(TEntity).Name, e.Message);
+                throw new RepositoryException(typeof(TEntity), "Error reading", e);
+            }
         }
 
-        public virtual TEntity Update(TEntity entity)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            Set.Update(entity);
-            Context.SaveChanges();
-
-            return entity;
+            try
+            {
+                Set.Update(entity);
+                await Context.SaveChangesAsync();
+                return entity;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError("Error updating {tpye}: {message}", typeof(TEntity).Name, e.Message);
+                throw new RepositoryException(typeof(TEntity), "Error updating", e);
+            }
         }
 
-        public virtual void Delete(TEntity entity)
+        public virtual async Task DeleteAsync(TEntity entity)
         {
-            Set.Remove(entity);
-            Context.SaveChanges();
+            try
+            {
+                Set.Remove(entity);
+                await Context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError("Error deleting {tpye}: {message}", typeof(TEntity).Name, e.Message);
+                throw new RepositoryException(typeof(TEntity), "Error deleting", e);
+            }
         }
 
         /// <summary>
@@ -62,36 +86,44 @@ namespace Lazy.EF.Repository
         /// <param name="sortExpression"></param>
         /// <param name="projection"></param>
         /// <returns></returns>
-        public virtual async Task<PagedRepositoryResult<TEntity>> GetPagedAsync(int pageSize,
+        public virtual async Task<PagedRepositoryResult<TEntity>> ReadPagedAsync(int pageSize,
             int pageNumber,
             Expression<Func<TEntity, bool>>? filterExpression,
             Expression<Func<TEntity, bool>>? sortExpression,
             Expression<Func<TEntity, TEntity>>? projection = null)
         {
-            var q = (IQueryable<TEntity>)Set;
-
-            if (filterExpression != null)
-                q = q.Where(filterExpression);
-            var count = await q.CountAsync();
-
-            var page = q;
-            if (sortExpression != null)
-                page = page.OrderBy(sortExpression);
-
-            page = page.Skip(pageNumber * pageSize).Take(pageSize);
-
-            if (projection != null) page = page.Select(projection);
-            
-            var list = await page.ToListAsync();
-
-            var result = new PagedRepositoryResult<TEntity>
+            try
             {
-                PageSize = pageSize,
-                PageNumber = Math.Min(pageNumber, (int)Math.Ceiling(count / (decimal)pageSize)),
-                Count = count,
-                Results = list
-            };
-            return result;
+                var q = (IQueryable<TEntity>)Set;
+
+                if (filterExpression != null)
+                    q = q.Where(filterExpression);
+                var count = await q.CountAsync();
+
+                var page = q;
+                if (sortExpression != null)
+                    page = page.OrderBy(sortExpression);
+
+                page = page.Skip(pageNumber * pageSize).Take(pageSize);
+
+                if (projection != null) page = page.Select(projection);
+
+                var list = await page.ToListAsync();
+
+                var result = new PagedRepositoryResult<TEntity>
+                {
+                    PageSize = pageSize,
+                    PageNumber = Math.Min(pageNumber, (int)Math.Ceiling(count / (decimal)pageSize)),
+                    Count = count,
+                    Results = list
+                };
+                return result;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError("Error reading paged {tpye}: {message}", typeof(TEntity).Name, e.Message);
+                throw new RepositoryException(typeof(TEntity), "Error reading paged", e);
+            }
         }
     }
 }

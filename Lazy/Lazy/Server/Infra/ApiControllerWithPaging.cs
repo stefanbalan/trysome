@@ -1,17 +1,13 @@
 ﻿using Lazy.Client.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Lazy.Server.Infra
 {
-    [ApiController]
-    public class PagingController : ControllerBase
+    public class ApiControllerWithPaging : ApiController
     {
-        protected readonly ILogger<PagingController> Logger;
         private readonly UserSettingsService _userSettingsService;
 
-        public PagingController(ILogger<PagingController> logger, UserSettingsService userSettingsService)
+        public ApiControllerWithPaging(ILogger<ApiControllerWithPaging> logger, UserSettingsService userSettingsService) : base(logger)
         {
-            Logger = logger;
             _userSettingsService = userSettingsService;
         }
 

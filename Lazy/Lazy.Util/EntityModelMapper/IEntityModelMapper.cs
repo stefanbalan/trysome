@@ -6,7 +6,7 @@
 
         static abstract TEntity ToEntity(TModel model);
 
-        TModel? GetModelFrom(TEntity? entity);
-        TEntity? GetEntityFrom(TModel? model);
+        TModel GetModelFrom(TEntity entity);
+        TEntity GetEntityFrom(TModel model);
     }
 }

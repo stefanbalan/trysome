@@ -7,89 +7,141 @@ using Lazy.Server.Infra;
 using Lazy.Util.EntityModelMapper;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Lazy.Server.Controllers;
 
-namespace Lazy.Server.Controllers
+[Route("api/[controller]")]
+public class EmailTemplateController : ApiControllerWithPaging
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmailTemplateController : PagingController
+    private readonly IRepository<EmailTemplate, int> _repository;
+    private readonly IEntityModelMapper<EmailTemplate, EmailTemplateModel> _mapperEmailTemplate;
+
+    private readonly IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>
+        _mapperPagedResult;
+
+    public EmailTemplateController(
+        ILogger<EmailTemplateController> logger,
+        UserSettingsService userSettingsService,
+        IRepository<EmailTemplate, int> repository,
+        IEntityModelMapper<EmailTemplate, EmailTemplateModel> mapperEmailTemplate,
+        IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>
+            mapperPagedResult)
+        : base(logger, userSettingsService)
     {
-        private readonly IRepository<EmailTemplate, int> _repository;
+        _repository = repository;
+        _mapperEmailTemplate = mapperEmailTemplate;
+        _mapperPagedResult = mapperPagedResult;
+    }
 
-        private readonly IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>
-            _mapper;
+    [HttpGet("", Name = "Paged list")]
+    public async Task<ActionResult<PagedModelResult<EmailTemplateModel>>> Get(
+        [FromQuery] int? pageSize,
+        [FromQuery] int? pageNumber,
+        [FromQuery] string? searchString)
+    {
+        var (ps, pn) = ValidatePaging(pageSize, pageNumber);
 
+        Expression<Func<EmailTemplate, bool>>? filterExpression =
+            !string.IsNullOrEmpty(searchString)
+                ? etm => etm.Name.Contains(searchString)
+                : null;
 
-        public EmailTemplateController(
-            ILogger<EmailTemplateController> logger,
-            UserSettingsService userSettingsService,
-            IRepository<EmailTemplate, int> repository,
-            IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>> mapper)
-            : base(logger, userSettingsService)
+        var repositoryResult = await _repository.ReadPagedAsync(ps, pn, filterExpression, null);
+        var modelResult = _mapperPagedResult.GetModelFrom(repositoryResult);
+
+        return Ok(modelResult);
+    }
+
+    // GET: api/Values/5
+    [HttpGet("{id}", Name = "Get")]
+    public async Task<ActionResult<EmailTemplateModel>> Get(int id)
+    {
+        try
         {
-            _repository = repository;
-            _mapper = mapper;
+            var result = await _repository.ReadAsync(id);
+            return result is null ? NotFound() : Ok(result);
         }
-
-        [HttpGet("")]
-        public async Task<ActionResult<PagedModelResult<EmailTemplateModel>>> Get(
-            [FromQuery] int? pageSize,
-            [FromQuery] int? pageNumber,
-            [FromQuery] string? searchString)
+        catch (Exception e)
         {
-            var (ps, pn) = ValidatePaging(pageSize, pageNumber);
-
-            Expression<Func<EmailTemplate, bool>>? filterExpression =
-                !string.IsNullOrEmpty(searchString)
-                    ? etm => etm.Name.Contains(searchString)
-                    : null;
-
-            var repositoryResult = await _repository.GetPagedAsync(ps, pn, filterExpression, null);
-            var modelResult = _mapper.GetModelFrom(repositoryResult);
-
-            return Ok(modelResult);
+            Logger.LogError("Error reading id {id}: {exception}", id, e.Message);
+            return Problem(e.Message);
         }
+    }
 
-        // GET: api/Values/5
-        [HttpGet("{id}", Name = "Get")]
-        public EmailTemplateModel Get(int id)
+    // POST: api/Values
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] EmailTemplateModel emailTemplateModel)
+    {
+        // if(! ModelState.IsValid) //todo add validation (also clientside)
+        //if( ! Validate<EmailTemplateModel> ( emailTemplateModel, out var validationResult ))
+        //{
+        //    return BadRequest(validationResult);
+        //}
+
+        try
         {
-            return new EmailTemplateModel()
+            var entity = _mapperEmailTemplate.GetEntityFrom(emailTemplateModel);
+            var result = await _repository.CreateAsync(entity);
+            var model = _mapperEmailTemplate.GetModelFrom(result);
+            return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError("Error POST {model}: {exception}", emailTemplateModel, e.Message);
+            return Problem(e.Message);
+        }
+    }
+
+    // PUT: api/Values/5
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> Put(int id, [FromBody] EmailTemplateModel emailTemplateModel)
+    {
+        // if(! ModelState.IsValid) //todo add validation
+        //if( ! Validate<EmailTemplateModel> ( emailTemplateModel, out var validationResult ))
+        //{
+        //    return BadRequest(validationResult);
+        //}
+
+        try
+        {
+            var entity = _mapperEmailTemplate.GetEntityFrom(emailTemplateModel);
+            if (entity.Id == 0)
             {
-                Id = 1,
-                Text =
-                    @"An <em>unhandled</em> error has occurred.",
-                Html = true
-            };
+                var result = await _repository.CreateAsync(entity);
+                var model = _mapperEmailTemplate.GetModelFrom(result);
+                return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+            }
+            else
+            {
+                var result = await _repository.UpdateAsync(entity);
+                var model = _mapperEmailTemplate.GetModelFrom(result);
+                return Ok(model);
+            }
         }
-
-        // POST: api/Values
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] EmailTemplateModel emailTemplate)
+        catch (Exception e)
         {
-            //if (check)
-            //{
-            //    return BadRequest();
-            //}
-
-            // _context.Email.Add(emailTemplate);
-            // await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(Get), new { id = emailTemplate.Id }, emailTemplate);
+            Logger.LogError("Error PUT {model}: {exception}", emailTemplateModel, e.Message);
+            return Problem(e.Message);
         }
+    }
 
-        // PUT: api/Values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+    // DELETE: api/Values/5
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        try
         {
+            await _repository.DeleteAsync(new EmailTemplate() { Id = id });
+            return NoContent();
         }
-
-        // DELETE: api/Values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        catch (Exception e)
         {
+            Logger.LogError("Error DEL {id}: {exception}", id, e.Message);
+            return Problem(e.Message);
         }
     }
 }

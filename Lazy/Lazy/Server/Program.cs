@@ -32,13 +32,13 @@ builder.Services.AddDb(builder.Configuration.GetConnectionString("LazyConStr"));
 builder.Services.AddScoped(typeof(UserSettingsService));
 
 // mappers
-builder.Services.AddSingleton(
-    typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>),
-    typeof(EmailTemplateMapper));
-
-builder.Services.AddSingleton(
-    typeof(IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>),
-    typeof(EmailTemplatePagedResultMapper));
+builder.Services
+    .AddSingleton(
+        typeof(IEntityModelMapper<EmailTemplate, EmailTemplateModel>),
+        typeof(EmailTemplateMapper))
+    .AddSingleton(
+        typeof(IEntityModelMapper<PagedRepositoryResult<EmailTemplate>, PagedModelResult<EmailTemplateModel>>),
+        typeof(EmailTemplatePagedResultMapper));
 
 
 

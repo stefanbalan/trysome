@@ -4,13 +4,15 @@ namespace Lazy.Data
 {
     public interface IRepository<TEntity, TKey>
     {
-        TEntity? Create(TEntity model);
-        TEntity? Read(TKey id);
+        Task<TEntity> CreateAsync(TEntity entity);
+        
+        Task<TEntity?> ReadAsync(TKey id);
 
-        TEntity? Update(TEntity model);
-        void Delete(TEntity model);
+        Task<TEntity> UpdateAsync(TEntity entity);
+        
+        Task DeleteAsync(TEntity entity);
 
-        Task<PagedRepositoryResult<TEntity>> GetPagedAsync(
+        Task<PagedRepositoryResult<TEntity>> ReadPagedAsync(
             int pageSize,
             int pageNumber,
             Expression<Func<TEntity, bool>>? filterExpression,
