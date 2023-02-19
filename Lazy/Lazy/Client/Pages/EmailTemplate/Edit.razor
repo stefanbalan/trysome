@@ -1,66 +1,80 @@
 @page "/EmailTemplate/Edit/{TemplateId:int}"
 @using Lazy.Model
+@using System.Text.Json
+
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 <PageTitle>Edit template</PageTitle>
 <h2>Editor</h2>
-<RadzenButton Icon="">Cancel</RadzenButton>
-<RadzenHtmlEditor @bind-Value=@htmlString style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image" Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
-    <RadzenHtmlEditorUndo />
-    <RadzenHtmlEditorRedo />
-    <RadzenHtmlEditorSeparator />
-    <RadzenHtmlEditorBold />
-    <RadzenHtmlEditorItalic />
-    <RadzenHtmlEditorUnderline />
-    <RadzenHtmlEditorStrikeThrough />
-    <RadzenHtmlEditorSeparator />
-    <RadzenHtmlEditorColor />
-    <RadzenHtmlEditorBackground />
-    <RadzenHtmlEditorRemoveFormat />
+<RadzenButton Icon="cancel" ButtonStyle="ButtonStyle.Secondary" Variant="Variant.Flat" Click="GoBack">Cancel</RadzenButton>
+<RadzenButton Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="Save">Save</RadzenButton>
+
+<RadzenHtmlEditor @bind-Value=@EmailTemplateText style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
+    <RadzenHtmlEditorUndo/>
+    <RadzenHtmlEditorRedo/>
+    <RadzenHtmlEditorSeparator/>
+    <RadzenHtmlEditorBold/>
+    <RadzenHtmlEditorItalic/>
+    <RadzenHtmlEditorUnderline/>
+    <RadzenHtmlEditorStrikeThrough/>
+    <RadzenHtmlEditorSeparator/>
+    <RadzenHtmlEditorColor/>
+    <RadzenHtmlEditorBackground/>
+    <RadzenHtmlEditorRemoveFormat/>
 </RadzenHtmlEditor>
 
 <div>param @TemplateId</div>
-
-<EventConsole @ref=@console Class="mt-4" />
 
 @code {
 
     [Parameter]
     public int? TemplateId { get; set; }
 
-    private string htmlString = "<h1>Hello World!!!</h1>";
     private EmailTemplateModel? _emailTemplate;
 
+    private string EmailTemplateText
+    {
+        get => _emailTemplate?.Text ?? "";
+        set
+        {
+            if (_emailTemplate != null) _emailTemplate.Text = value;
+        }
+    }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         try
         {
-            _emailTemplate = await HttpClient.GetFromJsonAsync<EmailTemplateModel>($"/api/EmailTemplate/{TemplateId}");
-            htmlString = _emailTemplate?.Text??string.Empty;
+            if (TemplateId == 0)
+                _emailTemplate = new EmailTemplateModel();
+            else
+                _emailTemplate = await HttpClient.GetFromJsonAsync<EmailTemplateModel>($"/api/EmailTemplate/{TemplateId}");
         }
         catch (Exception e)
         {
-            //log
+            Console.WriteLine($"EmailTemplate error GET {e.Message}");
         }
-        htmlString = _emailTemplate?.Text ?? "<h1>Hello World!!!</h1>";
     }
 
-    EventConsole console;
-
-    void OnPaste(HtmlEditorPasteEventArgs args)
+    private void GoBack()
     {
-        console.Log($"Paste: {args.Html}");
+        NavigationManager.NavigateTo("/EmailTemplate/List");
     }
 
-    void OnChange(string html)
+    private async Task Save()
     {
-        console.Log($"Change: {html}");
-    }
-
-    void OnExecute(HtmlEditorExecuteEventArgs args)
-    {
-        console.Log($"Execute: {args.CommandName}");
+    // HttpClient.PutAsync("/api/EmailTemplate", new StringContent())
+        var response = await HttpClient.PutAsJsonAsync("/api/EmailTemplate", _emailTemplate);
+        if (response.IsSuccessStatusCode)
+        {
+            _emailTemplate = await response.Content.ReadFromJsonAsync<EmailTemplateModel>();
+            Console.WriteLine($"EmailTemplate saved with id{_emailTemplate?.Id}");
+        }
+        else
+        {
+            Console.WriteLine($"EmailTemplate error PUT {response.StatusCode} - {response.ReasonPhrase}");
+        }
     }
 
 }
