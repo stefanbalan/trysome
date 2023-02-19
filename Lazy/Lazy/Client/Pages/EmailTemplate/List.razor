@@ -6,10 +6,11 @@
 
 @inject DialogService DialogService
 @inject UserSettingsService UserSettings
-@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
 <h2>Email templates</h2>
+
+<RadzenButton Icon="plus" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="AddTemplate">Add</RadzenButton>
 
 <div class="col-md-12 col-lg-8 p-3">
     <RadzenCard>
@@ -32,8 +33,10 @@
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="EmailTemplateModel" Property="ID" Title="Edit">
                 <Template Context="et">
-                    <RadzenButton ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Shade="Shade.Lighter"
+                    <RadzenButton ButtonStyle="ButtonStyle.Primary" Variant="Variant.Text"
                                   Icon="edit" Class="m-1" Click="@(() => EditTemplate(et.Id))" Text="Edit"/>
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Variant="Variant.Text" 
+                                  Icon="delete" Class="m-1" Click="@(() => DeleteTemplate(et.Id))" Text="Delete"/>
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
@@ -77,9 +80,20 @@
     {
     }
 
+    private void AddTemplate()
+    {
+        NavigationManager.NavigateTo($"/EmailTemplate/Edit/{0}");
+    }
+
     private void EditTemplate(int id)
     {
         NavigationManager.NavigateTo($"/EmailTemplate/Edit/{id}");
+    }
+
+    private async Task DeleteTemplate(int id)
+    {
+        await DeleteById(apiUrl, id);
+        await GetData();
     }
 
     private async Task LoadData(LoadDataArgs arg)
@@ -88,7 +102,6 @@
 
         await GetData();
     }
-
 
     private (int pageSize, int pageNumber) SetPageSizeAndNumber(int? ps, int? pn)
     {
@@ -108,5 +121,4 @@
         count = pagedResult.Count;
         _isLoading = false;
     }
-
 }

@@ -94,11 +94,11 @@ public class EmailTemplateController : ApiControllerWithPaging
     }
 
     // PUT: api/Values/5
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Put(int id, [FromBody] EmailTemplateModel emailTemplateModel)
+    public async Task<ActionResult> Put([FromBody] EmailTemplateModel emailTemplateModel)
     {
         // if(! ModelState.IsValid) //todo add validation
         //if( ! Validate<EmailTemplateModel> ( emailTemplateModel, out var validationResult ))
