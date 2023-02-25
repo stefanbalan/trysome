@@ -71,7 +71,7 @@ public class EmailTemplateController : ApiControllerWithPaging
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Post([FromBody] EmailTemplateModel emailTemplateModel)
+    public async Task<ActionResult> Post([FromBody] EmailTemplateModel emailTemplateModel)
     {
         // if(! ModelState.IsValid) //todo add validation (also clientside)
         //if( ! Validate<EmailTemplateModel> ( emailTemplateModel, out var validationResult ))
@@ -100,11 +100,13 @@ public class EmailTemplateController : ApiControllerWithPaging
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Put([FromBody] EmailTemplateModel emailTemplateModel)
     {
-        // if(! ModelState.IsValid) //todo add validation
-        //if( ! Validate<EmailTemplateModel> ( emailTemplateModel, out var validationResult ))
-        //{
-        //    return BadRequest(validationResult);
-        //}
+        if (string.IsNullOrWhiteSpace(emailTemplateModel.Name)) //todo add validation (fluent)
+        {
+            ModelState.AddModelError("Name", "The name should not be empty");
+        }
+
+        if (!ModelState.IsValid) 
+            return BadRequest();
 
         try
         {
