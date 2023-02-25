@@ -1,5 +1,6 @@
 using Lazy.Client;
 using Lazy.Client.Services;
+using Lazy.Model;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
@@ -14,5 +15,9 @@ builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<UserSettingsService>();
 
+
+builder.Services.AddHttpClient<DataService<EmailTemplateModel>, EmailTemplateDataService>();
+builder.Services.AddHttpClient<PagedDataService<EmailTemplateModel>, EmailTemplateDataService>();
+    
 
 await builder.Build().RunAsync();

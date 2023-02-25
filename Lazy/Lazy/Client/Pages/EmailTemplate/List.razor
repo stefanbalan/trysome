@@ -1,5 +1,4 @@
 ﻿@page "/EmailTemplate/List"
-@inherits PagingComponent
 
 @using Lazy.Client.Services
 @using Lazy.Model
@@ -7,6 +6,7 @@
 @inject DialogService DialogService
 @inject UserSettingsService UserSettings
 @inject NavigationManager NavigationManager
+@inject PagedDataService<EmailTemplateModel> DataService
 
 <h2>Email templates</h2>
 
@@ -45,7 +45,7 @@
 
 
 @code {
-        const string apiUrl = "/api/EmailTemplate";
+
     readonly IEnumerable<int> _pageSizeOptions = new[] { 5, 10, 20, 30 };
     private int _pageSize;
     private int _pageNumber;
@@ -92,7 +92,7 @@
 
     private async Task DeleteTemplate(int id)
     {
-        await DeleteById(apiUrl, id);
+        await DataService.DeleteById(id);
         await GetData();
     }
 
@@ -116,7 +116,7 @@
         Dictionary<string, string>? search = null;
         if (!string.IsNullOrWhiteSpace(SearchString))
             search = new Dictionary<string, string> { { "search", SearchString } };
-        var pagedResult = await GetPageAsync<EmailTemplateModel>(apiUrl, _pageSize, _pageNumber, search);
+        var pagedResult = await DataService.GetPageAsync(_pageSize, _pageNumber, search);
         data = pagedResult.Results;
         count = pagedResult.Count;
         _isLoading = false;
