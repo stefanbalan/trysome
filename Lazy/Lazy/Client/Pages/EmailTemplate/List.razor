@@ -92,7 +92,8 @@
 
     private async Task DeleteTemplate(int id)
     {
-        await DataService.DeleteById(id);
+        var success = await DataService.DeleteById(id);
+        //todo if success remove from local storage
         await GetData();
     }
 
