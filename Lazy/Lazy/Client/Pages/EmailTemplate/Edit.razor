@@ -5,13 +5,14 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject DataService<EmailTemplateModel> DataService
+@inject NotificationService NotificationService
 
 <PageTitle>Edit template</PageTitle>
 <h2>Editor</h2>
 <RadzenButton Icon="cancel" ButtonStyle="ButtonStyle.Secondary" Variant="Variant.Flat" Click="GoBack">Cancel</RadzenButton>
 <RadzenButton Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="Save">Save</RadzenButton>
 
-<RadzenTextBox bind-Value="@_emailTemplate.Name"></RadzenTextBox>
+<RadzenTextBox @bind-Value="@_emailTemplate.Name"></RadzenTextBox>
 
 <RadzenHtmlEditor @bind-Value=@_emailTemplate.Text style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
     <RadzenHtmlEditorUndo/>
@@ -53,7 +54,13 @@
 
     private async Task Save()
     {
-        _emailTemplate = await DataService.CreateOrUpdate(_emailTemplate) ?? _defaultEmailTemplateModel;
+        if (!_emailTemplate.IsValid())
+        {
+            NotificationService.Notify(new NotificationMessage { Detail  = "Email template model is not valid."});
+            return;
+        }
+        var result = await DataService.CreateOrUpdate(_emailTemplate);
+        if (result != null) _emailTemplate = result;
     }
 
 }

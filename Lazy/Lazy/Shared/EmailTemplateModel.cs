@@ -7,15 +7,15 @@ public record EmailTemplateModel : IValidator
     public string Name { get; set; } = string.Empty;
     public string Text { get; set; } = string.Empty;
     public bool Html { get; set; }
-    
 
-   public bool IsValid()
-   {
-       return true;
-   }
+
+    public bool IsValid()
+    {
+        return !string.IsNullOrWhiteSpace(Name);
+    }
 }
 
 interface IValidator
 {
-    bool IsValid(/*out ValidationResult validationErrors*/);
+    bool IsValid( /*out ValidationResult validationErrors*/);
 }
