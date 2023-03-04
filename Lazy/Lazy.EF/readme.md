@@ -14,12 +14,12 @@ dotnet tool install --global dotnet-ef
 dotnet tool update --global dotnet-ef
 
 dotnet ef migrations add InitialCreate
-dotnet ef migrations add 1_EmailTemplates --project Lazy.DB
+dotnet ef migrations add 1_EmailTemplates --project Lazy.EF
 
 dotnet ef migrations remove --project Lazy.DB
 
 
-// dotnet ef database update --project Lazy.DB
+// dotnet ef database update --project Lazy.EF
 
 dotnet ef database update --project Lazy.EF --startup-project .\Lazy\Server\
 
