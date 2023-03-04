@@ -13,6 +13,7 @@
 <RadzenButton Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="Save">Save</RadzenButton>
 
 <RadzenTextBox @bind-Value="@_emailTemplate.Name"></RadzenTextBox>
+<RadzenTextBox @bind-Value="@_emailTemplate.Title"></RadzenTextBox>
 
 <RadzenHtmlEditor @bind-Value=@_emailTemplate.Text style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
     <RadzenHtmlEditorUndo/>
@@ -28,21 +29,19 @@
     <RadzenHtmlEditorRemoveFormat/>
 </RadzenHtmlEditor>
 
-<div>param @TemplateId</div>
-
 @code {
 
     [Parameter]
     public int? TemplateId { get; set; }
 
-    
+
     private readonly EmailTemplateModel _defaultEmailTemplateModel = new() { Html = true };
     private EmailTemplateModel _emailTemplate = new() { Html = true };
 
     protected override async Task OnParametersSetAsync()
     {
         if (TemplateId is null or 0)
-            _emailTemplate = new EmailTemplateModel();
+            _emailTemplate = new EmailTemplateModel() { Html = true };
         else
             _emailTemplate = await DataService.GetById(TemplateId.Value) ?? _defaultEmailTemplateModel;
     }
@@ -56,11 +55,12 @@
     {
         if (!_emailTemplate.IsValid())
         {
-            NotificationService.Notify(new NotificationMessage { Detail  = "Email template model is not valid."});
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Warning, Detail = "Email template model is not valid." });
             return;
         }
         var result = await DataService.CreateOrUpdate(_emailTemplate);
         if (result != null) _emailTemplate = result;
     }
+
 
 }
