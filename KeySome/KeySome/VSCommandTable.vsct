@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<Extern href="stdidcmd.h" />
+	<Extern href="vsshlids.h" />
+	<Include href="KnownImageIds.vsct" />
+	<Include href="VSGlobals.vsct" />
+
+	<Commands package="KeySomeSymbol">
+		<Groups>
+			<Group guid="KeySomeSymbol" id="MyMenuGroup" priority="0x0600">
+				<Parent guid="VSMainMenu" id="Tools" />
+			</Group>
+		</Groups>
+
+		<!--This section defines the elements the user can interact with, like a menu command or a button
+        or combo box in a toolbar. -->
+		<Buttons>
+			<Button guid="KeySomeSymbol" id="OpenKeyEditorWindow" priority="0x0100" type="Button">
+				<Parent guid="KeySomeSymbol" id="MyMenuGroup" />
+				<Icon guid="ImageCatalogGuid" id="Keyboard" />
+				<CommandFlag>IconIsMoniker</CommandFlag>
+				<Strings>
+					<ButtonText>Key shortcuts editor</ButtonText>
+					<LocCanonicalName>.Tools.OpenKeyEditorWindow</LocCanonicalName>
+				</Strings>
+			</Button>
+		</Buttons>
+	</Commands>
+
+	<Symbols>
+		<GuidSymbol name="KeySomeSymbol" value="{fd652636-9bba-48fb-90d8-752d814bd08f}">
+			<IDSymbol name="MyMenuGroup" value="0x0001" />
+			<IDSymbol name="OpenKeyEditorWindow" value="0x0200" />
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>
