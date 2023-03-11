@@ -1,66 +1,47 @@
 @page "/EmailTemplate/Edit/{TemplateId:int}"
 @using Lazy.Model
 @using Lazy.Client.Services
+@using System.ComponentModel.DataAnnotations
+
+@inherits BaseEditPage
 
 @inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
 @inject DataService<EmailTemplateModel> DataService
 @inject NotificationService NotificationService
 
-<PageTitle>Edit template</PageTitle>
-<h2>Editor</h2>
-<RadzenButton Icon="cancel" ButtonStyle="ButtonStyle.Secondary" Variant="Variant.Flat" Click="GoBack">Cancel</RadzenButton>
-<RadzenButton Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="Save">Save</RadzenButton>
 
-<RadzenTextBox @bind-Value="@_emailTemplate.Name"></RadzenTextBox>
-<RadzenTextBox @bind-Value="@_emailTemplate.Title"></RadzenTextBox>
+<EditForm
+    @* EditContext="@ValidationContext.EditContext" *@
+    @* OnValidSubmit="HandleValidSumit" *@
+    >
+    <DataAnnotationsValidator />
+    <ValidationSummary/>
+    
+    
 
-<RadzenHtmlEditor @bind-Value=@_emailTemplate.Text style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
-    <RadzenHtmlEditorUndo/>
-    <RadzenHtmlEditorRedo/>
-    <RadzenHtmlEditorSeparator/>
-    <RadzenHtmlEditorBold/>
-    <RadzenHtmlEditorItalic/>
-    <RadzenHtmlEditorUnderline/>
-    <RadzenHtmlEditorStrikeThrough/>
-    <RadzenHtmlEditorSeparator/>
-    <RadzenHtmlEditorColor/>
-    <RadzenHtmlEditorBackground/>
-    <RadzenHtmlEditorRemoveFormat/>
-</RadzenHtmlEditor>
+    <PageTitle>Edit template</PageTitle>
+    <h2>Editor</h2>
+    <RadzenButton Icon="arrow-left" ButtonStyle="ButtonStyle.Secondary" Variant="Variant.Flat" Click="GoBack">
+        Back
+    </RadzenButton>
+    <RadzenButton Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="Save">
+        Save
+    </RadzenButton>
 
-@code {
+    <RadzenTextBox @bind-Value="@_emailTemplate.Name"></RadzenTextBox>
+    <RadzenTextBox @bind-Value="@_emailTemplate.Title"></RadzenTextBox>
 
-    [Parameter]
-    public int? TemplateId { get; set; }
-
-
-    private readonly EmailTemplateModel _defaultEmailTemplateModel = new() { Html = true };
-    private EmailTemplateModel _emailTemplate = new() { Html = true };
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (TemplateId is null or 0)
-            _emailTemplate = new EmailTemplateModel() { Html = true };
-        else
-            _emailTemplate = await DataService.GetById(TemplateId.Value) ?? _defaultEmailTemplateModel;
-    }
-
-    private void GoBack()
-    {
-        NavigationManager.NavigateTo("/EmailTemplate/List");
-    }
-
-    private async Task Save()
-    {
-        if (!_emailTemplate.IsValid())
-        {
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Warning, Detail = "Email template model is not valid." });
-            return;
-        }
-        var result = await DataService.CreateOrUpdate(_emailTemplate);
-        if (result != null) _emailTemplate = result;
-    }
-
-
-}
+    <RadzenHtmlEditor @bind-Value=@_emailTemplate.Text style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
+        <RadzenHtmlEditorUndo/>
+        <RadzenHtmlEditorRedo/>
+        <RadzenHtmlEditorSeparator/>
+        <RadzenHtmlEditorBold/>
+        <RadzenHtmlEditorItalic/>
+        <RadzenHtmlEditorUnderline/>
+        <RadzenHtmlEditorStrikeThrough/>
+        <RadzenHtmlEditorSeparator/>
+        <RadzenHtmlEditorColor/>
+        <RadzenHtmlEditorBackground/>
+        <RadzenHtmlEditorRemoveFormat/>
+    </RadzenHtmlEditor>
+</EditForm>
