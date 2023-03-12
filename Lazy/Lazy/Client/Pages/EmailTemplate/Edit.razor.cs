@@ -39,11 +39,7 @@ public partial class Edit
 
     private async Task Save()
     {
-        if (!_emailTemplate.IsValid())
-        {
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Warning, Detail = "Email template model is not valid." });
-            return;
-        }
+        
         var result = await DataService.CreateOrUpdate(_emailTemplate);
         if (result != null) _emailTemplate = result;
     }
@@ -52,5 +48,27 @@ public partial class Edit
     private void EditContext_OnFieldChanged()
     {
         // _hasChanges = true;
+    }
+
+    private async Task SubmitValidForm(EditContext arg)
+    {
+        var result = await DataService.CreateOrUpdate(_emailTemplate);
+        if (result != null) _emailTemplate = result;
+    }
+
+    private void SubmitInvalidForm(EditContext arg)
+    {
+        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Warning, Detail = "Email template model is not valid." });
+    }
+
+    private async Task SubmitForm(EditContext context)
+    {
+        if (context.Validate())
+        {
+            var result = await DataService.CreateOrUpdate(_emailTemplate);
+            if (result != null) _emailTemplate = result;
+        }
+        else
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Warning, Detail = "Email template model is not valid." });
     }
 }

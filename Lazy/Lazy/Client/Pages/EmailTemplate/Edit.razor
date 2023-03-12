@@ -1,7 +1,6 @@
 @page "/EmailTemplate/Edit/{TemplateId:int}"
 @using Lazy.Model
 @using Lazy.Client.Services
-@using System.ComponentModel.DataAnnotations
 
 @inherits BaseEditPage
 
@@ -10,26 +9,30 @@
 @inject NotificationService NotificationService
 
 
-<EditForm
-    @* EditContext="@ValidationContext.EditContext" *@
-    @* OnValidSubmit="HandleValidSumit" *@
-    >
-    <DataAnnotationsValidator />
+@* <EditForm Model="@_emailTemplate" OnValidSubmit="@SubmitValidForm" OnInvalidSubmit="SubmitInvalidForm"> *@
+<EditForm Model="@_emailTemplate" OnSubmit="@SubmitForm">
+
+    <FluentValidationValidator />
     <ValidationSummary/>
-    
-    
+
 
     <PageTitle>Edit template</PageTitle>
     <h2>Editor</h2>
     <RadzenButton Icon="arrow-left" ButtonStyle="ButtonStyle.Secondary" Variant="Variant.Flat" Click="GoBack">
         Back
     </RadzenButton>
-    <RadzenButton Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat" Click="Save">
+    <RadzenButton ButtonType="ButtonType.Submit" Icon="save" ButtonStyle="ButtonStyle.Primary" Variant="Variant.Flat">
         Save
     </RadzenButton>
-
-    <RadzenTextBox @bind-Value="@_emailTemplate.Name"></RadzenTextBox>
-    <RadzenTextBox @bind-Value="@_emailTemplate.Title"></RadzenTextBox>
+    
+    <p>
+        <label> Name <RadzenTextBox @bind-Value="@_emailTemplate.Name"></RadzenTextBox>
+        </label>
+    </p>
+    <p>
+        <label>Title</label>
+        <RadzenTextBox @bind-Value="@_emailTemplate.Title"></RadzenTextBox>
+    </p>
 
     <RadzenHtmlEditor @bind-Value=@_emailTemplate.Text style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
         <RadzenHtmlEditorUndo/>
