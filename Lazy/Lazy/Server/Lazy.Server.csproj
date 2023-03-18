@@ -34,5 +34,9 @@
     <ProjectReference Include="..\Shared\Lazy.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 
 </Project>
