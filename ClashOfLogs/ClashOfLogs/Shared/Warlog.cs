@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+// ReSharper disable ClassNeverInstantiated.Global
 
 namespace ClashOfLogs.Shared
 {
-    public class Cursors
+    public record Cursors
     {
     }
 
-    public class Paging
+    public record Paging
     {
         [JsonPropertyName("cursors")]
         public Cursors Cursors { get; set; }
     }
 
-    public class Warlog
+    public record Warlog
     {
         [JsonPropertyName("items")]
         public List<WarSummary> Items { get; set; }

@@ -1,13 +1,11 @@
 ﻿using ClashOfLogs.Shared;
-using System;
 
-namespace CoL.Service
+namespace CoL.Service.DataProvider;
+
+public record JsonImport
 {
-    public class JsonImport
-    {
-        internal DateTime Date { get; set; }
-        internal Clan Clan { get; set; }
-        internal Warlog WarLog { get; set; }
-        internal WarDetail WarDetail { get; set; }
-    }
+    internal DateTime Date { get; set; }
+    internal Clan? Clan { get; set; }
+    internal Warlog? WarLog { get; set; }
+    internal WarDetail? WarDetail { get; set; }
 }

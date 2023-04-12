@@ -5,7 +5,7 @@ using ClashOfLogs.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace CoL.Service
+namespace CoL.Service.DataProvider
 {
     internal class FileJsonDataProvider : IJsonDataProvider
     {
@@ -28,7 +28,7 @@ namespace CoL.Service
         public bool HasImportData()
         {
             if (!(directory?.Exists ?? false)) return false;
-            DirectoryInfo importDir = null;
+            DirectoryInfo? importDir = null;
             try
             {
                 importDir = directory.EnumerateDirectories()
@@ -43,7 +43,7 @@ namespace CoL.Service
             return importDir != null;
         }
 
-        public async Task<JsonData> GetImportDataAsync()
+        public async Task<JsonData?> GetImportDataAsync()
         {
             if (!(directory?.Exists ?? false)) return null;
             try
@@ -54,6 +54,7 @@ namespace CoL.Service
                     .Where(d => !d.Name.Contains("error"))
                     .FirstOrDefault(d => DateTime.TryParse(d.Name, out date));
 
+                if (currentImportDir is null) return null;
                 var result = new JsonData { Date = date };
 
                 result.Clan = await ImportFileAsync<Clan>(currentImportDir, "Clan");
@@ -63,34 +64,25 @@ namespace CoL.Service
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message);
+                logger.LogError("Error reading json files from disk {Message}", ex.Message);
                 return null;
             }
         }
 
-        public bool SetImported(bool success)
+        private async Task<T?> ImportFileAsync<T>(DirectoryInfo dir, string name)
         {
-            if (currentImportDir is null) return false;
-
+            var fileInfo = dir.EnumerateFiles($"{name}*.json").FirstOrDefault();
+            if (fileInfo == null) return default;
             try
             {
-                currentImportDir.MoveTo(currentImportDir.Name + (success ? " imported" : " error"));
-                return true;
+                await using var reader = fileInfo.Open(FileMode.Open);
+                return await JsonSerializer.DeserializeAsync<T>(reader);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                logger.LogError("Failed to set data directory as processed {DirName}: {ExMessage}",
-                    currentImportDir.Name, ex.Message);
-                return false;
+                logger.LogError("Error reading json file {Name}: {Exception}", name, e.Message);
+                return default;
             }
-        }
-
-        private async Task<T> ImportFileAsync<T>(DirectoryInfo dir, string name)
-        {
-            var f = dir.EnumerateFiles($"{name}*.json").FirstOrDefault();
-            if (f == null) return default;
-            await using var reader = f.Open(FileMode.Open);
-            return await JsonSerializer.DeserializeAsync<T>(reader);
         }
     }
 }

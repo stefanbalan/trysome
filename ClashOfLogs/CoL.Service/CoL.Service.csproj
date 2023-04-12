@@ -5,7 +5,7 @@
     <UserSecretsId>dotnet-CoL.Service-C94EA116-0906-4591-AB85-5807D5B90F34</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <StartupObject>CoL.Service.Program</StartupObject>
-    <Nullable>warnings</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
