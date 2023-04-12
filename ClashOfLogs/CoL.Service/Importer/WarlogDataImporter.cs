@@ -4,7 +4,7 @@ namespace CoL.Service.Importer
 {
     internal class WarlogDataImporter
     {
-        public async Task<bool> ImportAsync(Warlog jsonDataWarlog, DateTime jsonDataDate)
+        public async Task<bool> ImportAsync(Warlog? jsonDataWarlog, DateTime jsonDataDate)
         {
 
             return false;

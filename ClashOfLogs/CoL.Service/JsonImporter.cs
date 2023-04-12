@@ -1,12 +1,8 @@
-﻿namespace CoL.Service
+﻿namespace CoL.Service;
+
+public class JsonImporter
 {
-
-   public class JsonImporter
+    public void Import(JsonData importProvider)
     {
-        public void Import(JsonData importProvider)
-        {
-
-        }
-
     }
 }
