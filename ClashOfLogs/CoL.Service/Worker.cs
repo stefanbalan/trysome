@@ -1,6 +1,6 @@
 using System.Threading;
 using ClashOfLogs.Shared;
-using CoL.DB.mssql;
+using CoL.DB;
 using CoL.Service.DataProvider;
 using CoL.Service.Importer;
 using Microsoft.Extensions.Hosting;
@@ -53,8 +53,10 @@ public class Worker : BackgroundService
                 //todo test multiple import set and check updated properties
                 var success = false;
                 success &= jsonData.Clan is not null
-                          && await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
-                success &= await warlogDataImporter.ImportAsync(jsonData.Warlog, jsonData.Date);
+                           && await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
+                if (jsonData.Warlog?.Items != null)
+                    foreach (var warlogItem in jsonData.Warlog.Items)
+                        success &= await warlogDataImporter.ImportAsync(warlogItem, jsonData.Date);
 
                 // if (!importDataProvider.SetImported(success))
                 // {

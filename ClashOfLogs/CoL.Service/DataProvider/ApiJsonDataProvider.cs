@@ -20,9 +20,10 @@ public class ApiJsonDataProvider : IJsonDataProvider
         this.client = client;
         this.logger = logger;
 
-        this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", apiKey);
+        this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
         this.client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
     }
+
     public bool HasImportData() => true; // maybe add a ping to the api
 
     public async Task<JsonData?> GetImportDataAsync()
@@ -30,12 +31,11 @@ public class ApiJsonDataProvider : IJsonDataProvider
         try
         {
             // connect to Clash of Clans api and get CLan, Warlog and CurrentWar
-            var clan = await  GetClanByTagAsync(clanTag);
-            var warlog = await  GetClanWarlogByTagAsync(clanTag);
-            var currentWar = await  GetCurrentWarByTagAsync(clanTag);
+            var clan = await GetClanByTagAsync(clanTag);
+            var warlog = await GetClanWarlogByTagAsync(clanTag);
+            var currentWar = await GetCurrentWarByTagAsync(clanTag);
 
-            return new JsonData
-            {
+            return new JsonData {
                 Date = DateTime.Now,
                 Clan = JsonSerializer.Deserialize<Clan>(clan),
                 Warlog = JsonSerializer.Deserialize<Warlog>(warlog),

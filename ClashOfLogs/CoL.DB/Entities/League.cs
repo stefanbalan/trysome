@@ -1,25 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿namespace CoL.DB.Entities;
 
-namespace CoL.DB.Entities
+public record League : BaseEntity
 {
-    public class League : BaseEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public IconUrls IconUrls { get; set; }
-
-        public class LeagueConfiguration : IEntityTypeConfiguration<League>
-        {
-            public void Configure(EntityTypeBuilder<League> builder)
-            {
-                builder.HasKey(league => league.Id);
-
-                builder.Property(league => league.Id).ValueGeneratedNever();
-
-                builder.OwnsOne(league => league.IconUrls,
-                    nav => nav.Property(urls => urls.Small).IsRequired());
-            }
-        }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public IconUrls IconUrls { get; set; }
 }

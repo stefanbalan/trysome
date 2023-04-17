@@ -6,10 +6,7 @@ namespace CoL.Service.Mappers
     {
         public DBLeague CreateEntity(League league, DateTime timeStamp)
         {
-            var dbLeague = new DBLeague
-            {
-                Id = league.Id,
-            };
+            var dbLeague = new DBLeague { Id = league.Id, };
             return dbLeague;
         }
 
@@ -17,11 +14,8 @@ namespace CoL.Service.Mappers
         {
             dbLeague.Name = league.Name;
 
-            dbLeague.IconUrls = new DB.Entities.IconUrls
-            {
-                Small = league.IconUrls.Small,
-                Medium = league.IconUrls.Medium,
-                Tiny = league.IconUrls.Tiny,
+            dbLeague.IconUrls = new DB.Entities.IconUrls {
+                Small = league.IconUrls.Small, Medium = league.IconUrls.Medium, Tiny = league.IconUrls.Tiny,
             };
 
             dbLeague.UpdatedAt = timeStamp;

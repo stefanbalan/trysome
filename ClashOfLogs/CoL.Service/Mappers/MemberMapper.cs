@@ -1,50 +1,55 @@
-﻿using ClashOfLogs.Shared;
-
+﻿using CoL.DB.Entities;
 using CoL.Service.Importer;
+using League = ClashOfLogs.Shared.League;
+using Member = ClashOfLogs.Shared.Member;
 
-namespace CoL.Service.Mappers
+namespace CoL.Service.Mappers;
+
+internal class MemberMapper : IMapper<DBMember, Member>
 {
-    internal class MemberMapper : IMapper<DBMember, Member>
+    private readonly EntityProviderBase<DBLeague, int, League> leagueProvider;
+
+    public MemberMapper(EntityProviderBase<DBLeague, int, League> leagueProvider)
     {
-        private readonly EntityProviderBase<DBLeague,int, League> leagueProvider;
-        public MemberMapper(EntityProviderBase<DBLeague, int, League> leagueProvider)
+        this.leagueProvider = leagueProvider;
+    }
+
+    public DBMember CreateEntity(Member entity, DateTime timeStamp) =>
+        new() { Tag = entity.Tag, CreatedAt = timeStamp };
+
+    public async Task UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
+    {
+        // todo add history
+        if (!string.IsNullOrWhiteSpace(entity.Name))
+            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Name), model.Name, entity.Name));
+        entity.Name = model.Name;
+
+        entity.Role = model.Role;
+        entity.ExpLevel = model.ExpLevel;
+        entity.Trophies = model.Trophies;
+        entity.VersusTrophies = model.VersusTrophies;
+        entity.ClanRank = model.ClanRank;
+        entity.PreviousClanRank = model.PreviousClanRank;
+        entity.IsMember = true;
+
+        if (entity.Donations > model.Donations)
         {
-            this.leagueProvider = leagueProvider;
+            //new season
+            entity.DonationsPreviousSeason = entity.Donations;
+            entity.DonationsReceivedPreviousSeason = entity.DonationsReceived;
+
+            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Donations), "0",
+                entity.Donations.ToString()));
+            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.DonationsReceived), "0",
+                entity.DonationsReceived.ToString()));
         }
 
-        public DBMember CreateEntity(Member entity, DateTime timeStamp) =>
-            new() {
-                Tag = entity.Tag,
-                CreatedAt = timeStamp
-            };
+        entity.Donations = model.Donations;
+        entity.DonationsReceived = model.DonationsReceived;
 
-        public async Task UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
-        {
-            entity.Name = model.Name;
-            entity.Role = model.Role;
-            entity.ExpLevel = model.ExpLevel;
-            entity.Trophies = model.Trophies;
-            entity.VersusTrophies = model.VersusTrophies;
-            entity.ClanRank = model.ClanRank;
-            entity.PreviousClanRank = model.PreviousClanRank;
-            entity.IsMember = true;
 
-            if (entity.Donations > model.Donations)
-            {
-                //new season
-                entity.DonationsPreviousSeason = entity.Donations;
-                entity.DonationsReceivedPreviousSeason = entity.DonationsReceived;
-            }
-            else
-            {
-                entity.Donations = model.Donations;
-                entity.DonationsReceived = model.DonationsReceived;
-            }
+        entity.League = await leagueProvider.GetOrCreateAsync(model.League, timeStamp);
 
-            entity.League = await leagueProvider.GetOrCreateAsync(model.League, timeStamp);//todo cannot find table Leagues
-
-            entity.UpdatedAt = timeStamp;
-        }
-
+        entity.UpdatedAt = timeStamp;
     }
 }

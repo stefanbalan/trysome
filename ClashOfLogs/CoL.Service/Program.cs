@@ -7,7 +7,7 @@ global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
 using ClashOfLogs.Shared;
-using CoL.DB.mssql;
+using CoL.DB;
 using CoL.Service.DataProvider;
 using CoL.Service.Importer;
 using CoL.Service.Mappers;
@@ -89,6 +89,8 @@ public static class Program
                 services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
 
                 services.AddTransient<EntityImporter<DBClan, Clan, string>, ClanImporter>();
+                services.AddTransient<EntityImporter<DBWar, WarSummary, string>, WarlogDataImporter>(); 
+
                 // services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
                 services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
 
@@ -102,8 +104,8 @@ public static class Program
                 services.AddSingleton<EntityProviderBase<DBLeague, int, League>, LeagueCatalogProvider>();
 
                 // repositories
-                services.AddSingleton<IRepository<DBMember, string>, MemberRepository>();
-                services.AddSingleton<IRepository<DBLeague, int>, LeagueRepository>();
+                services.AddSingleton<IRepository<DBMember, string>, MemberEfRepository>();
+                services.AddSingleton<IRepository<DBLeague, int>, LeagueEfRepository>();
 
                 //the actual service to run
                 services.AddHostedService<Worker>();
