@@ -6,7 +6,8 @@ namespace CoL.Service.Importer
 {
     internal class MemberProvider : EntityProviderBase<DBMember, string, Member>
     {
-        public MemberProvider(IRepository<DBMember, string> repository, IMapper<DBMember, Member> mapper) : base(repository, mapper)
+        public MemberProvider(IRepository<DBMember, string> repository, IMapper<DBMember, Member> mapper) : base(
+            repository, mapper)
         {
         }
 

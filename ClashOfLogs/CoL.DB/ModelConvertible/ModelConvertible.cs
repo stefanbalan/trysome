@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoL.DB
+namespace CoL.DB.ModelConvertible
 {
     public class ModelConvertible<TEntity, TModel>
         where TModel : new()

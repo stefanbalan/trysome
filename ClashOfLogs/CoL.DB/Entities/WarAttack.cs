@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace CoL.DB.Entities
+﻿namespace CoL.DB.Entities
 {
-
-    [Owned]
     public class WarAttack
     {
         public string AttackerTag { get; set; }

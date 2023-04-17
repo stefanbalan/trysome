@@ -1,27 +1,13 @@
-﻿namespace CoL.DB.Entities
+﻿namespace CoL.DB.Entities;
+
+public record WarMember : BaseEntityWithTag
 {
-    public class WarMemberClan : WarMember
-    {
-
-    }
-
-
-    public class WarMemberOpponent : WarMember
-    {
-
-    }
-
-
-
-    public class WarMember : BaseEntityWithTag
-    {
-        public int WarId { get; set; }
-        public string Name { get; set; }
-        public int TownhallLevel { get; set; }
-        public int MapPosition { get; set; }
-        public WarAttack Attack1 { get; set; }
-        public WarAttack Attack2 { get; set; }
-        public int OpponentAttacks { get; set; }
-        public WarAttack BestOpponentAttack { get; set; }
-    }
+    public int WarId { get; set; }
+    public string Name { get; set; }
+    public int TownhallLevel { get; set; }
+    public int MapPosition { get; set; }
+    public WarAttack Attack1 { get; set; }
+    public WarAttack Attack2 { get; set; }
+    public int OpponentAttacks { get; set; }
+    public WarAttack BestOpponentAttack { get; set; }
 }

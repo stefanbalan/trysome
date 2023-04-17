@@ -1,19 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace CoL.DB.Entities;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace CoL.DB.Entities
+public class BadgeUrls
 {
-    [Owned]
-    public class BadgeUrls
-    {
-        [Required]
-        public string Small { get; set; }
+    public string Small { get; set; }
 
-        [Required]
-        public string Large { get; set; }
+    public string Medium { get; set; }
 
-        [Required]
-        public string Medium { get; set; }
-    }
+    public string Large { get; set; }
 }

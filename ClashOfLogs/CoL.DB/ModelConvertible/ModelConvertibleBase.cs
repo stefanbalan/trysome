@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CoL.DB
+namespace CoL.DB.ModelConvertible
 {
     //todo implement as separate, injectable service?
 
