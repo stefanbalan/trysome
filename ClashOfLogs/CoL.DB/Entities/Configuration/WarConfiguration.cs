@@ -9,6 +9,8 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
     {
         builder.HasKey(x => x.Id);
 
+        builder.HasIndex(war => war.EndTime);
+
         //builder.HasAlternateKey(nameof(War.EndTime), nameof(War.ClanTag), nameof(War.OpponentTag));
 
         builder.Property(w => w.Result).IsRequired().HasColumnType("varchar(10)");
@@ -16,6 +18,7 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
         builder.OwnsOne(w => w.Clan,
             bwc =>
             {
+                bwc.HasIndex(clan => clan.Tag);
                 bwc.Property(wc => wc.Tag).ConfigureTag();
                 bwc.Property(wc => wc.Name).IsRequired()
                     .HasColumnType("varchar(50)");
@@ -32,6 +35,7 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
         builder.OwnsOne(w => w.Opponent,
             bwc =>
             {
+                bwc.HasIndex(clan => clan.Tag);
                 bwc.Property(wc => wc.Tag).ConfigureTag();
                 bwc.Property(wc => wc.Name).IsRequired()
                     .HasColumnType("varchar(50)");

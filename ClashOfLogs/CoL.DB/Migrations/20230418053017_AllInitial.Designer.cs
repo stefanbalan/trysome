@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoL.DB.Migrations
 {
     [DbContext(typeof(CoLContext))]
-    [Migration("20230417153205_AllInitial")]
+    [Migration("20230418053017_AllInitial")]
     partial class AllInitial
     {
         /// <inheritdoc />
@@ -214,6 +214,8 @@ namespace CoL.DB.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EndTime");
+
                     b.ToTable("Wars");
                 });
 
@@ -377,6 +379,8 @@ namespace CoL.DB.Migrations
 
                             b1.HasKey("WarId");
 
+                            b1.HasIndex("Tag");
+
                             b1.ToTable("Wars");
 
                             b1.WithOwner()
@@ -436,6 +440,8 @@ namespace CoL.DB.Migrations
                                 .HasColumnType("varchar(12)");
 
                             b1.HasKey("WarId");
+
+                            b1.HasIndex("Tag");
 
                             b1.ToTable("Wars");
 
