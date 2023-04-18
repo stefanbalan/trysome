@@ -194,6 +194,21 @@ namespace CoL.DB.Migrations
                 name: "IX_WarMembers_Opponent_WarId",
                 table: "WarMembers_Opponent",
                 column: "WarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wars_Clan_Tag",
+                table: "Wars",
+                column: "Clan_Tag");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wars_EndTime",
+                table: "Wars",
+                column: "EndTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wars_Opponent_Tag",
+                table: "Wars",
+                column: "Opponent_Tag");
         }
 
         /// <inheritdoc />

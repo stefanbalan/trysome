@@ -211,6 +211,8 @@ namespace CoL.DB.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EndTime");
+
                     b.ToTable("Wars");
                 });
 
@@ -374,6 +376,8 @@ namespace CoL.DB.Migrations
 
                             b1.HasKey("WarId");
 
+                            b1.HasIndex("Tag");
+
                             b1.ToTable("Wars");
 
                             b1.WithOwner()
@@ -433,6 +437,8 @@ namespace CoL.DB.Migrations
                                 .HasColumnType("varchar(12)");
 
                             b1.HasKey("WarId");
+
+                            b1.HasIndex("Tag");
 
                             b1.ToTable("Wars");
 
