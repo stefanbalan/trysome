@@ -4,15 +4,17 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
-public abstract class EntityImporter<TDbEntity, TEntity, TKey>
+public abstract class EntityImporter<TDbEntity, TEntity>
     where TDbEntity : BaseEntity
     where TEntity : class
 {
     protected readonly CoLContext Context;
-    private readonly ILogger<EntityImporter<TDbEntity, TEntity, TKey>> logger;
+    private readonly ILogger<EntityImporter<TDbEntity, TEntity>> logger;
 
-    protected EntityImporter(CoLContext context,
-        ILogger<EntityImporter<TDbEntity, TEntity, TKey>> logger)
+    protected EntityImporter(
+        CoLContext context,
+        ILogger<EntityImporter<TDbEntity, TEntity>> logger
+        )
     {
         this.Context = context;
         this.logger = logger;
@@ -23,7 +25,7 @@ public abstract class EntityImporter<TDbEntity, TEntity, TKey>
         try
         {
             var dbEntity = await FindExistingAsync(entity) ?? await CreateNewAsync(entity, dateTime);
-            UpdateProperties(dbEntity, entity, dateTime);
+            await UpdateProperties(dbEntity, entity, dateTime);
             await UpdateChildrenAsync(dbEntity, entity, dateTime);
             await Context.SaveChangesAsync();
 
@@ -38,6 +40,6 @@ public abstract class EntityImporter<TDbEntity, TEntity, TKey>
 
     protected abstract Task<TDbEntity?> FindExistingAsync(TEntity entity);
     protected abstract Task<TDbEntity> CreateNewAsync(TEntity entity, DateTime dateTime);
-    protected abstract void UpdateProperties(TDbEntity tDbEntity, TEntity entity, DateTime dateTime);
+    protected abstract Task UpdateProperties(TDbEntity tDbEntity, TEntity entity, DateTime dateTime);
     protected abstract Task UpdateChildrenAsync(TDbEntity tDbEntity, TEntity entity, DateTime dateTime);
 }

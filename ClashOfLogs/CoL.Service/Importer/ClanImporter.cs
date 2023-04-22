@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
-internal class ClanImporter : EntityImporter<DBClan, Clan, string>
+internal class ClanImporter : EntityImporter<DBClan, Clan>
 {
     private readonly IMapper<DBClan, Clan> clanMapper;
     private readonly IMapper<DBMember, Member> memberMapper;
@@ -15,9 +15,9 @@ internal class ClanImporter : EntityImporter<DBClan, Clan, string>
 
     public ClanImporter(
         CoLContext context,
+        ILogger<ClanImporter> logger,
         IMapper<DBClan, Clan> clanMapper,
         IMapper<DBMember, Member> memberMapper,
-        ILogger<ClanImporter> logger,
         EntityProviderBase<DBMember, string, Member> memberProvider) : base(context, logger)
     {
         this.clanMapper = clanMapper;
@@ -33,6 +33,16 @@ internal class ClanImporter : EntityImporter<DBClan, Clan, string>
 
         return dbEntity;
     }
+
+    protected async override Task<DBClan> CreateNewAsync(Clan entity, DateTime timeStamp)
+    {
+        var dbClan = clanMapper.CreateEntity(entity, timeStamp);
+        await Context.Clans.AddAsync(dbClan);
+        return dbClan;
+    }
+
+    protected async override Task UpdateProperties(DBClan entity, Clan model, DateTime timeStamp)
+        => await clanMapper.UpdateEntityAsync(entity, model, timeStamp);
 
     protected async override Task UpdateChildrenAsync(DBClan dbClan, Clan clan, DateTime timeStamp)
     {
@@ -51,17 +61,5 @@ internal class ClanImporter : EntityImporter<DBClan, Clan, string>
             pm.LastLeft = timeStamp;
             pm.IsMember = false;
         }
-
-        ;
     }
-
-    protected async override Task<DBClan> CreateNewAsync(Clan entity, DateTime timeStamp)
-    {
-        var dbClan = clanMapper.CreateEntity(entity, timeStamp);
-        await Context.Clans.AddAsync(dbClan);
-        return dbClan;
-    }
-
-    protected override void UpdateProperties(DBClan entity, Clan model, DateTime timeStamp)
-        => clanMapper.UpdateEntityAsync(entity, model, timeStamp);
 }

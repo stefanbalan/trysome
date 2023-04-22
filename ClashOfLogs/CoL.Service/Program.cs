@@ -6,6 +6,7 @@ global using DBLeague = CoL.DB.Entities.League;
 global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
+
 using ClashOfLogs.Shared;
 using CoL.DB;
 using CoL.Service.DataProvider;
@@ -88,16 +89,19 @@ public static class Program
 
                 services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
 
-                services.AddTransient<EntityImporter<DBClan, Clan, string>, ClanImporter>();
-                services.AddTransient<EntityImporter<DBWar, WarSummary, string>, WarlogDataImporter>(); 
-
-                // services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+                // data providers
                 services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+                // services.AddTransient<IJsonDataProvider, ApiJsonDataProvider>();
+
+                // importers
+                services.AddTransient<EntityImporter<DBClan, Clan>, ClanImporter>();
+                services.AddTransient<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
 
                 // mappers
                 services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
                 services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
                 services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
+                services.AddSingleton<IMapper<DBWar, WarSummary>, WarMapper>();
 
                 //entity providers
                 services.AddSingleton<EntityProviderBase<DBMember, string, Member>, MemberProvider>();

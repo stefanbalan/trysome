@@ -17,7 +17,7 @@ internal class MemberMapper : IMapper<DBMember, Member>
     public DBMember CreateEntity(Member entity, DateTime timeStamp) =>
         new() { Tag = entity.Tag, CreatedAt = timeStamp };
 
-    public async Task UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
+    public async ValueTask UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
     {
         // todo add history
         if (!string.IsNullOrWhiteSpace(entity.Name))
