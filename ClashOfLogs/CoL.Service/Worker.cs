@@ -5,13 +5,14 @@ using CoL.Service.DataProvider;
 using CoL.Service.Importer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Clan = ClashOfLogs.Shared.Clan;
 
 namespace CoL.Service;
 
 public class Worker : BackgroundService
 {
-    private readonly EntityImporter<DBClan, Clan, string> clanDataImporter;
-    private readonly WarlogDataImporter warlogDataImporter;
+    private readonly EntityImporter<DBClan, Clan> clanDataImporter;
+    private readonly EntityImporter<DBWar, WarSummary> warLogImporter;
     private readonly CoLContext context;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
     private readonly IJsonDataProvider importDataProvider;
@@ -22,13 +23,15 @@ public class Worker : BackgroundService
         ILogger<Worker> logger,
         CoLContext context,
         IJsonDataProvider importDataProvider,
-        EntityImporter<DBClan, Clan, string> clanDataImporter)
+        EntityImporter<DBClan, Clan> clanDataImporter,
+        EntityImporter<DBWar, WarSummary> warLogImporter)
     {
         this.hostApplicationLifetime = hostApplicationLifetime;
         this.logger = logger;
         this.context = context;
         this.importDataProvider = importDataProvider;
         this.clanDataImporter = clanDataImporter;
+        this.warLogImporter = warLogImporter;
     }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -56,7 +59,7 @@ public class Worker : BackgroundService
                            && await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
                 if (jsonData.Warlog?.Items != null)
                     foreach (var warlogItem in jsonData.Warlog.Items)
-                        success &= await warlogDataImporter.ImportAsync(warlogItem, jsonData.Date);
+                        success &= await warLogImporter.ImportAsync(warlogItem, jsonData.Date);
 
                 // if (!importDataProvider.SetImported(success))
                 // {

@@ -20,7 +20,7 @@ public class OldWorker : BackgroundService
     private readonly IConfiguration _config;
     private readonly CoLContext context;
     private readonly IJsonDataProvider importDataProvider;
-    private readonly EntityImporter<DBClan, Clan, string> clanDataImporter;
+    private readonly EntityImporter<DBClan, Clan> clanDataImporter;
 
     public OldWorker(
         IHostApplicationLifetime hostApplicationLifetime,
@@ -28,7 +28,7 @@ public class OldWorker : BackgroundService
         IConfiguration config,
         CoLContext context,
         IJsonDataProvider importDataProvider,
-        EntityImporter<DBClan, Clan, string> clanDataImporter)
+        EntityImporter<DBClan, Clan> clanDataImporter)
     {
         this.hostApplicationLifetime = hostApplicationLifetime;
         _logger = logger;
@@ -58,17 +58,20 @@ public class OldWorker : BackgroundService
         if (exdbWarSummary != null)
             return;
 
-        var dbWarSummary = new DBWar {
+        var dbWarSummary = new DBWar
+        {
             Result = warSummary.Result,
             EndTime = endTime,
             TeamSize = warSummary.TeamSize,
             AttacksPerMember = warSummary.AttacksPerMember,
 
             //ClanTag = warSummary.Clan.Tag,
-            Clan = new DBWarClan {
+            Clan = new DBWarClan
+            {
                 Name = warSummary.Clan.Name,
                 BadgeUrls =
-                    new DBBadgeUrls {
+                    new DBBadgeUrls
+                    {
                         Small = warSummary.Clan.BadgeUrls.Small,
                         Large = warSummary.Clan.BadgeUrls.Large,
                         Medium = warSummary.Clan.BadgeUrls.Medium,
@@ -80,11 +83,13 @@ public class OldWorker : BackgroundService
             },
 
             //OpponentTag = warSummary.Opponent.Tag,
-            Opponent = new DBWarClan {
+            Opponent = new DBWarClan
+            {
                 Tag = warSummary.Opponent.Tag,
                 Name = warSummary.Opponent.Name,
                 BadgeUrls =
-                    new DBBadgeUrls {
+                    new DBBadgeUrls
+                    {
                         Small = warSummary.Opponent.BadgeUrls.Small,
                         Large = warSummary.Opponent.BadgeUrls.Large,
                         Medium = warSummary.Opponent.BadgeUrls.Medium,
@@ -138,16 +143,19 @@ public class OldWorker : BackgroundService
         if (exdbWarSummary != null)
             return;
 
-        var dbWarSummary = new DBWar {
+        var dbWarSummary = new DBWar
+        {
             EndTime = endTime,
             TeamSize = war.TeamSize,
             AttacksPerMember = war.AttacksPerMember,
 
             //ClanTag = war.Clan.Tag,
-            Clan = new DBWarClan {
+            Clan = new DBWarClan
+            {
                 Name = war.Clan.Name,
                 BadgeUrls =
-                    new DBBadgeUrls {
+                    new DBBadgeUrls
+                    {
                         Small = war.Clan.BadgeUrls.Small,
                         Large = war.Clan.BadgeUrls.Large,
                         Medium = war.Clan.BadgeUrls.Medium,
@@ -159,11 +167,13 @@ public class OldWorker : BackgroundService
             },
 
             //OpponentTag = war.Opponent.Tag,
-            Opponent = new DBWarClan {
+            Opponent = new DBWarClan
+            {
                 Tag = war.Opponent.Tag,
                 Name = war.Opponent.Name,
                 BadgeUrls =
-                    new DBBadgeUrls {
+                    new DBBadgeUrls
+                    {
                         Small = war.Opponent.BadgeUrls.Small,
                         Large = war.Opponent.BadgeUrls.Large,
                         Medium = war.Opponent.BadgeUrls.Medium,

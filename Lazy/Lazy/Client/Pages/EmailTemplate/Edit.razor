@@ -4,10 +4,6 @@
 
 @inherits BaseEditPage
 
-@inject HttpClient HttpClient
-@inject DataService<EmailTemplateModel> DataService
-@inject NotificationService NotificationService
-
 
 @* <EditForm Model="@_emailTemplate" OnValidSubmit="@SubmitValidForm" OnInvalidSubmit="SubmitInvalidForm"> *@
 <EditForm Model="@_emailTemplate" OnSubmit="@SubmitForm">
