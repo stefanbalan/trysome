@@ -18,10 +18,8 @@ public record War : BaseEntity
     public int AttacksPerMember { get; set; }
 
     public WarClan Clan { get; set; }
-    public string ClanTag => Clan.Tag;
     public List<WarMemberClan> ClanMembers { get; set; }
 
     public WarClan Opponent { get; set; }
-    public string OpponentTag => Opponent.Tag;
     public List<WarMemberOpponent> OpponentMembers { get; set; }
 }

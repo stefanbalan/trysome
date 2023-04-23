@@ -11,8 +11,6 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
 
         builder.HasIndex(war => war.EndTime);
 
-        //builder.HasAlternateKey(nameof(War.EndTime), nameof(War.ClanTag), nameof(War.OpponentTag));
-
         builder.Property(w => w.Result).IsRequired().HasColumnType("varchar(10)");
 
         builder.OwnsOne(w => w.Clan,

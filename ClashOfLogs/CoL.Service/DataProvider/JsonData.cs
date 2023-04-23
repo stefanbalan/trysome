@@ -1,6 +1,6 @@
 ﻿using ClashOfLogs.Shared;
 
-namespace CoL.Service;
+namespace CoL.Service.DataProvider;
 
 public class JsonData
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -61,13 +62,16 @@ public record WarDetail
     public int AttacksPerMember { get; set; }
 
     [JsonPropertyName("preparationStartTime")]
-    public string PreparationStartTime { get; set; }
+    [JsonConverter(typeof(CustomDateTimeJsonConverter))]
+    public DateTime PreparationStartTime { get; set; }
 
     [JsonPropertyName("startTime")]
-    public string StartTime { get; set; }
+    [JsonConverter(typeof(CustomDateTimeJsonConverter))]
+    public DateTime StartTime { get; set; }
 
     [JsonPropertyName("endTime")]
-    public string EndTime { get; set; }
+    [JsonConverter(typeof(CustomDateTimeJsonConverter))]
+    public DateTime EndTime { get; set; }
 
     [JsonPropertyName("clan")]
     public WarClan Clan { get; set; }

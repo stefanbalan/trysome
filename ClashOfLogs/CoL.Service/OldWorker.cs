@@ -1,5 +1,4 @@
 #nullable disable
-using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
@@ -45,15 +44,8 @@ public class OldWorker : BackgroundService
 
     private async Task AddOrUpdateWarSummary(WarSummary warSummary)
     {
-        if (!DateTime.TryParse(warSummary.EndTime, out var endTime))
-        {
-            _logger.LogError($"Cannot import warsummary, invalid end time {warSummary.EndTime} " +
-                             $"clan:{warSummary.Clan.Tag} opponent:{warSummary.Opponent.Tag}");
-            return;
-        }
-
         var exdbWarSummary = await context.Wars
-            .FindAsync(endTime, warSummary.Clan.Tag, warSummary.Opponent.Tag);
+             .FindAsync(warSummary.EndTime, warSummary.Clan.Tag, warSummary.Opponent.Tag);
 
         if (exdbWarSummary != null)
             return;
@@ -61,7 +53,7 @@ public class OldWorker : BackgroundService
         var dbWarSummary = new DBWar
         {
             Result = warSummary.Result,
-            EndTime = endTime,
+            EndTime = warSummary.EndTime,
             TeamSize = warSummary.TeamSize,
             AttacksPerMember = warSummary.AttacksPerMember,
 
@@ -129,23 +121,15 @@ public class OldWorker : BackgroundService
 
     private async Task AddOrUpdateWarDetail(WarDetail war)
     {
-        if (!DateTime.TryParseExact(war.EndTime, @"yyyyMMdd\THHmmss.fff\Z", CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal, out var endTime))
-        {
-            _logger.LogError($"Cannot import warsummary, invalid end time {war.EndTime} " +
-                             $"clan:{war.Clan.Tag} opponent:{war.Opponent.Tag}");
-            return;
-        }
-
         var exdbWarSummary = await context.Wars
-            .FindAsync(endTime, war.Clan.Tag, war.Opponent.Tag);
+            .FindAsync(war.EndTime, war.Clan.Tag, war.Opponent.Tag);
 
         if (exdbWarSummary != null)
             return;
 
         var dbWarSummary = new DBWar
         {
-            EndTime = endTime,
+            EndTime = war.EndTime,
             TeamSize = war.TeamSize,
             AttacksPerMember = war.AttacksPerMember,
 

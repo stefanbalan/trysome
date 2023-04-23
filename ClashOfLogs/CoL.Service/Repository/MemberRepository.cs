@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service.Repository;
 
-public class MemberEfRepository : BaseEFRepository<CoLContext, DBMember, string>
+public class MemberEfRepository : BaseEFRepository<CoLContext, DBMember>
 {
     public MemberEfRepository(CoLContext context) : base(context)
     {
