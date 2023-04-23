@@ -1,19 +1,11 @@
-﻿using System.Globalization;
-using ClashOfLogs.Shared;
+﻿using ClashOfLogs.Shared;
 
 namespace CoL.Service.Mappers;
 
 internal class WarMapper : IMapper<DBWar, WarSummary>
 {
-    public DBWar CreateEntity(WarSummary entity, DateTime timeStamp)
-    {
-        // "endTime": "20210524T130613.000Z",
-        if (!DateTime.TryParseExact(entity.EndTime, "yyyyMMddTHHmmss.000Z",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal, out var endTime))
-            throw new FormatException($"{nameof(entity.EndTime)} cannot be parsed");
-
-        return new DBWar
+    public DBWar CreateEntity(WarSummary entity, DateTime timeStamp) =>
+        new()
         {
             Clan = new DBWarClan
             {
@@ -23,10 +15,9 @@ internal class WarMapper : IMapper<DBWar, WarSummary>
             {
                 Tag = entity.Opponent.Tag
             },
-            EndTime = endTime,
+            EndTime = entity.EndTime,
             CreatedAt = timeStamp
         };
-    }
 
 
     public ValueTask UpdateEntityAsync(DBWar entity, WarSummary model, DateTime timeStamp)

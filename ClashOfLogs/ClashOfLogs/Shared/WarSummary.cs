@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ClashOfLogs.Shared;
 
@@ -8,7 +9,8 @@ public class WarSummary
     public string Result { get; set; }
 
     [JsonPropertyName("endTime")]
-    public string EndTime { get; set; }
+    [JsonConverter(typeof(CustomDateTimeJsonConverter))]
+    public DateTime EndTime { get; set; }
 
     [JsonPropertyName("teamSize")]
     public int TeamSize { get; set; }

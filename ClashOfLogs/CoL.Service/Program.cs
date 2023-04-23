@@ -95,7 +95,10 @@ public static class Program
 
                 // importers
                 services.AddTransient<EntityImporter<DBClan, Clan>, ClanImporter>();
+                services.AddSingleton<EntityImporter<DBMember, Member>, MemberProvider>();
+                services.AddSingleton<EntityImporter<DBLeague, League>, LeagueCatalogProvider>();
                 services.AddTransient<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
+
 
                 // mappers
                 services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
@@ -103,13 +106,11 @@ public static class Program
                 services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
                 services.AddSingleton<IMapper<DBWar, WarSummary>, WarMapper>();
 
-                //entity providers
-                services.AddSingleton<EntityProviderBase<DBMember, string, Member>, MemberProvider>();
-                services.AddSingleton<EntityProviderBase<DBLeague, int, League>, LeagueCatalogProvider>();
-
                 // repositories
-                services.AddSingleton<IRepository<DBMember, string>, MemberEfRepository>();
-                services.AddSingleton<IRepository<DBLeague, int>, LeagueEfRepository>();
+                services.AddSingleton<IRepository<DBClan>, ClanEfRepository>();
+                services.AddSingleton<IRepository<DBMember>, MemberEfRepository>();
+                services.AddSingleton<IRepository<DBLeague>, LeagueEfRepository>();
+                services.AddSingleton<IRepository<DBWar>, WarRepository>();
 
                 //the actual service to run
                 services.AddHostedService<Worker>();

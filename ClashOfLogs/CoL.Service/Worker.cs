@@ -5,7 +5,6 @@ using CoL.Service.DataProvider;
 using CoL.Service.Importer;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Clan = ClashOfLogs.Shared.Clan;
 
 namespace CoL.Service;
 
@@ -56,10 +55,10 @@ public class Worker : BackgroundService
                 //todo test multiple import set and check updated properties
                 var success = false;
                 success &= jsonData.Clan is not null
-                           && await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
+                           && await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date) != null;
                 if (jsonData.Warlog?.Items != null)
                     foreach (var warlogItem in jsonData.Warlog.Items)
-                        success &= await warLogImporter.ImportAsync(warlogItem, jsonData.Date);
+                        success &= await warLogImporter.ImportAsync(warlogItem, jsonData.Date) != null;
 
                 // if (!importDataProvider.SetImported(success))
                 // {

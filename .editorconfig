@@ -5,6 +5,8 @@
 
 # ReSharper properties
 resharper_place_accessorholder_attribute_on_same_line = false
+resharper_wrap_before_arrow_with_expressions = true
+resharper_wrap_before_extends_colon = true
 
 #Core editorconfig formatting - indentation
 

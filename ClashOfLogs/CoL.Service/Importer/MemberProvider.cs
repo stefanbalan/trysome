@@ -1,16 +1,22 @@
 ﻿using ClashOfLogs.Shared;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
+using Microsoft.Extensions.Logging;
 
-namespace CoL.Service.Importer
+namespace CoL.Service.Importer;
+
+internal class MemberProvider : EntityImporter<DBMember, Member>
 {
-    internal class MemberProvider : EntityProviderBase<DBMember, string, Member>
+    public MemberProvider(
+        IMapper<DBMember, Member> mapper,
+        IRepository<DBMember> repository,
+        ILogger<EntityImporter<DBMember, Member>> logger)
+        : base(mapper, repository, logger)
     {
-        public MemberProvider(IRepository<DBMember, string> repository, IMapper<DBMember, Member> mapper) : base(
-            repository, mapper)
-        {
-        }
-
-        protected override string EntityKey(Member model) => model.Tag;
     }
+
+    protected override object?[] EntityKey(Member entity) => new object?[] { entity.Tag };
+
+    protected override Task UpdateChildrenAsync(DBMember tDbEntity, Member entity, DateTime timestamp)
+        => Task.CompletedTask;
 }

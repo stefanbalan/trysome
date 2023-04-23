@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service.Repository;
 
-public class LeagueEfRepository : BaseEFRepository<CoLContext, DBLeague, int>
+public class LeagueEfRepository : BaseEFRepository<CoLContext, DBLeague>
 {
     public LeagueEfRepository(CoLContext context) : base(context)
     {
