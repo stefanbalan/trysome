@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
-internal class LeagueCatalogProvider : EntityImporter<DBLeague, League>
+internal class LeagueImporter : EntityImporter<DBLeague, League>
 {
-    public LeagueCatalogProvider(
+    public LeagueImporter(
         IMapper<DBLeague, League> mapper,
         IRepository<DBLeague> repository,
         ILogger<EntityImporter<DBLeague, League>> logger)
@@ -17,6 +17,6 @@ internal class LeagueCatalogProvider : EntityImporter<DBLeague, League>
 
     protected override object?[] EntityKey(League entity) => new object?[] { entity.Id };
 
-    protected override Task UpdateChildrenAsync(DBLeague tDbEntity, League entity, DateTime timestamp)
-        => Task.CompletedTask;
+    protected async override Task UpdateChildrenAsync(DBLeague dbEntity, League entity, DateTime timestamp)
+        => await Task.CompletedTask;
 }

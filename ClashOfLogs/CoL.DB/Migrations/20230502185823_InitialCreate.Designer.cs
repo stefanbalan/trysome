@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoL.DB.Migrations
 {
     [DbContext(typeof(CoLContext))]
-    [Migration("20230418053017_AllInitial")]
-    partial class AllInitial
+    [Migration("20230502185823_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,6 +141,7 @@ namespace CoL.DB.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("History")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsMember")
@@ -200,11 +201,13 @@ namespace CoL.DB.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Result")
-                        .IsRequired()
                         .HasColumnType("varchar(10)");
 
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("State")
+                        .HasColumnType("varchar(10)");
 
                     b.Property<int>("TeamSize")
                         .HasColumnType("int");
@@ -259,22 +262,22 @@ namespace CoL.DB.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("CoL.DB.Entities.WarMemberClan", b =>
+            modelBuilder.Entity("CoL.DB.Entities.WarClanMember", b =>
                 {
                     b.HasBaseType("CoL.DB.Entities.WarMember");
 
                     b.HasIndex("WarId");
 
-                    b.HasDiscriminator().HasValue("WarMemberClan");
+                    b.HasDiscriminator().HasValue("WarClanMember");
                 });
 
-            modelBuilder.Entity("CoL.DB.Entities.WarMemberOpponent", b =>
+            modelBuilder.Entity("CoL.DB.Entities.WarOpponentMember", b =>
                 {
                     b.HasBaseType("CoL.DB.Entities.WarMember");
 
                     b.HasIndex("WarId");
 
-                    b.HasDiscriminator().HasValue("WarMemberOpponent");
+                    b.HasDiscriminator().HasValue("WarOpponentMember");
                 });
 
             modelBuilder.Entity("CoL.DB.Entities.Clan", b =>
@@ -368,7 +371,7 @@ namespace CoL.DB.Migrations
 
                             b1.Property<string>("Name")
                                 .IsRequired()
-                                .HasColumnType("varchar(50)");
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<int>("Stars")
                                 .HasColumnType("int");
@@ -430,7 +433,7 @@ namespace CoL.DB.Migrations
 
                             b1.Property<string>("Name")
                                 .IsRequired()
-                                .HasColumnType("varchar(50)");
+                                .HasColumnType("nvarchar(50)");
 
                             b1.Property<int>("Stars")
                                 .HasColumnType("int");
@@ -476,9 +479,11 @@ namespace CoL.DB.Migrations
                             b1.Navigation("BadgeUrls");
                         });
 
-                    b.Navigation("Clan");
+                    b.Navigation("Clan")
+                        .IsRequired();
 
-                    b.Navigation("Opponent");
+                    b.Navigation("Opponent")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoL.DB.Entities.WarMember", b =>
@@ -589,7 +594,7 @@ namespace CoL.DB.Migrations
                     b.Navigation("BestOpponentAttack");
                 });
 
-            modelBuilder.Entity("CoL.DB.Entities.WarMemberClan", b =>
+            modelBuilder.Entity("CoL.DB.Entities.WarClanMember", b =>
                 {
                     b.HasOne("CoL.DB.Entities.War", null)
                         .WithMany("ClanMembers")
@@ -598,7 +603,7 @@ namespace CoL.DB.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CoL.DB.Entities.WarMemberOpponent", b =>
+            modelBuilder.Entity("CoL.DB.Entities.WarOpponentMember", b =>
                 {
                     b.HasOne("CoL.DB.Entities.War", null)
                         .WithMany("OpponentMembers")

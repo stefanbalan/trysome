@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CoL.DB.Migrations
 {
     /// <inheritdoc />
-    public partial class AllInitial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,30 +66,31 @@ namespace CoL.DB.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Result = table.Column<string>(type: "varchar(10)", nullable: false),
+                    Result = table.Column<string>(type: "varchar(10)", nullable: true),
+                    State = table.Column<string>(type: "varchar(10)", nullable: true),
                     PreparationStartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TeamSize = table.Column<int>(type: "int", nullable: false),
                     AttacksPerMember = table.Column<int>(type: "int", nullable: false),
-                    Clan_Tag = table.Column<string>(type: "varchar(12)", nullable: true),
-                    Clan_Name = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Clan_Tag = table.Column<string>(type: "varchar(12)", nullable: false),
+                    Clan_Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Clan_BadgeUrls_Small = table.Column<string>(type: "varchar(150)", nullable: true),
                     Clan_BadgeUrls_Medium = table.Column<string>(type: "varchar(150)", nullable: true),
                     Clan_BadgeUrls_Large = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Clan_ClanLevel = table.Column<int>(type: "int", nullable: true),
-                    Clan_Attacks = table.Column<int>(type: "int", nullable: true),
-                    Clan_Stars = table.Column<int>(type: "int", nullable: true),
-                    Clan_DestructionPercentage = table.Column<double>(type: "float", nullable: true),
-                    Opponent_Tag = table.Column<string>(type: "varchar(12)", nullable: true),
-                    Opponent_Name = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Clan_ClanLevel = table.Column<int>(type: "int", nullable: false),
+                    Clan_Attacks = table.Column<int>(type: "int", nullable: false),
+                    Clan_Stars = table.Column<int>(type: "int", nullable: false),
+                    Clan_DestructionPercentage = table.Column<double>(type: "float", nullable: false),
+                    Opponent_Tag = table.Column<string>(type: "varchar(12)", nullable: false),
+                    Opponent_Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     Opponent_BadgeUrls_Small = table.Column<string>(type: "varchar(150)", nullable: true),
                     Opponent_BadgeUrls_Medium = table.Column<string>(type: "varchar(150)", nullable: true),
                     Opponent_BadgeUrls_Large = table.Column<string>(type: "varchar(150)", nullable: true),
-                    Opponent_ClanLevel = table.Column<int>(type: "int", nullable: true),
-                    Opponent_Attacks = table.Column<int>(type: "int", nullable: true),
-                    Opponent_Stars = table.Column<int>(type: "int", nullable: true),
-                    Opponent_DestructionPercentage = table.Column<double>(type: "float", nullable: true),
+                    Opponent_ClanLevel = table.Column<int>(type: "int", nullable: false),
+                    Opponent_Attacks = table.Column<int>(type: "int", nullable: false),
+                    Opponent_Stars = table.Column<int>(type: "int", nullable: false),
+                    Opponent_DestructionPercentage = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -117,7 +118,7 @@ namespace CoL.DB.Migrations
                     DonationsReceivedPreviousSeason = table.Column<int>(type: "int", nullable: false),
                     LastLeft = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsMember = table.Column<bool>(type: "bit", nullable: false),
-                    History = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    History = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ClanTag = table.Column<string>(type: "varchar(12)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)

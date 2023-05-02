@@ -9,5 +9,5 @@ public class LeagueEfRepository : BaseEFRepository<CoLContext, DBLeague>
     {
     }
 
-    protected override DbSet<DBLeague> DbSet => Context.Leagues;
+    protected override DbSet<DBLeague> EntitySet => Context.Leagues;
 }

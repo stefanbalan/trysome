@@ -9,5 +9,5 @@ public class MemberEfRepository : BaseEFRepository<CoLContext, DBMember>
     {
     }
 
-    protected override DbSet<DBMember> DbSet => Context.ClanMembers;
+    protected override DbSet<DBMember> EntitySet => Context.ClanMembers;
 }

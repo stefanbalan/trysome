@@ -5,7 +5,7 @@ using Member = ClashOfLogs.Shared.Member;
 
 namespace CoL.Service.Mappers;
 
-internal class MemberMapper : IMapper<DBMember, Member>
+internal class MemberMapper : BaseMapper<DBMember, Member>
 {
     private readonly EntityImporter<DBLeague, League> leagueProvider;
 
@@ -14,27 +14,28 @@ internal class MemberMapper : IMapper<DBMember, Member>
         this.leagueProvider = leagueProvider;
     }
 
-    public DBMember CreateEntity(Member entity, DateTime timeStamp) =>
-        new()
+    public override DBMember CreateEntity(Member entity, DateTime timeStamp) =>
+        base.CreateEntity(entity, timeStamp) with
         {
-            Tag = entity.Tag,
-            CreatedAt = timeStamp
+            Tag = entity.Tag
         };
 
-    public async ValueTask UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
+    public override void UpdateEntity(DBMember entity, Member model, DateTime timeStamp)
     {
-        // todo add history
-        if (!string.IsNullOrWhiteSpace(entity.Name))
+        base.UpdateEntity(entity, model, timeStamp);
+
+        if (!string.Equals(entity.Name, model.Name, StringComparison.InvariantCulture))
             entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Name), model.Name, entity.Name));
         entity.Name = model.Name;
 
+        if (!string.Equals(entity.Role, model.Role, StringComparison.InvariantCulture))
+            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Role), model.Role, entity.Role));
         entity.Role = model.Role;
         entity.ExpLevel = model.ExpLevel;
         entity.Trophies = model.Trophies;
         entity.VersusTrophies = model.VersusTrophies;
         entity.ClanRank = model.ClanRank;
         entity.PreviousClanRank = model.PreviousClanRank;
-        entity.IsMember = true;
 
         if (entity.Donations > model.Donations)
         {
@@ -51,9 +52,8 @@ internal class MemberMapper : IMapper<DBMember, Member>
         entity.Donations = model.Donations;
         entity.DonationsReceived = model.DonationsReceived;
 
-
-        entity.League = await leagueProvider.ImportAsync(model.League, timeStamp);
-
-        entity.UpdatedAt = timeStamp;
+        // todo this is async code but method is sync
+        entity.League = leagueProvider.ImportAsync(model.League, timeStamp)
+            .GetAwaiter().GetResult();
     }
 }

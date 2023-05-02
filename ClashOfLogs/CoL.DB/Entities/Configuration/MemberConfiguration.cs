@@ -25,7 +25,8 @@ public class MemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigurati
             .HasConversion(h => ToCsvString(h),
                 s => FromCsvString(s),
                 new ValueComparer<List<HistoryEvent>>(
-                    (l1, l2) => l1.SequenceEqual(l2, new HistoryEventComparer()),
+                    (l1, l2) => l1 != null && l2 != null
+                                           && l1.SequenceEqual(l2, new HistoryEventComparer()),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                     c => c.ToList())
             );
@@ -34,7 +35,7 @@ public class MemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigurati
     private static string ToCsvString(List<HistoryEvent> historyEvents)
     {
         //it may be larger than needed but we try to avoid new allocations
-        var sb = new StringBuilder(historyEvents.Count * 100); 
+        var sb = new StringBuilder(historyEvents.Count * 100);
         foreach (var he in historyEvents)
         {
             sb.AppendLine($"{he.DateTime:yyyy-MM-DD HH:ss}\t{he.Property}\t{he.NewValue}\t{he.OldValue}");
@@ -43,7 +44,7 @@ public class MemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigurati
         return sb.ToString();
     }
 
-// yyyy-MM-DD HH:ss PropertyName NewValue OldValue
+    // yyyy-MM-DD HH:ss PropertyName NewValue OldValue
 
     private static List<HistoryEvent> FromCsvString(string s)
     {
@@ -62,11 +63,10 @@ public class MemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigurati
 
     private class HistoryEventComparer : IEqualityComparer<HistoryEvent>
     {
-        public bool Equals(HistoryEvent x, HistoryEvent y)
+        public bool Equals(HistoryEvent? x, HistoryEvent? y)
         {
+            if (x == null || y == null) return x == null && y == null;
             if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
             if (x.GetType() != y.GetType()) return false;
             return x.DateTime.Equals(y.DateTime) && x.Property == y.Property;
         }
