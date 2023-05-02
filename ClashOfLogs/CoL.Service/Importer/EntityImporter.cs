@@ -12,6 +12,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
     private readonly ILogger<EntityImporter<TDbEntity, TEntity>> logger;
     protected readonly IRepository<TDbEntity> Repository;
     private readonly IMapper<TDbEntity, TEntity> mapper;
+    protected bool PersistChangesAfterImport;
 
     protected EntityImporter(
         IMapper<TDbEntity, TEntity> mapper,
@@ -20,16 +21,54 @@ public abstract class EntityImporter<TDbEntity, TEntity>
     {
         this.mapper = mapper;
         this.logger = logger;
-        this.Repository = repository;
+        Repository = repository;
     }
 
     public async Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp)
     {
         try
         {
-            var dbEntity = await FindExistingAsync(entity) ?? await CreateNewAsync(entity, timestamp);
-            await UpdateProperties(dbEntity, entity, timestamp);
+            TDbEntity? dbEntity;
+            try
+            {
+                dbEntity = await Repository.GetByIdAsync(EntityKey(entity));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Getting {Type} by id failed {Message}",
+                    typeof(TDbEntity).Name,
+                    ex.Message);
+                return null;
+            }
+
+            if (dbEntity != null)
+            {
+                UpdateProperties(dbEntity, entity, timestamp);
+                Repository.Update(dbEntity);
+                logger.LogDebug("Updated existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
+            }
+            else
+            {
+                dbEntity = mapper.CreateEntity(entity, timestamp);
+                UpdateProperties(dbEntity, entity, timestamp);
+
+                try
+                {
+                    await Repository.AddAsync(dbEntity);
+                    logger.LogDebug("Added new {Type} : {Entity}", typeof(TDbEntity).Name, EntityKey(entity));
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Adding a new {Type} failed {Message}",
+                        typeof(TDbEntity).Name,
+                        ex.Message);
+                    return null;
+                }
+            }
+
             await UpdateChildrenAsync(dbEntity, entity, timestamp);
+
+            if (PersistChangesAfterImport) await Repository.PersistChangesAsync();
 
             return dbEntity;
         }
@@ -45,22 +84,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
 
     protected abstract object?[] EntityKey(TEntity entity);
 
-    protected virtual Task<TDbEntity?> FindExistingAsync(TEntity entity)
-        => Repository.GetByIdAsync(EntityKey(entity));
+    protected virtual void UpdateProperties(TDbEntity dbEntity, TEntity entity, DateTime timestamp)
+        => mapper.UpdateEntity(dbEntity, entity, timestamp);
 
-    protected async virtual Task<TDbEntity> CreateNewAsync(TEntity entity, DateTime timestamp)
-    {
-        var dbEntity = mapper.CreateEntity(entity, timestamp);
-        dbEntity.CreatedAt = timestamp;
-        await Repository.Add(dbEntity);
-        return dbEntity;
-    }
-
-    protected async virtual Task UpdateProperties(TDbEntity dbEntity, TEntity entity, DateTime timestamp)
-    {
-        await mapper.UpdateEntityAsync(dbEntity, entity, timestamp);
-        dbEntity.UpdatedAt = timestamp;
-    }
-
-    protected abstract Task UpdateChildrenAsync(TDbEntity tDbEntity, TEntity entity, DateTime timestamp);
+    protected abstract Task UpdateChildrenAsync(TDbEntity dbEntity, TEntity entity, DateTime timestamp);
 }

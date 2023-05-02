@@ -4,24 +4,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service.Repository;
 
-internal class WarRepository : IRepository<DBWar>
+internal class WarRepository : BaseEFRepository<CoLContext, DBWar>
 {
-    private readonly CoLContext context;
-
-    public WarRepository(CoLContext context)
+    public WarRepository(CoLContext context) : base(context)
     {
-        this.context = context;
     }
 
-    public async Task<DBWar?> GetByIdAsync(params object?[] keyValues)
-        => await context.Wars
+    protected override DbSet<DBWar> EntitySet => Context.Wars;
+
+    public async override ValueTask<DBWar?> GetByIdAsync(params object?[] keyValues)
+        => await EntitySet
             .Include(w => w.ClanMembers)
             .Include(w => w.OpponentMembers)
             .Where(war => war.EndTime.Equals(keyValues[0])
-                          && war.Clan.Tag == keyValues[1] as string
-                          && war.Opponent.Tag == keyValues[2] as string)
+                           //&& war.Clan != null
+                           && war.Clan.Tag == keyValues[1] as string
+                           // && war.Opponent != null
+                           && war.Opponent.Tag == keyValues[2] as string)
             .SingleOrDefaultAsync();
-
-    public async Task Add(DBWar entity)
-        => await context.Wars.AddAsync(entity);
 }

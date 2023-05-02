@@ -1,27 +1,23 @@
 ﻿using ClashOfLogs.Shared;
+using WarClan = ClashOfLogs.Shared.WarClan;
 
 namespace CoL.Service.Mappers;
 
-internal class WarMapper : IMapper<DBWar, WarSummary>
+internal class WarSummaryMapper : BaseMapper<DBWar, WarSummary>
 {
-    public DBWar CreateEntity(WarSummary entity, DateTime timeStamp) =>
-        new()
+    public override DBWar CreateEntity(WarSummary entity, DateTime timeStamp) =>
+        base.CreateEntity(entity, timeStamp) with
         {
-            Clan = new DBWarClan
-            {
-                Tag = entity.Clan.Tag
-            },
-            Opponent = new DBWarClan
-            {
-                Tag = entity.Opponent.Tag
-            },
-            EndTime = entity.EndTime,
-            CreatedAt = timeStamp
+            Clan = new DBWarClan { Tag = entity.Clan.Tag },
+            Opponent = new DBWarClan { Tag = entity.Opponent.Tag },
+            EndTime = entity.EndTime
         };
 
 
-    public ValueTask UpdateEntityAsync(DBWar entity, WarSummary model, DateTime timeStamp)
+    public override void UpdateEntity(DBWar entity, WarSummary model, DateTime timeStamp)
     {
+        base.UpdateEntity(entity, model, timeStamp);
+
         entity.Result = model.Result;
         entity.TeamSize = model.TeamSize;
         entity.AttacksPerMember = model.AttacksPerMember;
@@ -29,10 +25,7 @@ internal class WarMapper : IMapper<DBWar, WarSummary>
         UpdateWarClan(entity.Clan, model.Clan);
         UpdateWarClan(entity.Opponent, model.Opponent);
 
-        entity.UpdatedAt = timeStamp;
-        return ValueTask.CompletedTask;
-
-        void UpdateWarClan(DBWarClan warClan, WarClan clan)
+        static void UpdateWarClan(DBWarClan warClan, WarClan clan)
         {
             warClan.Name = clan.Name;
             warClan.ClanLevel = clan.ClanLevel;

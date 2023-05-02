@@ -11,7 +11,8 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
 
         builder.HasIndex(war => war.EndTime);
 
-        builder.Property(w => w.Result).IsRequired().HasColumnType("varchar(10)");
+        builder.Property(w => w.Result).HasColumnType("varchar(10)");
+        builder.Property(w => w.State).HasColumnType("varchar(10)");
 
         builder.OwnsOne(w => w.Clan,
             bwc =>
@@ -19,7 +20,7 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
                 bwc.HasIndex(clan => clan.Tag);
                 bwc.Property(wc => wc.Tag).ConfigureTag();
                 bwc.Property(wc => wc.Name).IsRequired()
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("nvarchar(50)");
 
                 bwc.OwnsOne(wc => wc.BadgeUrls,
                     bbu =>
@@ -36,7 +37,7 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
                 bwc.HasIndex(clan => clan.Tag);
                 bwc.Property(wc => wc.Tag).ConfigureTag();
                 bwc.Property(wc => wc.Name).IsRequired()
-                    .HasColumnType("varchar(50)");
+                    .HasColumnType("nvarchar(50)");
 
                 bwc.OwnsOne(wc => wc.BadgeUrls,
                     bbu =>

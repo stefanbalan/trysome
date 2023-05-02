@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
-internal class MemberProvider : EntityImporter<DBMember, Member>
+internal class MemberImporter : EntityImporter<DBMember, Member>
 {
-    public MemberProvider(
+    public MemberImporter(
         IMapper<DBMember, Member> mapper,
         IRepository<DBMember> repository,
         ILogger<EntityImporter<DBMember, Member>> logger)
@@ -17,6 +17,6 @@ internal class MemberProvider : EntityImporter<DBMember, Member>
 
     protected override object?[] EntityKey(Member entity) => new object?[] { entity.Tag };
 
-    protected override Task UpdateChildrenAsync(DBMember tDbEntity, Member entity, DateTime timestamp)
-        => Task.CompletedTask;
+    protected async override Task UpdateChildrenAsync(DBMember dbEntity, Member entity, DateTime timestamp)
+        => await Task.CompletedTask;
 }

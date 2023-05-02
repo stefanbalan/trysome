@@ -1,5 +1,6 @@
 ﻿using CoL.DB.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CoL.Service.Repository;
 
@@ -14,10 +15,17 @@ public abstract class BaseEFRepository<TContext, TDbEntity> : IRepository<TDbEnt
         Context = context;
     }
 
-    protected abstract DbSet<TDbEntity> DbSet { get; }
+    protected abstract DbSet<TDbEntity> EntitySet { get; }
 
-    public async Task Add(TDbEntity entity) => await DbSet.AddAsync(entity);
+    public async virtual ValueTask<TDbEntity?> GetByIdAsync(params object?[] keyValues)
+        => await EntitySet.FindAsync(keyValues);
 
-    public async virtual Task<TDbEntity?> GetByIdAsync(params object?[] keyValues)
-        => await DbSet.FindAsync(keyValues);
+    public async virtual ValueTask AddAsync(TDbEntity entity)
+        => await EntitySet.AddAsync(entity);
+
+    public virtual EntityEntry<TDbEntity> Update(TDbEntity entity)
+        => EntitySet.Update(entity);
+
+    public async ValueTask PersistChangesAsync()
+        => await Context.SaveChangesAsync();
 }

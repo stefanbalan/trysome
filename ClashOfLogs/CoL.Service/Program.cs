@@ -6,19 +6,21 @@ global using DBLeague = CoL.DB.Entities.League;
 global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
-
+global using DBWarClanMember = CoL.DB.Entities.WarClanMember;
+global using DBWarMember = CoL.DB.Entities.WarMember;
+global using DBWarOpponentMember = CoL.DB.Entities.WarOpponentMember;
 using ClashOfLogs.Shared;
 using CoL.DB;
 using CoL.Service.DataProvider;
 using CoL.Service.Importer;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Events;
 
 namespace CoL.Service;
 
@@ -26,18 +28,21 @@ public static class Program
 {
     public static int Main(string[] args)
     {
-        var config =
-            BuildConfiguration(); // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
+        var config = BuildConfiguration();
+        // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
 
-        Log.Logger =
-            new LoggerConfiguration() //todo: study if it is better to use a separate logger for the bootstrapper part
-                .ReadFrom.Configuration(config)
-                .MinimumLevel.Information()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .Enrich.FromLogContext()
-                //.WriteTo.Console()
-                //.WriteTo.File("col.log")
-                .CreateLogger();
+        var loggerConfiguration =
+                new LoggerConfiguration() //todo: study if it is better to use a separate logger for the bootstrapper part
+                    .ReadFrom.Configuration(config)
+            // these are configured from appsettings.json
+            // .MinimumLevel.Information()
+            // .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            // .Enrich.FromLogContext()
+            // .WriteTo.Console()
+            // .WriteTo.File("col.log")
+            ;
+
+        Log.Logger = loggerConfiguration.CreateLogger();
 
         try
         {
@@ -58,12 +63,13 @@ public static class Program
 
     private static IConfigurationRoot BuildConfiguration()
     {
-        var env = Environment.GetEnvironmentVariable("NETCORE_ENVIRONMENT");
-        var builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", true, true)
-            .AddJsonFile($"appsettings.{env}.json", true, true)
-            .AddEnvironmentVariables();
+        var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
 
+        var builder = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", true, true);
+        if (!string.IsNullOrWhiteSpace(env))
+            builder.AddJsonFile($"appsettings.{env}.json", true, true);
+        builder.AddEnvironmentVariables();
         return builder.Build();
     }
 
@@ -86,8 +92,10 @@ public static class Program
                     lb.AddConfiguration(configuration);
                 });
 
-
-                services.AddDbContext<CoLContext>(ServiceLifetime.Singleton);
+                services.AddDbContext<CoLContext>(options
+                    => options.UseSqlServer(configuration.GetConnectionString("CoLContext"),
+                        sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)),
+                    ServiceLifetime.Singleton);
 
                 // data providers
                 services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
@@ -95,22 +103,30 @@ public static class Program
 
                 // importers
                 services.AddTransient<EntityImporter<DBClan, Clan>, ClanImporter>();
-                services.AddSingleton<EntityImporter<DBMember, Member>, MemberProvider>();
-                services.AddSingleton<EntityImporter<DBLeague, League>, LeagueCatalogProvider>();
+                services.AddTransient<EntityImporter<DBMember, Member>, MemberImporter>();
+                services.AddTransient<EntityImporter<DBLeague, League>, LeagueImporter>();
                 services.AddTransient<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
-
+                services.AddTransient<EntityImporter<DBWar, WarDetail>, WarDetailImporter>();
+                services.AddTransient<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
+                services.AddTransient<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
 
                 // mappers
                 services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
                 services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
                 services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
-                services.AddSingleton<IMapper<DBWar, WarSummary>, WarMapper>();
+                services.AddSingleton<IMapper<DBWar, WarSummary>, WarSummaryMapper>();
+                services.AddSingleton<IMapper<DBWar, WarDetail>, WarDetailMapper>();
+                services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
+                services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarClanMemberMapper>();
+                services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarOpponentMemberMapper>();
 
                 // repositories
-                services.AddSingleton<IRepository<DBClan>, ClanEfRepository>();
-                services.AddSingleton<IRepository<DBMember>, MemberEfRepository>();
-                services.AddSingleton<IRepository<DBLeague>, LeagueEfRepository>();
-                services.AddSingleton<IRepository<DBWar>, WarRepository>();
+                services.AddTransient<IRepository<DBClan>, ClanRepository>();
+                services.AddTransient<IRepository<DBMember>, MemberEfRepository>();
+                services.AddTransient<IRepository<DBLeague>, LeagueEfRepository>();
+                services.AddTransient<IRepository<DBWar>, WarRepository>();
+                services.AddTransient<IRepository<DBWarClanMember>, WarClanMemberRepository>();
+                services.AddTransient<IRepository<DBWarOpponentMember>, WarClanOpponentMemberRepository>();
 
                 //the actual service to run
                 services.AddHostedService<Worker>();
