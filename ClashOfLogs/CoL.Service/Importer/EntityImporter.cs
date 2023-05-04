@@ -5,6 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
+
+// todo change the mapping with the new one, used in Lazy
+// needs:
+//      - only change "UPdatedAt" and only add to the DbSet as updated when there are actual changes
+//      - validate that all (needed) properties are present, there are wars in log with null result or no name for opponent clan
 public abstract class EntityImporter<TDbEntity, TEntity>
     where TDbEntity : BaseEntity
     where TEntity : class
@@ -24,7 +29,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
         Repository = repository;
     }
 
-    public async Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp)
+    public async Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp, bool persist = false)
     {
         try
         {
@@ -68,7 +73,18 @@ public abstract class EntityImporter<TDbEntity, TEntity>
 
             await UpdateChildrenAsync(dbEntity, entity, timestamp);
 
-            if (PersistChangesAfterImport) await Repository.PersistChangesAsync();
+            if (PersistChangesAfterImport || persist) try
+                {
+                    await Repository.PersistChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Importing {Type} with key {Key} error: {Error}",
+                        typeof(TDbEntity).Name,
+                        EntityKey(entity),
+                        ex.Message);
+                    return null;
+                }
 
             return dbEntity;
         }

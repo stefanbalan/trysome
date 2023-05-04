@@ -10,6 +10,7 @@ namespace CoL.Service;
 
 public class Worker : BackgroundService
 {
+    private readonly EntityImporter<DBLeague, League> leagueImporter;
     private readonly EntityImporter<DBClan, Clan> clanDataImporter;
     private readonly EntityImporter<DBWar, WarSummary> warLogImporter;
     private readonly EntityImporter<DBWar, WarDetail> warDetailImporter;
@@ -25,7 +26,9 @@ public class Worker : BackgroundService
         CoLContext context,
         IJsonDataProvider importDataProvider,
         EntityImporter<DBClan, Clan> clanDataImporter,
-        EntityImporter<DBWar, WarSummary> warLogImporter, EntityImporter<DBWar, WarDetail> warDetailImporter)
+        EntityImporter<DBWar, WarSummary> warLogImporter,
+        EntityImporter<DBWar, WarDetail> warDetailImporter,
+        EntityImporter<DBLeague, League> leagueImporter)
     {
         this.hostApplicationLifetime = hostApplicationLifetime;
         this.logger = logger;
@@ -34,6 +37,7 @@ public class Worker : BackgroundService
         this.clanDataImporter = clanDataImporter;
         this.warLogImporter = warLogImporter;
         this.warDetailImporter = warDetailImporter;
+        this.leagueImporter = leagueImporter;
     }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -57,6 +61,10 @@ public class Worker : BackgroundService
             {
                 //todo test multiple import set and check updated properties
                 var success = true;
+
+                if (jsonData.Clan is not null)
+                    foreach (var clanMember in jsonData.Clan.Members)
+                        success &= await leagueImporter.ImportAsync(clanMember.League, jsonData.Date) != null;
 
                 if (jsonData.Clan is not null)
                     success &= await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date) != null;

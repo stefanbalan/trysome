@@ -16,6 +16,7 @@ using CoL.Service.Importer;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -92,9 +93,17 @@ public static class Program
                     lb.AddConfiguration(configuration);
                 });
 
-                services.AddDbContext<CoLContext>(options
-                    => options.UseSqlServer(configuration.GetConnectionString("CoLContext"),
-                        sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)),
+                services.AddDbContext<CoLContext>(options =>
+                    {
+                        options.UseSqlServer(configuration.GetConnectionString("CoLContext"),
+                            sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+#if DEBUG
+                        options.LogTo(Log.Debug, LogLevel.Information);
+                        options.ConfigureWarnings(warningOptions
+                            => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
+                        options.EnableSensitiveDataLogging();
+#endif
+                    },
                     ServiceLifetime.Singleton);
 
                 // data providers
@@ -102,13 +111,13 @@ public static class Program
                 // services.AddTransient<IJsonDataProvider, ApiJsonDataProvider>();
 
                 // importers
-                services.AddTransient<EntityImporter<DBClan, Clan>, ClanImporter>();
-                services.AddTransient<EntityImporter<DBMember, Member>, MemberImporter>();
-                services.AddTransient<EntityImporter<DBLeague, League>, LeagueImporter>();
-                services.AddTransient<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
-                services.AddTransient<EntityImporter<DBWar, WarDetail>, WarDetailImporter>();
-                services.AddTransient<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
-                services.AddTransient<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
+                services.AddSingleton<EntityImporter<DBClan, Clan>, ClanImporter>();
+                services.AddSingleton<EntityImporter<DBMember, Member>, MemberImporter>();
+                services.AddSingleton<EntityImporter<DBLeague, League>, LeagueImporter>();
+                services.AddSingleton<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
+                services.AddSingleton<EntityImporter<DBWar, WarDetail>, WarDetailImporter>();
+                services.AddSingleton<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
+                services.AddSingleton<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
 
                 // mappers
                 services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();

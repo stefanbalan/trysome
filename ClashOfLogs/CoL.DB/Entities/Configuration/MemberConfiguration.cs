@@ -38,7 +38,7 @@ public class MemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigurati
         var sb = new StringBuilder(historyEvents.Count * 100);
         foreach (var he in historyEvents)
         {
-            sb.AppendLine($"{he.DateTime:yyyy-MM-DD HH:ss}\t{he.Property}\t{he.NewValue}\t{he.OldValue}");
+            sb.AppendLine($"{he.DateTime:yyyy-MM-dd HH:ss}\t{he.Property}\t{he.NewValue}\t{he.OldValue}");
         }
 
         return sb.ToString();
