@@ -13,6 +13,7 @@ internal class MemberImporter : EntityImporter<DBMember, Member>
         ILogger<EntityImporter<DBMember, Member>> logger)
         : base(mapper, repository, logger)
     {
+        // PersistChangesAfterImport = true;
     }
 
     protected override object?[] EntityKey(Member entity) => new object?[] { entity.Tag };

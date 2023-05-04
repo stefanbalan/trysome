@@ -13,6 +13,7 @@ internal class LeagueImporter : EntityImporter<DBLeague, League>
         ILogger<EntityImporter<DBLeague, League>> logger)
         : base(mapper, repository, logger)
     {
+        PersistChangesAfterImport = true;
     }
 
     protected override object?[] EntityKey(League entity) => new object?[] { entity.Id };
