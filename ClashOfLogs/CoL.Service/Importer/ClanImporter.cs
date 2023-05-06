@@ -18,7 +18,7 @@ internal class ClanImporter : EntityImporter<DBClan, Clan>
     public ClanImporter(
         IMapper<DBClan, Clan> mapper,
         IRepository<DBClan> repository,
-        ILogger<EntityImporter<DBClan, Clan>> logger,
+        ILogger<ClanImporter> logger,
         EntityImporter<DBLeague, League> leagueImporter,
         EntityImporter<DBMember, Member> memberImporter)
         : base(mapper, repository, logger)
