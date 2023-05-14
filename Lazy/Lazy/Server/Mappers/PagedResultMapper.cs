@@ -2,27 +2,26 @@
 using Lazy.Model;
 using Lazy.Util.EntityModelMapper;
 
-namespace Lazy.Server.Mappers
+namespace Lazy.Server.Mappers;
+
+public class PagedResultMapper<TEntity, TModel>
+    : EntityModelMapperBase<PagedRepositoryResult<TEntity>, PagedModelResult<TModel>>
+    where TEntity : new()
+    where TModel : new()
 {
-    public class PagedResultMapper<TEntity, TModel>
-        : EntityModelMapperBase<PagedRepositoryResult<TEntity>, PagedModelResult<TModel>>
-        where TEntity : new()
-        where TModel : new()
+    private readonly IEntityModelMapper<TEntity, TModel> _mapper;
+
+    public PagedResultMapper(IEntityModelMapper<TEntity, TModel> mapper)
     {
-        private readonly IEntityModelMapper<TEntity, TModel> _mapper;
+        _mapper = mapper;
+    }
 
-        public PagedResultMapper(IEntityModelMapper<TEntity, TModel> mapper)
-        {
-            _mapper = mapper;
-        }
+    protected override void BuildMappings()
+    {
+        MapEntityToModel(prr => prr.PageSize, pr => pr.PageSize);
+        MapEntityToModel(prr => prr.PageNumber, pr => pr.PageNumber);
+        MapEntityToModel(prr => prr.Count, pr => pr.Count);
 
-        public override void BuildMappings()
-        {
-            MapEntityToModel(prr => prr.PageSize, pr => pr.PageSize);
-            MapEntityToModel(prr => prr.PageNumber, pr => pr.PageNumber);
-            MapEntityToModel(prr => prr.Count, pr => pr.Count);
-
-            MapEntityToModel(prr => prr.Results.Select(e => _mapper.GetModelFrom(e)).ToList(), pr => pr.Results);
-        }
+        MapEntityToModel(prr => prr.Results.Select(e => _mapper.GetModelFrom(e)).ToList(), pr => pr.Results);
     }
 }
