@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lazy.Util.Tests", "Lazy.Util.Tests\Lazy.Util.Tests.csproj", "{93ED34A3-A875-42B9-BADD-92C2D37A882E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{E7668A93-D8D2-4229-BB57-EE19C46E0047}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7668A93-D8D2-4229-BB57-EE19C46E0047}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7668A93-D8D2-4229-BB57-EE19C46E0047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93ED34A3-A875-42B9-BADD-92C2D37A882E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93ED34A3-A875-42B9-BADD-92C2D37A882E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93ED34A3-A875-42B9-BADD-92C2D37A882E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93ED34A3-A875-42B9-BADD-92C2D37A882E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{30F8227E-BB1C-4FEB-9B4A-A5E751C2E552} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
 		{B6106DAF-8CEC-433C-B56F-691ABF783FDD} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
 		{E7668A93-D8D2-4229-BB57-EE19C46E0047} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
+		{93ED34A3-A875-42B9-BADD-92C2D37A882E} = {83EC67A9-34D0-4412-A050-D73ACB1F91EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FA3F694C-AF3B-48A6-8CAD-D22C42546C00}
