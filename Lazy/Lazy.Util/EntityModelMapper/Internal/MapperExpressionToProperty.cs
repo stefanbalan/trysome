@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace Lazy.Util.EntityModelMapper.Internal;
 
-public class MapperExpressionToProperty
+public static class MapperExpressionToProperty
 {
-    public static PropertyInfo SourcePropertyInfo<T, TP>(Expression<Func<T, TP>> expression)
+    public static PropertyInfo SourceExpression<T, TP>(Expression<Func<T, TP>> expression)
     {
         var prop = TestExpression(expression.Body, typeof(T));
 
@@ -19,6 +19,9 @@ public class MapperExpressionToProperty
         {
             switch (ex)
             {
+                case UnaryExpression ue:
+                    return TestExpression(ue.Operand, type);
+                    break;
                 case LambdaExpression le:
                     foreach (var exParameter in le.Parameters)
                     {
@@ -49,24 +52,18 @@ public class MapperExpressionToProperty
         }
     }
 
-    public static PropertyInfo DestinationPropertyInfo<T, TP>(Expression<Func<T, TP>> expression)
+    public static MemberInfo DestinationMember<T, TP>(Expression<Func<T, TP>> expression)
     {
-        var memberExpression = expression.Body as MemberExpression ??
-                               ((UnaryExpression)expression.Body).Operand as MemberExpression;
+        if (expression.Body is not MemberExpression memberExpression)
+            throw new ArgumentException($"Expression '{expression.Name}' does not refer to a field or property.");
 
         var type = typeof(T);
-        if (memberExpression == null)
-            throw new ArgumentException($"Expression '{expression.Name}' refers to a method, not a property.");
 
-        var propInfo = memberExpression.Member as PropertyInfo;
-        if (propInfo == null)
-            throw new ArgumentException(
-                $"Expression '{memberExpression.Member.Name}' refers to a field, not a property.");
-
-        if (propInfo.ReflectedType == null ||
-            (type != propInfo.ReflectedType && !type.IsSubclassOf(propInfo.ReflectedType)))
+        if (memberExpression.Member.ReflectedType == null ||
+            (type != memberExpression.Member.ReflectedType &&
+             !type.IsSubclassOf(memberExpression.Member.ReflectedType)))
             throw new ArgumentException(
                 $"Expresion '{memberExpression.Member.Name}' refers to a property that is not from type {type}.");
-        return propInfo;
+        return memberExpression.Member;
     }
 }
