@@ -81,30 +81,35 @@ public abstract class EntityModelMapperBase<TEntity, TModel> : IEntityModelMappe
     private class Mapping<TSrc, TPropSrc, TDst, TPropDst> : IMapping<TSrc, TDst>
     {
         private readonly Expression<Func<TSrc, TPropSrc>> srcExp;
-        private readonly PropertyInfo srcProp;
-        private readonly PropertyInfo dstProp;
+        private readonly MemberInfo srcMember;
+        private readonly MemberInfo dstMember;
 
         public Mapping(Expression<Func<TSrc, TPropSrc>> srcExp, Expression<Func<TDst, TPropDst>> dstExp)
         {
             this.srcExp = srcExp;
-            srcProp = MapperExpressionToProperty.SourcePropertyInfo(srcExp);
-            dstProp = MapperExpressionToProperty.DestinationPropertyInfo(dstExp);
-            if (!dstProp.CanWrite) throw new ArgumentException("Destination is read-only");
+            srcMember = MapperExpressionToProperty.SourceExpression(srcExp);
+            dstMember = MapperExpressionToProperty.DestinationMember(dstExp);
+            if (dstMember is PropertyInfo { CanWrite: false }) throw new ArgumentException("Destination is read-only");
         }
 
-        public string Key => $"{srcProp.Name}_{dstProp.Name}";
+        public string Key => $"{srcMember.Name}_{dstMember.Name}";
 
 
         public void Apply(TSrc src, TDst dst)
         {
             // _dstProp.SetValue(dst, _srcProp.GetValue(src));
             var c = srcExp.Compile();
-            dstProp.SetValue(dst, c(src));
+            switch (dstMember)
+            {
+                case FieldInfo fi:
+                    fi.SetValue(dst, c(src));
+                    break;
+                case PropertyInfo pi:
+                    pi.SetValue(dst, c(src));
+                    break;
+            }
         }
 
-        public bool ApplyToExisting(TSrc src, TDst dst)
-        {
-            return false;
-        }
+        public bool ApplyToExisting(TSrc src, TDst dst) => false;
     }
 }
