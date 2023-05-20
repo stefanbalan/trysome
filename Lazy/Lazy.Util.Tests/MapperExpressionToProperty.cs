@@ -1,11 +1,14 @@
+using Lazy.Util.EntityModelMapper.Internal;
+
 namespace Lazy.Util.Tests;
 
-public class MapperExpressionToProperty
+public class MapperExpressionToPropertyTests
 {
     private class TestClass
     {
-        public int ExampleField;
-        public int ExampleProperty { get; set; }
+        public int IntField;
+        public int IntProperty { get; set; }
+        public bool BoolProperty { get; set; }
         public int ExampleMethod() => 1;
     }
 
@@ -13,36 +16,72 @@ public class MapperExpressionToProperty
     {
         public int ExampleProperty { get; set; }
     }
-#region destination member tests
+
+    #region source member tests
+
     [Fact]
-    public void DestinationMember_ThrowsNullWhenExpressionIsNull() =>
+    public void SourceMember_DoesntAcceptNull_Throws() =>
         Assert.Throws<NullReferenceException>(() =>
-            EntityModelMapper.Internal.MapperExpressionToProperty
-                .DestinationMember<TestClass, int>(null!));
+            MapperExpressionToProperty.SourceExpression<TestClass, int>(null!));
+
+    [Fact]
+    public void SourceExpression_AcceptsProperty()
+    {
+        var pi = MapperExpressionToProperty
+            .SourceExpression<TestClass, int>(ex => ex.IntProperty);
+
+        Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
+    }
+
+    [Fact]
+    public void SourceExpression_AcceptsField()
+    {
+        var pi = MapperExpressionToProperty
+            .SourceExpression<TestClass, int>(ex => ex.IntField);
+
+        Assert.Equal(nameof(TestClass.IntField), pi.Name);
+    }
+
+    [Fact]
+    public void SourceExpression_AcceptsUnnaryExpression()
+    {
+        var pi = MapperExpressionToProperty
+            .SourceExpression<TestClass, bool>(ex => !ex.BoolProperty);
+
+        Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
+    }
+
+    #endregion
+
+    #region destination member tests
+
+    [Fact]
+    public void DestinationMember_DoesntAcceptNull_Throws() =>
+        Assert.Throws<NullReferenceException>(() =>
+            MapperExpressionToProperty.DestinationMember<TestClass, int>(null!));
 
     [Fact]
     public void DestinationMember_AcceptsProperty()
     {
-        var pi = EntityModelMapper.Internal.MapperExpressionToProperty
-            .DestinationMember<TestClass, int>(ex => ex.ExampleProperty);
+        var pi = MapperExpressionToProperty
+            .DestinationMember<TestClass, int>(ex => ex.IntProperty);
 
-        Assert.Equal(nameof(TestClass.ExampleProperty), pi.Name);
+        Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
     }
 
     [Fact]
     public void DestinationMember_AcceptsField()
     {
-        var pi = EntityModelMapper.Internal.MapperExpressionToProperty
-            .DestinationMember<TestClass, int>(ex => ex.ExampleField);
+        var pi = MapperExpressionToProperty
+            .DestinationMember<TestClass, int>(ex => ex.IntField);
 
-        Assert.Equal(nameof(TestClass.ExampleField), pi.Name);
+        Assert.Equal(nameof(TestClass.IntField), pi.Name);
     }
 
     [Fact]
     public void DestinationMember_DoesntAcceptMethod_Throws() =>
         Assert.Throws<ArgumentException>(() =>
-            EntityModelMapper.Internal.MapperExpressionToProperty
-                .DestinationMember<TestClass, int>(ex => ex.ExampleMethod())
+            MapperExpressionToProperty.DestinationMember<TestClass, int>(ex => ex.ExampleMethod())
         );
 
     [Fact]
@@ -50,9 +89,9 @@ public class MapperExpressionToProperty
     {
         var t2 = new TestClass2();
         Assert.Throws<ArgumentException>(() =>
-            EntityModelMapper.Internal.MapperExpressionToProperty
-                .DestinationMember<TestClass, int>(ex => t2.ExampleProperty)
+            MapperExpressionToProperty.DestinationMember<TestClass, int>(ex => t2.ExampleProperty)
         );
     }
 }
+
 #endregion
