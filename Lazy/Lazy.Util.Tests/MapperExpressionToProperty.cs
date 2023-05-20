@@ -14,7 +14,8 @@ public class MapperExpressionToPropertyTests
 
     private class TestClass2
     {
-        public int ExampleProperty { get; set; }
+        public int IntProperty { get; set; }
+        public static int TestMethod(int num) => num + 2;
     }
 
     #region source member tests
@@ -47,6 +48,24 @@ public class MapperExpressionToPropertyTests
     {
         var pi = MapperExpressionToProperty
             .SourceExpression<TestClass, bool>(ex => !ex.BoolProperty);
+
+        Assert.Equal(nameof(TestClass.BoolProperty), pi.Name);
+    }
+
+    [Fact]
+    public void SourceExpression_AcceptsBinaryExpression()
+    {
+        var pi = MapperExpressionToProperty
+            .SourceExpression<TestClass, int>(ex => ex.IntProperty * 2);
+
+        Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
+    }
+
+    [Fact]
+    public void SourceExpression_AcceptsMethodCall()
+    {
+        var pi = MapperExpressionToProperty
+            .SourceExpression<TestClass, int>(ex => TestClass2.TestMethod(ex.IntProperty));
 
         Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
     }
@@ -89,7 +108,7 @@ public class MapperExpressionToPropertyTests
     {
         var t2 = new TestClass2();
         Assert.Throws<ArgumentException>(() =>
-            MapperExpressionToProperty.DestinationMember<TestClass, int>(ex => t2.ExampleProperty)
+            MapperExpressionToProperty.DestinationMember<TestClass, int>(ex => t2.IntProperty)
         );
     }
 }
