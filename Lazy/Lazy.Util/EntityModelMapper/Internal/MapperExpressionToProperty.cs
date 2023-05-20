@@ -5,7 +5,7 @@ namespace Lazy.Util.EntityModelMapper.Internal;
 
 public static class MapperExpressionToProperty
 {
-    public static PropertyInfo SourceExpression<T, TP>(Expression<Func<T, TP>> expression)
+    public static MemberInfo SourceExpression<T, TP>(Expression<Func<T, TP>> expression)
     {
         var prop = TestExpression(expression.Body, typeof(T));
 
@@ -14,33 +14,26 @@ public static class MapperExpressionToProperty
 
         return prop;
 
-        PropertyInfo? TestExpression(Expression ex, Type type)
+        MemberInfo? TestExpression(Expression ex, Type type)
         {
             switch (ex)
             {
                 case UnaryExpression ue:
                     return TestExpression(ue.Operand, type);
 
-                case LambdaExpression le:
-                    foreach (var exParameter in le.Parameters)
-                    {
-                        var pi = TestExpression(exParameter, type);
-                        if (pi is not null) return pi;
-                    }
-
-                    break;
+                case BinaryExpression be:
+                    return TestExpression(be.Left, type) ?? TestExpression(be.Right, type);
 
                 case MethodCallExpression mce:
                     foreach (var exParameter in mce.Arguments)
                     {
-                        var pi = TestExpression(exParameter, type);
-                        if (pi is not null) return pi;
+                        var pmc = TestExpression(exParameter, type);
+                        if (pmc is not null) return pmc;
                     }
-
                     break;
 
                 case MemberExpression me:
-                    var p = me.Member as PropertyInfo;
+                    var p = me.Member;
                     if (p?.ReflectedType == null ||
                         (type != p.ReflectedType && !type.IsSubclassOf(p.ReflectedType)))
                         return null;
