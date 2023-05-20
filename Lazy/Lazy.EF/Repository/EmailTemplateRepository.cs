@@ -25,8 +25,7 @@ namespace Lazy.EF.Repository
                     new EmailTemplate
                     {
                         Id = et.Id,
-                        Name = et.Name,
-                        Html = et.Html,
+                        Name = et.Name
                     });
 
             return base.ReadPagedAsync(pageSize, pageNumber, filterExpression, sortExpression, projection1);

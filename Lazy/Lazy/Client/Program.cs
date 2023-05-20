@@ -1,3 +1,4 @@
+using FluentValidation;
 using Lazy.Client;
 using Lazy.Client.Services;
 using Lazy.Model;
@@ -22,7 +23,8 @@ builder.Services.AddScoped<UserSettingsService>();
 builder.Services
     .AddScoped<DataService<EmailTemplateModel>, EmailTemplateDataService>()
     .AddScoped<PagedDataService<EmailTemplateModel>, EmailTemplateDataService>();
-    
+
+builder.Services.AddScoped<IValidator<EmailTemplateModel>, EmailTemplateModelValidator>();
 
 
 await builder.Build().RunAsync();

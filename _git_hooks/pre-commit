@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# List of constant strings to search for
+strings=("string1" "string2" "string3")
+
+# List of file names to search for
+filenames=("appsettings.*\.json" "secrets.json")
+
+# Search for files with specified names
+files=$(git diff --cached --name-only | grep -E "$(printf '%s$|' "${filenames[@]}" | sed 's/|$//')")
+
+# Check if any file contains any of the constant strings
+for file in $files; do
+    for str in "${strings[@]}"; do
+        if grep -q "$str" "$file"; then
+            echo "Error: $file contains the string '$str'"
+            exit 1
+        fi
+    done
+done
+
+exit 0
