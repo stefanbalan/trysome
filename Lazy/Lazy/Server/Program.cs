@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Lazy.Data;
 using Lazy.EF;
 using Lazy.Data.Entities;
@@ -26,6 +28,10 @@ logger.Information("Hello, world!");
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddFluentValidationAutoValidation(config =>
+{
+    // config.DisableDataAnnotationsValidation = true; //
+});
 
 builder.Services.AddDb(builder.Configuration.GetConnectionString("LazyConStr"));
 
@@ -44,6 +50,9 @@ builder.Services
 
 // repositories
 builder.Services.AddScoped<IRepository<EmailTemplate, int>, EmailTemplateRepository>();
+
+// validators
+builder.Services.AddValidatorsFromAssemblyContaining<EmailTemplateModelValidator>();
 
 
 var app = builder.Build();
