@@ -37,19 +37,28 @@
             <Button Margin="10 0" Width="100">Remove</Button>
         </StackPanel>
         <TreeView Grid.Row="4" x:Name="CommandsTreeView" Margin="10">
-            <TreeView.Resources>
+            <!--<TreeView.Resources>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="Template">
-            
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TreeViewItem">
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Margin="2" Name="checkBox1"/>
+                                    <Border Padding="2">
+                                        <ContentPresenter Name="PART_header" ContentSource="Header"/>
+                                    </Border>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
                     </Setter>
                 </Style>
-            </TreeView.Resources>
+            </TreeView.Resources>-->
             <TreeViewItem Header="Employee1" />
             <TreeViewItem Header="Jesper Aaberg"/>
             <TreeViewItem Header="Employee Number">
                 <TreeViewItem Header="12345"/>
             </TreeViewItem>
-            <TreeViewItem Header="Work Days">
+            <TreeViewItem Header="Work Days" IsExpanded="True">
                 <TreeViewItem Header="Monday"/>
                 <TreeViewItem Header="Tuesday"/>
                 <TreeViewItem Header="Thursday"/>
