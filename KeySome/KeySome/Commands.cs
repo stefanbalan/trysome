@@ -55,6 +55,10 @@ public class Commands
 
                         items.Add(new KeyItem(command.Name, binding, prefix, scope));
                     }
+                    else
+                    {
+
+                    }
                 }
             }
         }
