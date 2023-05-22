@@ -23,12 +23,12 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void SourceMember_DoesntAcceptNull_Throws() =>
         Assert.Throws<NullReferenceException>(() =>
-            MapperExpressionToProperty.SourceExpression<TestClass, int>(null!));
+            MapperExpressionToMemberBuilder.SourceExpression<TestClass, int>(null!));
 
     [Fact]
     public void SourceExpression_AcceptsProperty()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .SourceExpression<TestClass, int>(ex => ex.IntProperty);
 
         Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
@@ -37,7 +37,7 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void SourceExpression_AcceptsField()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .SourceExpression<TestClass, int>(ex => ex.IntField);
 
         Assert.Equal(nameof(TestClass.IntField), pi.Name);
@@ -46,7 +46,7 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void SourceExpression_AcceptsUnnaryExpression()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .SourceExpression<TestClass, bool>(ex => !ex.BoolProperty);
 
         Assert.Equal(nameof(TestClass.BoolProperty), pi.Name);
@@ -55,7 +55,7 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void SourceExpression_AcceptsBinaryExpression()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .SourceExpression<TestClass, int>(ex => ex.IntProperty * 2);
 
         Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
@@ -64,7 +64,7 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void SourceExpression_AcceptsMethodCall()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .SourceExpression<TestClass, int>(ex => TestClass2.TestMethod(ex.IntProperty));
 
         Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
@@ -77,12 +77,12 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void DestinationMember_DoesntAcceptNull_Throws() =>
         Assert.Throws<NullReferenceException>(() =>
-            MapperExpressionToProperty.DestinationMember<TestClass, int>(null!));
+            MapperExpressionToMemberBuilder.DestinationMember<TestClass, int>(null!));
 
     [Fact]
     public void DestinationMember_AcceptsProperty()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .DestinationMember<TestClass, int>(ex => ex.IntProperty);
 
         Assert.Equal(nameof(TestClass.IntProperty), pi.Name);
@@ -91,7 +91,7 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void DestinationMember_AcceptsField()
     {
-        var pi = MapperExpressionToProperty
+        var pi = MapperExpressionToMemberBuilder
             .DestinationMember<TestClass, int>(ex => ex.IntField);
 
         Assert.Equal(nameof(TestClass.IntField), pi.Name);
@@ -100,7 +100,7 @@ public class MapperExpressionToPropertyTests
     [Fact]
     public void DestinationMember_DoesntAcceptMethod_Throws() =>
         Assert.Throws<ArgumentException>(() =>
-            MapperExpressionToProperty.DestinationMember<TestClass, int>(ex => ex.ExampleMethod())
+            MapperExpressionToMemberBuilder.DestinationMember<TestClass, int>(ex => ex.ExampleMethod())
         );
 
     [Fact]
@@ -108,7 +108,7 @@ public class MapperExpressionToPropertyTests
     {
         var t2 = new TestClass2();
         Assert.Throws<ArgumentException>(() =>
-            MapperExpressionToProperty.DestinationMember<TestClass, int>(ex => t2.IntProperty)
+            MapperExpressionToMemberBuilder.DestinationMember<TestClass, int>(ex => t2.IntProperty)
         );
     }
 }
