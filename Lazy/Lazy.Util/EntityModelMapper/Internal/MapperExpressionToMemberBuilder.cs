@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Lazy.Util.EntityModelMapper.Internal;
 
-public static class MapperExpressionToProperty
+public static class MapperExpressionToMemberBuilder
 {
     public static MemberInfo SourceExpression<T, TP>(Expression<Func<T, TP>> expression)
     {
