@@ -7,7 +7,7 @@ internal class LeagueMapper : BaseMapper<DBLeague, League>
     public override DBLeague CreateEntity(League league, DateTime timeStamp) =>
         base.CreateEntity(league, timeStamp) with { Id = league.Id };
 
-    public override void UpdateEntity(DBLeague dbLeague, League league, DateTime timeStamp)
+    public override bool UpdateEntity(DBLeague dbLeague, League league, DateTime timeStamp)
     {
         dbLeague.Name = league.Name;
 
@@ -17,5 +17,7 @@ internal class LeagueMapper : BaseMapper<DBLeague, League>
             Medium = league.IconUrls.Medium,
             Tiny = league.IconUrls.Tiny,
         };
+
+        return true;
     }
 }

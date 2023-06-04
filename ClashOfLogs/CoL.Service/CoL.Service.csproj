@@ -26,6 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Lazy\Lazy.Util\Lazy.Util.csproj" />
 		<ProjectReference Include="..\ClashOfLogs\Shared\ClashOfLogs.Shared.csproj" />
 		<ProjectReference Include="..\CoL.DB\CoL.DB.csproj" />
 	</ItemGroup>

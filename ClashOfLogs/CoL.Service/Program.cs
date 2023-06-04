@@ -11,10 +11,12 @@ global using DBWarMember = CoL.DB.Entities.WarMember;
 global using DBWarOpponentMember = CoL.DB.Entities.WarOpponentMember;
 using ClashOfLogs.Shared;
 using CoL.DB;
+using CoL.DB.Entities;
 using CoL.Service.DataProvider;
 using CoL.Service.Importer;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
+using Lazy.Util.EntityModelMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +24,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Clan = ClashOfLogs.Shared.Clan;
+using League = ClashOfLogs.Shared.League;
+using Member = ClashOfLogs.Shared.Member;
+using WarMember = ClashOfLogs.Shared.WarMember;
 
 namespace CoL.Service;
 
@@ -125,9 +131,10 @@ public static class Program
                 services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
                 services.AddSingleton<IMapper<DBWar, WarSummary>, WarSummaryMapper>();
                 services.AddSingleton<IMapper<DBWar, WarDetail>, WarDetailMapper>();
+
                 services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
-                services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarClanMemberMapper>();
-                services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarOpponentMemberMapper>();
+                services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarMemberMapperForClan>();
+                services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarMemberMapperForOpponent>();
 
                 // repositories
                 services.AddTransient<IRepository<DBClan>, ClanRepository>();

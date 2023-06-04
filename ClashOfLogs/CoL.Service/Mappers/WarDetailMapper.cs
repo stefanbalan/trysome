@@ -16,7 +16,7 @@ internal class WarDetailMapper : BaseMapper<DBWar, WarDetail>
         };
     }
 
-    public override void UpdateEntity(DBWar entity, WarDetail model, DateTime timeStamp)
+    public override bool UpdateEntity(DBWar entity, WarDetail model, DateTime timeStamp)
     {
         entity.State = model.State;
         entity.TeamSize = model.TeamSize;
@@ -43,5 +43,7 @@ internal class WarDetailMapper : BaseMapper<DBWar, WarDetail>
                 Large = clan.BadgeUrls.Large
             };
         }
+
+        return true;
     }
 }

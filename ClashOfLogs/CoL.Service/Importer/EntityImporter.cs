@@ -48,14 +48,18 @@ public abstract class EntityImporter<TDbEntity, TEntity>
 
             if (dbEntity != null)
             {
-                UpdateProperties(dbEntity, entity, timestamp);
-                Repository.Update(dbEntity);
-                logger.LogDebug("Updated existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
+                if (mapper.UpdateEntity(dbEntity, entity, timestamp))
+                {
+                    Repository.Update(dbEntity);
+                    logger.LogDebug("Updated existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
+                }
+                else
+                    logger.LogDebug("No update for existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
             }
             else
             {
                 dbEntity = mapper.CreateEntity(entity, timestamp);
-                UpdateProperties(dbEntity, entity, timestamp);
+                mapper.UpdateEntity(dbEntity, entity, timestamp);
 
                 try
                 {
@@ -99,9 +103,6 @@ public abstract class EntityImporter<TDbEntity, TEntity>
     }
 
     protected abstract object?[] EntityKey(TEntity entity);
-
-    protected virtual void UpdateProperties(TDbEntity dbEntity, TEntity entity, DateTime timestamp)
-        => mapper.UpdateEntity(dbEntity, entity, timestamp);
 
     protected abstract Task UpdateChildrenAsync(TDbEntity dbEntity, TEntity entity, DateTime timestamp);
 }

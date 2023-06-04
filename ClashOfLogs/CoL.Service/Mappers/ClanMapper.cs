@@ -10,7 +10,7 @@ internal class ClanMapper : BaseMapper<DBClan, Clan>
             Tag = entity.Tag,
         };
 
-    public override void UpdateEntity(DBClan entity, Clan model, DateTime timeStamp)
+    public override bool UpdateEntity(DBClan entity, Clan model, DateTime timeStamp)
     {
         base.UpdateEntity(entity, model, timeStamp);
         entity.Name = model.Name;
@@ -35,5 +35,7 @@ internal class ClanMapper : BaseMapper<DBClan, Clan>
             Medium = model.BadgeUrls.Medium,
             Large = model.BadgeUrls.Large
         };
+
+        return true;
     }
 }
