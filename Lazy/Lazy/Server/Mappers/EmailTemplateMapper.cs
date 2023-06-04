@@ -4,9 +4,9 @@ using Lazy.Util.EntityModelMapper;
 
 namespace Lazy.Server.Mappers;
 
-public sealed class EmailTemplateMapper : EntityModelMapperBase<EmailTemplate, EmailTemplateModel>
+public sealed class EmailTemplateMapper : EntityModelMapper<EmailTemplate, EmailTemplateModel>
 {
-    protected override void BuildMappings()
+    public EmailTemplateMapper()
     {
         MapTwoWay(entity => entity.Id, model => model.Id);
         MapTwoWay(entity => entity.Name, model => model.Name);

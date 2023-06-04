@@ -7,43 +7,42 @@ public static class MapperExpressionToMemberBuilder
 {
     public static MemberInfo SourceExpression<T, TP>(Expression<Func<T, TP>> expression)
     {
-        var prop = TestExpression(expression.Body, typeof(T));
+        var prop = TestSourceExpression(expression.Body, typeof(T));
 
         if (prop is null)
             throw new ArgumentException("No suitable field or property found.");
 
         return prop;
+    }
 
-        MemberInfo? TestExpression(Expression ex, Type type)
+    private static MemberInfo? TestSourceExpression(Expression ex, Type type)
+    {
+        switch (ex)
         {
-            switch (ex)
-            {
-                case UnaryExpression ue:
-                    return TestExpression(ue.Operand, type);
+            case UnaryExpression ue:
+                return TestSourceExpression(ue.Operand, type);
 
-                case BinaryExpression be:
-                    return TestExpression(be.Left, type) ?? TestExpression(be.Right, type);
+            case BinaryExpression be:
+                return TestSourceExpression(be.Left, type) ?? TestSourceExpression(be.Right, type);
 
-                case MethodCallExpression mce:
-                    foreach (var exParameter in mce.Arguments)
-                    {
-                        var pmc = TestExpression(exParameter, type);
-                        if (pmc is not null) return pmc;
-                    }
-                    break;
+            case MethodCallExpression mce:
+                foreach (var exParameter in mce.Arguments)
+                {
+                    var pmc = TestSourceExpression(exParameter, type);
+                    if (pmc is not null) return pmc;
+                }
 
-                case MemberExpression me:
-                    var p = me.Member;
-                    if (p?.ReflectedType == null ||
-                        (type != p.ReflectedType && !type.IsSubclassOf(p.ReflectedType)))
-                        return null;
-                    return p;
+                return null;
 
-                default:
+            case MemberExpression me:
+                var p = me.Member;
+                if (p.ReflectedType == null ||
+                    (type != p.ReflectedType && !type.IsSubclassOf(p.ReflectedType)))
                     return null;
-            }
+                return p;
 
-            return null;
+            default:
+                return null;
         }
     }
 
