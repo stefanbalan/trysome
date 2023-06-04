@@ -20,7 +20,7 @@ internal class MemberMapper : BaseMapper<DBMember, Member>
             Tag = entity.Tag
         };
 
-    public override void UpdateEntity(DBMember entity, Member model, DateTime timeStamp)
+    public override bool UpdateEntity(DBMember entity, Member model, DateTime timeStamp)
     {
         base.UpdateEntity(entity, model, timeStamp);
 
@@ -55,5 +55,7 @@ internal class MemberMapper : BaseMapper<DBMember, Member>
         // todo this is async code but method is sync
         entity.League = leagueProvider.ImportAsync(model.League, timeStamp)
             .GetAwaiter().GetResult();
+
+        return true;
     }
 }

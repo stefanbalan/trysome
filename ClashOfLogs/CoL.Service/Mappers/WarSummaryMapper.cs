@@ -14,7 +14,7 @@ internal class WarSummaryMapper : BaseMapper<DBWar, WarSummary>
         };
 
 
-    public override void UpdateEntity(DBWar entity, WarSummary model, DateTime timeStamp)
+    public override bool UpdateEntity(DBWar entity, WarSummary model, DateTime timeStamp)
     {
         base.UpdateEntity(entity, model, timeStamp);
 
@@ -39,5 +39,7 @@ internal class WarSummaryMapper : BaseMapper<DBWar, WarSummary>
                 Large = clan.BadgeUrls.Large
             };
         }
+
+        return true;
     }
 }

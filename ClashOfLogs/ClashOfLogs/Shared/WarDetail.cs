@@ -35,7 +35,7 @@ public record WarMember
     public string Name { get; set; }
 
     [JsonPropertyName("townhallLevel")]
-    public int TownhallLevel { get; set; }
+    public int TownHallLevel { get; set; }
 
     [JsonPropertyName("mapPosition")]
     public int MapPosition { get; set; }

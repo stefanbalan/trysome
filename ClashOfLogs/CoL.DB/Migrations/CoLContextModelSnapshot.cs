@@ -241,7 +241,7 @@ namespace CoL.DB.Migrations
                     b.Property<int>("OpponentAttacks")
                         .HasColumnType("int");
 
-                    b.Property<int>("TownhallLevel")
+                    b.Property<int>("TownHallLevel")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
