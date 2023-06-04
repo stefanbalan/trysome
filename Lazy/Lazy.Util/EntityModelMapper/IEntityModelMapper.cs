@@ -3,13 +3,10 @@
 namespace Lazy.Util.EntityModelMapper;
 
 
-public interface IEntityModelMapper<TEntity, TModel>
+public interface IEntityModelMapper<T1, T2>
 {
-    static abstract TModel ToModel(TEntity entity);
-
-    static abstract TEntity ToEntity(TModel model);
-
-    TModel GetModelFrom(TEntity entity);
-    TEntity GetEntityFrom(TModel model);
-    bool UpdateEntityFromModel(TEntity entity, TModel model);
+    T2 Get2From(T1 o1);
+    T1 Get1From(T2 o2);
+    bool UpdateT1FromT2(T1 o1, T2 o2);
+    bool UpdateT2FromT1(T2 o1, T1 o2);
 }
