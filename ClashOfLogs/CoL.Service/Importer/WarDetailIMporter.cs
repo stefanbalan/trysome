@@ -11,18 +11,17 @@ namespace CoL.Service.Importer;
 
 internal class WarDetailImporter : EntityImporter<DBWar, WarDetail>
 {
-    private readonly EntityImporter<DBWarClanMember, WarMember> warMemberClanImporter;
-    private readonly EntityImporter<DBWarOpponentMember, WarMember> warMemberopponentImporter;
+    private readonly EntityImporter<DBWarMember, WarMember> warMemberImporter;
 
     public WarDetailImporter(IMapper<DBWar, WarDetail> mapper,
         IRepository<DBWar> repository,
         ILogger<WarDetailImporter> logger,
-        EntityImporter<WarClanMember, WarMember> warMemberClanImporter,
-        EntityImporter<WarOpponentMember, WarMember> warMemberopponentImporter)
+        EntityImporter<DBWarMember, WarMember> warMemberImporter,
+        EntityImporter<DBWarMember, WarMember> warMemberopponentImporter)
         : base(mapper, repository, logger)
     {
-        this.warMemberClanImporter = warMemberClanImporter;
-        this.warMemberopponentImporter = warMemberopponentImporter;
+        this.warMemberImporter = warMemberImporter;
+        // this.warMemberopponentImporter = warMemberopponentImporter;
     }
 
     protected override object?[] EntityKey(WarDetail entity)
@@ -30,19 +29,19 @@ internal class WarDetailImporter : EntityImporter<DBWar, WarDetail>
 
     protected async override Task UpdateChildrenAsync(DBWar dbEntity, WarDetail entity, DateTime timestamp)
     {
-        dbEntity.ClanMembers ??= new List<DBWarClanMember>();
+        dbEntity.ClanMembers ??= new List<DBWarMember>();
         foreach (var clanMember in entity.Clan.Members)
         {
-            var wm = await warMemberClanImporter.ImportAsync(clanMember, timestamp);
+            var wm = await warMemberImporter.ImportAsync(clanMember, timestamp);
             if (wm == null) continue;
             var existing = dbEntity.ClanMembers.FirstOrDefault(wmc => string.Equals(wmc.Tag, clanMember.Tag));
             if (existing != null && ReferenceEquals(wm, existing)) throw new Exception("I knew it!?!");
         }
 
-        dbEntity.OpponentMembers ??= new List<DBWarOpponentMember>();
+        dbEntity.OpponentMembers ??= new List<DBWarMember>();
         foreach (var opponentMember in entity.Opponent.Members)
         {
-            var wm = await warMemberopponentImporter.ImportAsync(opponentMember, timestamp);
+            var wm = await warMemberImporter.ImportAsync(opponentMember, timestamp);
             if (wm == null) continue;
         }
     }

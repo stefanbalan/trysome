@@ -227,10 +227,6 @@ namespace CoL.DB.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MapPosition")
                         .HasColumnType("int");
 
@@ -250,31 +246,19 @@ namespace CoL.DB.Migrations
                     b.Property<int>("WarId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WarIdC")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WarIdO")
+                        .HasColumnType("int");
+
                     b.HasKey("Tag");
 
-                    b.ToTable("WarMembers_Opponent", (string)null);
+                    b.HasIndex("WarIdC");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("WarMember");
+                    b.HasIndex("WarIdO");
 
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("CoL.DB.Entities.WarClanMember", b =>
-                {
-                    b.HasBaseType("CoL.DB.Entities.WarMember");
-
-                    b.HasIndex("WarId");
-
-                    b.HasDiscriminator().HasValue("WarClanMember");
-                });
-
-            modelBuilder.Entity("CoL.DB.Entities.WarOpponentMember", b =>
-                {
-                    b.HasBaseType("CoL.DB.Entities.WarMember");
-
-                    b.HasIndex("WarId");
-
-                    b.HasDiscriminator().HasValue("WarOpponentMember");
+                    b.ToTable("WarMember");
                 });
 
             modelBuilder.Entity("CoL.DB.Entities.Clan", b =>
@@ -485,6 +469,16 @@ namespace CoL.DB.Migrations
 
             modelBuilder.Entity("CoL.DB.Entities.WarMember", b =>
                 {
+                    b.HasOne("CoL.DB.Entities.War", null)
+                        .WithMany("ClanMembers")
+                        .HasForeignKey("WarIdC")
+                        .HasConstraintName("FK_WarMember_Wars_WarId_ClanMembers");
+
+                    b.HasOne("CoL.DB.Entities.War", null)
+                        .WithMany("OpponentMembers")
+                        .HasForeignKey("WarIdO")
+                        .HasConstraintName("FK_WarMember_Wars_WarId_OpponentMembers");
+
                     b.OwnsOne("CoL.DB.Entities.WarAttack", "Attack1", b1 =>
                         {
                             b1.Property<string>("WarMemberTag")
@@ -512,7 +506,7 @@ namespace CoL.DB.Migrations
 
                             b1.HasKey("WarMemberTag");
 
-                            b1.ToTable("WarMembers_Opponent");
+                            b1.ToTable("WarMember");
 
                             b1.WithOwner()
                                 .HasForeignKey("WarMemberTag");
@@ -545,7 +539,7 @@ namespace CoL.DB.Migrations
 
                             b1.HasKey("WarMemberTag");
 
-                            b1.ToTable("WarMembers_Opponent");
+                            b1.ToTable("WarMember");
 
                             b1.WithOwner()
                                 .HasForeignKey("WarMemberTag");
@@ -578,7 +572,7 @@ namespace CoL.DB.Migrations
 
                             b1.HasKey("WarMemberTag");
 
-                            b1.ToTable("WarMembers_Opponent");
+                            b1.ToTable("WarMember");
 
                             b1.WithOwner()
                                 .HasForeignKey("WarMemberTag");
@@ -589,24 +583,6 @@ namespace CoL.DB.Migrations
                     b.Navigation("Attack2");
 
                     b.Navigation("BestOpponentAttack");
-                });
-
-            modelBuilder.Entity("CoL.DB.Entities.WarClanMember", b =>
-                {
-                    b.HasOne("CoL.DB.Entities.War", null)
-                        .WithMany("ClanMembers")
-                        .HasForeignKey("WarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CoL.DB.Entities.WarOpponentMember", b =>
-                {
-                    b.HasOne("CoL.DB.Entities.War", null)
-                        .WithMany("OpponentMembers")
-                        .HasForeignKey("WarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoL.DB.Entities.Clan", b =>

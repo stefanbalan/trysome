@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
-internal class LeagueImporter : EntityImporter<DBLeague, League>
+public class LeagueImporter : EntityImporter<DBLeague, League>
 {
     public LeagueImporter(
         IMapper<DBLeague, League> mapper,

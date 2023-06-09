@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoL.DB.Entities.Configuration;
@@ -55,12 +56,13 @@ public class WarConfiguration : IEntityTypeConfiguration<War>
         builder
             .HasMany(wc => wc.ClanMembers)
             .WithOne()
-            .HasForeignKey(wm => wm.WarId)
-            ;
+            .HasForeignKey(wm => wm.WarIdC)
+            .HasConstraintName("FK_WarMember_Wars_WarId_ClanMembers");
 
         builder
             .HasMany(wc => wc.OpponentMembers)
             .WithOne()
-            .HasForeignKey(wm => wm.WarId);
+            .HasForeignKey(wm => wm.WarIdO)
+            .HasConstraintName("FK_WarMember_Wars_WarId_OpponentMembers");
     }
 }

@@ -6,9 +6,9 @@ global using DBLeague = CoL.DB.Entities.League;
 global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
-global using DBWarClanMember = CoL.DB.Entities.WarClanMember;
 global using DBWarMember = CoL.DB.Entities.WarMember;
-global using DBWarOpponentMember = CoL.DB.Entities.WarOpponentMember;
+// global using DBWarClanMember = CoL.DB.Entities.WarMemberOfClan;
+// global using DBWarOpponentMember = CoL.DB.Entities.WarMemberOfOpponent;
 using ClashOfLogs.Shared;
 using CoL.DB;
 using CoL.DB.Entities;
@@ -122,27 +122,29 @@ public static class Program
                 services.AddSingleton<EntityImporter<DBLeague, League>, LeagueImporter>();
                 services.AddSingleton<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
                 services.AddSingleton<EntityImporter<DBWar, WarDetail>, WarDetailImporter>();
-                services.AddSingleton<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
-                services.AddSingleton<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
+                services.AddSingleton<EntityImporter<DBWarMember, WarMember>, WarMemberImporter>();
+                // services.AddSingleton<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
+                // services.AddSingleton<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
 
                 // mappers
                 services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
-                services.AddSingleton<IMapper<DBMember, Member>, MemberMapper>();
+                services.AddTransient<IMapper<DBMember, Member>, MemberMapper>();
                 services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
                 services.AddSingleton<IMapper<DBWar, WarSummary>, WarSummaryMapper>();
                 services.AddSingleton<IMapper<DBWar, WarDetail>, WarDetailMapper>();
 
                 services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
-                services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarMemberMapperForClan>();
-                services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarMemberMapperForOpponent>();
+                // services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarMemberMapperForClan>();
+                // services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarMemberMapperForOpponent>();
 
                 // repositories
                 services.AddTransient<IRepository<DBClan>, ClanRepository>();
                 services.AddTransient<IRepository<DBMember>, MemberEfRepository>();
                 services.AddTransient<IRepository<DBLeague>, LeagueEfRepository>();
                 services.AddTransient<IRepository<DBWar>, WarRepository>();
-                services.AddTransient<IRepository<DBWarClanMember>, WarClanMemberRepository>();
-                services.AddTransient<IRepository<DBWarOpponentMember>, WarClanOpponentMemberRepository>();
+                services.AddTransient<IRepository<DBWarMember>, WarMemberRepository>();
+                // services.AddTransient<IRepository<DBWarClanMember>, WarClanMemberRepository>();
+                // services.AddTransient<IRepository<DBWarOpponentMember>, WarClanOpponentMemberRepository>();
 
                 //the actual service to run
                 services.AddHostedService<Worker>();

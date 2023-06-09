@@ -2,22 +2,19 @@
 
 namespace CoL.Service.Mappers;
 
-internal class LeagueMapper : BaseMapper<DBLeague, League>
+public class LeagueMapper : BaseMapper<DBLeague, League>
 {
-    public override DBLeague CreateEntity(League league, DateTime timeStamp) =>
-        base.CreateEntity(league, timeStamp) with { Id = league.Id };
-
-    public override bool UpdateEntity(DBLeague dbLeague, League league, DateTime timeStamp)
+    public LeagueMapper()
     {
-        dbLeague.Name = league.Name;
-
-        dbLeague.IconUrls = new DB.Entities.IconUrls
-        {
-            Small = league.IconUrls.Small,
-            Medium = league.IconUrls.Medium,
-            Tiny = league.IconUrls.Tiny,
-        };
-
-        return true;
+        MapT2ToT1(l => l.Id, dl => dl.Id);
+        MapT2ToT1(l => l.Name, dl => dl.Name);
+        MapT2ToT1(l => DbLeagueIconUrls(l.IconUrls), dl => dl.IconUrls);
     }
+
+    private static DB.Entities.IconUrls DbLeagueIconUrls(IconUrls iconUrls) => new()
+    {
+        Small = iconUrls.Small,
+        Medium = iconUrls.Medium,
+        Tiny = iconUrls.Tiny,
+    };
 }

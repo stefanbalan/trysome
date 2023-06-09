@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoL.DB.Entities.Configuration;
 
-public class WarMemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfiguration<WarMember>
+public class WarMemberConfiguration : BaseEntityWithTagConfiguration<WarMember>
 {
     public override void Configure(EntityTypeBuilder<WarMember> builder)
     {
@@ -14,6 +14,7 @@ public class WarMemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigur
         builder.OwnsOne(wm => wm.Attack2, WarAttackConfiguration);
         builder.OwnsOne(wm => wm.BestOpponentAttack, WarAttackConfiguration);
     }
+
 
     private static void WarAttackConfiguration(OwnedNavigationBuilder<WarMember, WarAttack> builder)
     {

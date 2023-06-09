@@ -2,6 +2,6 @@
 
 public interface IMapper<TEntity, TModel> where TEntity : DB.Entities.BaseEntity
 {
-    TEntity CreateEntity(TModel entity, DateTime timeStamp);
+    TEntity CreateAndUpdateEntity(TModel model, DateTime timeStamp);
     bool UpdateEntity(TEntity entity, TModel model, DateTime timeStamp);
 }

@@ -1,24 +1,12 @@
+using CoL.Service.Mappers;
 using WarMember = ClashOfLogs.Shared.WarMember;
 
-namespace CoL.Service.Mappers.Tests;
+namespace CoL.Service.Tests.Mappers;
 
 public class WarMemberMapperTests
 {
     [Fact]
-    public void UpdateEntity_WithPopulatedModel_PropertiesUpdated_WarMember()
-        => UpdateEntity_WithPopulatedModel_PropertiesUpdated<WarMemberMapper>();
-
-    [Fact]
-    public void UpdateEntity_WithPopulatedModel_PropertiesUpdated_WarMemberClan()
-        => UpdateEntity_WithPopulatedModel_PropertiesUpdated<WarMemberMapperForClan>();
-
-    [Fact]
-    public void UpdateEntity_WithPopulatedModel_PropertiesUpdated_WarMemberForOpponent()
-        => UpdateEntity_WithPopulatedModel_PropertiesUpdated<WarMemberMapperForOpponent>();
-
-
-    private void UpdateEntity_WithPopulatedModel_PropertiesUpdated<TMapper>()
-        where TMapper : WarMemberMapper, new()
+    private void UpdateEntity_WithPopulatedModel_PropertiesUpdated()
     {
         // Arrange
         var model = new WarMember
@@ -56,11 +44,11 @@ public class WarMemberMapperTests
                 Duration = 120
             }
         };
-        var mapper = new TMapper();
+        var mapper = new WarMemberMapper();
 
 
         var now = DateTime.Now;
-        var entity = mapper.CreateEntity(model, now);
+        var entity = mapper.CreateAndUpdateEntity(model, now);
 
         // Act
         var result = mapper.UpdateEntity(entity, model, now);

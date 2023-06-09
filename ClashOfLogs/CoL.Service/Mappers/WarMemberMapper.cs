@@ -12,7 +12,6 @@ public class WarMemberMapper
 {
     public WarMemberMapper()
     {
-        //base.Configure();
         MapT2ToT1(wm => wm.Tag, wm => wm.Tag);
         MapT2ToT1(wm => wm.Name, wm => wm.Name);
         MapT2ToT1(wm => wm.TownHallLevel, wm => wm.TownHallLevel);
@@ -23,11 +22,14 @@ public class WarMemberMapper
         MapT2ToT1(wm => BuildAttack(wm.BestOpponentAttack), wm => wm.BestOpponentAttack);
     }
 
-    public virtual DBWarMember CreateEntity(WarMember entity, DateTime timeStamp)
-        => new() { Tag = entity.Tag };
+
+    public virtual DBWarMember CreateAndUpdateEntity(WarMember model, DateTime timeStamp)
+        => new() { Tag = model.Tag };
 
     public virtual bool UpdateEntity(DBWarMember entity, WarMember model, DateTime timeStamp)
         => UpdateT1FromT2(entity, model);
+
+
 
     private static WarAttack? BuildAttacks(List<Attack>? l, int number)
         => l?.Count >= number ? BuildAttack(l[number - 1]) : null;

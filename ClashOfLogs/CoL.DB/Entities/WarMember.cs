@@ -2,7 +2,8 @@
 
 public record WarMember : BaseEntityWithTag
 {
-    public int WarId { get; set; }
+    public int? WarIdC { get; set; }
+    public int? WarIdO { get; set; }
     public string? Name { get; set; }
     public int TownHallLevel { get; set; }
     public int MapPosition { get; set; }

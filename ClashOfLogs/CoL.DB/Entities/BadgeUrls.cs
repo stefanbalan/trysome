@@ -1,6 +1,6 @@
 ﻿namespace CoL.DB.Entities;
 
-public class BadgeUrls
+public record BadgeUrls
 {
     public string? Small { get; set; }
     public string? Medium { get; set; }
