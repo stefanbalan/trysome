@@ -5,8 +5,8 @@ namespace CoL.Service.Mappers;
 
 internal class WarSummaryMapper : BaseMapper<DBWar, WarSummary>
 {
-    public override DBWar CreateEntity(WarSummary entity, DateTime timeStamp) =>
-        base.CreateEntity(entity, timeStamp) with
+    public override DBWar CreateAndUpdateEntity(WarSummary entity, DateTime timeStamp) =>
+        base.CreateAndUpdateEntity(entity, timeStamp) with
         {
             Clan = new DBWarClan { Tag = entity.Clan.Tag },
             Opponent = new DBWarClan { Tag = entity.Opponent.Tag },

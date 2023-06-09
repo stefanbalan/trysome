@@ -27,17 +27,19 @@ public class EntityModelMapper<T1, T2> : IEntityModelMapper<T1, T2>
 
     protected static void MapT1ToT2<TValue>(
         Expression<Func<T1, TValue>> t1Exp,
-        Expression<Func<T2, TValue>> t2Exp)
+        Expression<Func<T2, TValue>> t2Exp
+        , Action<T1, T2>? onChangeAction = null)
     {
-        var etmMapping = new Mapping<T1, T2, TValue>(t1Exp, t2Exp);
+        var etmMapping = new Mapping<T1, T2, TValue>(t1Exp, t2Exp, onChangeAction);
         T1ToT2Mappings[etmMapping.Key] = etmMapping;
     }
 
     protected static void MapT2ToT1<TValue>(
         Expression<Func<T2, TValue>> t2Exp,
-        Expression<Func<T1, TValue>> t1Exp)
+        Expression<Func<T1, TValue>> t1Exp,
+        Action<T2, T1>? onChangeAction = null)
     {
-        var t2ToT1Mapping = new Mapping<T2, T1, TValue>(t2Exp, t1Exp);
+        var t2ToT1Mapping = new Mapping<T2, T1, TValue>(t2Exp, t1Exp, onChangeAction);
         T2ToT1Mappings[t2ToT1Mapping.Key] = t2ToT1Mapping;
     }
 
@@ -45,10 +47,12 @@ public class EntityModelMapper<T1, T2> : IEntityModelMapper<T1, T2>
 
     #region public builders
 
-    public void T1ToT2<TValue>(Expression<Func<T1, TValue>> t1Exp, Expression<Func<T2, TValue>> t2Exp)
-        => MapT1ToT2(t1Exp, t2Exp);
+    public void T1ToT2<TValue>(Expression<Func<T1, TValue>> t1Exp, Expression<Func<T2, TValue>> t2Exp,
+        Action<T1, T2>? onChangeAction = null)
+        => MapT1ToT2(t1Exp, t2Exp, onChangeAction);
 
-    public void T2ToT1<TValue>(Expression<Func<T2, TValue>> t2Exp, Expression<Func<T1, TValue>> t1Exp)
+    public void T2ToT1<TValue>(Expression<Func<T2, TValue>> t2Exp, Expression<Func<T1, TValue>> t1Exp,
+        Action? onChangeAction = null)
         => MapT2ToT1(t2Exp, t1Exp);
 
     public void TwoWay<TValue>(Expression<Func<T1, TValue>> t1Exp, Expression<Func<T2, TValue>> t2Exp)
@@ -98,9 +102,12 @@ public class EntityModelMapper<T1, T2> : IEntityModelMapper<T1, T2>
         protected readonly Func<TSrc, TValue> SrcGetter;
         protected readonly Func<TDst, TValue> DstGetter;
         protected readonly Action<TDst, TValue> DstSetter = null!;
+        private readonly Action<TSrc, TDst>? changeAction;
 
-        public Mapping(Expression<Func<TSrc, TValue>> srcExp, Expression<Func<TDst, TValue>> dstExp)
+        public Mapping(Expression<Func<TSrc, TValue>> srcExp, Expression<Func<TDst, TValue>> dstExp,
+            Action<TSrc, TDst>? onChangeAction = null)
         {
+            changeAction = onChangeAction;
             srcMember = MapperExpressionToMemberBuilder.SourceExpression(srcExp);
             dstMember = MapperExpressionToMemberBuilder.DestinationMember(dstExp);
             if (dstMember is PropertyInfo { CanWrite: false }) throw new ArgumentException("Destination is read-only");
@@ -160,6 +167,7 @@ public class EntityModelMapper<T1, T2> : IEntityModelMapper<T1, T2>
             }
 
             DstSetter(dst, newValue);
+            changeAction?.Invoke(src, dst);
             return true;
         }
 
@@ -178,7 +186,7 @@ public class EntityModelMapper<T1, T2> : IEntityModelMapper<T1, T2>
         ////             break;
         ////     }
         //// }
-
-        #endregion
     }
+
+    #endregion
 }

@@ -1,6 +1,6 @@
 ﻿namespace CoL.DB.Entities;
 
-public class WarAttack
+public record WarAttack
 {
     public string AttackerTag { get; set; } = null!;
     public string DefenderTag { get; set; } = null!;

@@ -5,38 +5,45 @@ using Member = ClashOfLogs.Shared.Member;
 
 namespace CoL.Service.Mappers;
 
-internal class MemberMapper : BaseMapper<DBMember, Member>
+public class MemberMapper : BaseMapper<DBMember, Member>
 {
     private readonly EntityImporter<DBLeague, League> leagueProvider;
 
     public MemberMapper(EntityImporter<DBLeague, League> leagueProvider)
     {
         this.leagueProvider = leagueProvider;
+
+        MapT2ToT1(m => m.Tag, dm => dm.Tag);
+        MapT2ToT1(m => m.Name, dm => dm.Name,
+            (m, dm) => dm.History.Add(
+                new HistoryEvent(TimeStamp, nameof(dm.Name), m.Name, dm.Name)));
+        MapT2ToT1(m => m.Role, dm => dm.Role,
+            (m, dm) => dm.History.Add(
+                new HistoryEvent(TimeStamp, nameof(dm.Role), m.Role, dm.Role)));
+        MapT2ToT1(m => m.ExpLevel, dm => dm.ExpLevel);
+        MapT2ToT1(m => m.Trophies, dm => dm.Trophies);
+        MapT2ToT1(m => m.VersusTrophies, dm => dm.VersusTrophies);
+        MapT2ToT1(m => m.ClanRank, dm => dm.ClanRank);
+        MapT2ToT1(m => m.PreviousClanRank, dm => dm.PreviousClanRank);
+        MapT2ToT1(m => m.Donations, dm => dm.Donations);
+        MapT2ToT1(m => m.DonationsReceived, dm => dm.DonationsReceived);
     }
 
-    public override DBMember CreateEntity(Member entity, DateTime timeStamp) =>
-        base.CreateEntity(entity, timeStamp) with
-        {
-            Tag = entity.Tag
-        };
+    public DateTime TimeStamp { get; set; }
+
+    public override DBMember CreateAndUpdateEntity(Member model, DateTime timeStamp)
+    {
+        TimeStamp = timeStamp;
+
+        var entity = base.CreateAndUpdateEntity(model, timeStamp);
+        entity.League = leagueProvider.ImportAsync(model.League, timeStamp)
+            .GetAwaiter().GetResult();
+        return entity;
+    }
 
     public override bool UpdateEntity(DBMember entity, Member model, DateTime timeStamp)
     {
-        base.UpdateEntity(entity, model, timeStamp);
-
-        if (!string.Equals(entity.Name, model.Name, StringComparison.InvariantCulture))
-            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Name), model.Name, entity.Name));
-        entity.Name = model.Name;
-
-        if (!string.Equals(entity.Role, model.Role, StringComparison.InvariantCulture))
-            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Role), model.Role, entity.Role));
-        entity.Role = model.Role;
-        entity.ExpLevel = model.ExpLevel;
-        entity.Trophies = model.Trophies;
-        entity.VersusTrophies = model.VersusTrophies;
-        entity.ClanRank = model.ClanRank;
-        entity.PreviousClanRank = model.PreviousClanRank;
-
+        TimeStamp = timeStamp;
         if (entity.Donations > model.Donations)
         {
             //new season
@@ -49,13 +56,9 @@ internal class MemberMapper : BaseMapper<DBMember, Member>
                 entity.DonationsReceived.ToString()));
         }
 
-        entity.Donations = model.Donations;
-        entity.DonationsReceived = model.DonationsReceived;
-
-        // todo this is async code but method is sync
         entity.League = leagueProvider.ImportAsync(model.League, timeStamp)
             .GetAwaiter().GetResult();
 
-        return true;
+        return base.UpdateEntity(entity, model, timeStamp);
     }
 }

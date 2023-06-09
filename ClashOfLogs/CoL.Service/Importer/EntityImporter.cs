@@ -5,14 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importer;
 
-
-// todo change the mapping with the new one, used in Lazy
 // needs:
-//      - only change "UPdatedAt" and only add to the DbSet as updated when there are actual changes
-//      - validate that all (needed) properties are present, there are wars in log with null result or no name for opponent clan
+//todo - validate that all (needed) properties are present, there are wars in log with null result or no name for opponent clan
+//todo - check test coverage to see what properties are not being imported (eg: Clan.Location)
+
 public abstract class EntityImporter<TDbEntity, TEntity>
     where TDbEntity : BaseEntity
-    where TEntity : class
 {
     private readonly ILogger<EntityImporter<TDbEntity, TEntity>> logger;
     protected readonly IRepository<TDbEntity> Repository;
@@ -29,7 +27,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
         Repository = repository;
     }
 
-    public async Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp, bool persist = false)
+    public async virtual Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp, bool persist = false)
     {
         try
         {
@@ -58,8 +56,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
             }
             else
             {
-                dbEntity = mapper.CreateEntity(entity, timestamp);
-                mapper.UpdateEntity(dbEntity, entity, timestamp);
+                dbEntity = mapper.CreateAndUpdateEntity(entity, timestamp);
 
                 try
                 {
