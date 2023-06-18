@@ -135,8 +135,8 @@ public class MemberMapperTests
             VersusTrophies = 345,
             ClanRank = 9,
             PreviousClanRank = 10,
-            Donations = 10,
-            DonationsReceived = 12
+            Donations = 1000,
+            DonationsReceived = 1200
         };
         var member = new Member
         {
@@ -149,8 +149,8 @@ public class MemberMapperTests
             VersusTrophies = 2345,
             ClanRank = 5,
             PreviousClanRank = 7,
-            Donations = 1000,
-            DonationsReceived = 1200
+            Donations = 100,
+            DonationsReceived = 120
         };
 
 
@@ -164,7 +164,7 @@ public class MemberMapperTests
 
         leagueImporterMock.Setup(importer => importer.ImportAsync(
                 It.IsAny<League>(), It.IsAny<DateTime>(), false))
-            .Returns(() => Task.FromResult(dbLeague)!);
+            .ReturnsAsync(() => dbLeague);
 
         var mapper = new MemberMapper(leagueImporterMock.Object);
 
@@ -176,7 +176,23 @@ public class MemberMapperTests
         Assert.True(changed);
 
 
-        // Assert
+        var historyName = dbMember.History
+            .FirstOrDefault(h => h.Property == nameof(dbMember.Name));
+        var historyRole = dbMember.History
+            .FirstOrDefault(h => h.Property.Equals(nameof(dbMember.Role)));
+        var historyDonations = dbMember.History
+            .FirstOrDefault(h => h.Property == nameof(dbMember.Donations));
+        var historyDonationsReceived = dbMember.History
+            .FirstOrDefault(h => h.Property.Equals(nameof(dbMember.DonationsReceived)));
+
+
+        Assert.NotNull(historyName);
+        Assert.NotNull(historyRole);
+        Assert.NotNull(historyDonations);
+        Assert.NotNull(historyDonationsReceived);
+
+
+
         Assert.Equal(member.Tag, dbMember.Tag);
         Assert.Equal(member.Name, dbMember.Name);
         Assert.Equal(member.Role, dbMember.Role);
@@ -187,6 +203,10 @@ public class MemberMapperTests
         Assert.Equal(member.PreviousClanRank, dbMember.PreviousClanRank);
         Assert.Equal(member.Donations, dbMember.Donations);
         Assert.Equal(member.DonationsReceived, dbMember.DonationsReceived);
+
+
+
+
 
         leagueImporterMock.Verify(leagueImporter =>
             leagueImporter.ImportAsync(It.IsAny<League>(), It.IsAny<DateTime>(), false), Times.Once);

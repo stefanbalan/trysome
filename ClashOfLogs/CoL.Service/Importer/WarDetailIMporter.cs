@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ClashOfLogs.Shared;
-using CoL.DB.Entities;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using Microsoft.Extensions.Logging;
@@ -16,12 +15,10 @@ internal class WarDetailImporter : EntityImporter<DBWar, WarDetail>
     public WarDetailImporter(IMapper<DBWar, WarDetail> mapper,
         IRepository<DBWar> repository,
         ILogger<WarDetailImporter> logger,
-        EntityImporter<DBWarMember, WarMember> warMemberImporter,
-        EntityImporter<DBWarMember, WarMember> warMemberopponentImporter)
+        EntityImporter<DBWarMember, WarMember> warMemberImporter)
         : base(mapper, repository, logger)
     {
         this.warMemberImporter = warMemberImporter;
-        // this.warMemberopponentImporter = warMemberopponentImporter;
     }
 
     protected override object?[] EntityKey(WarDetail entity)
@@ -42,7 +39,6 @@ internal class WarDetailImporter : EntityImporter<DBWar, WarDetail>
         foreach (var opponentMember in entity.Opponent.Members)
         {
             var wm = await warMemberImporter.ImportAsync(opponentMember, timestamp);
-            if (wm == null) continue;
         }
     }
 }

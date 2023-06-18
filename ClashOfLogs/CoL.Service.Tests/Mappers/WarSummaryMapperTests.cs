@@ -4,22 +4,19 @@ using WarClan = ClashOfLogs.Shared.WarClan;
 
 namespace CoL.Service.Tests.Mappers;
 
-public class WarDetailMapperTests
+public class WarSummaryMapperTests
 {
     [Fact]
-    public void Map_CreatesWarDetail_ReturnsMappedWarDetail()
+    public void Map_CreatesWarSummary_ReturnsMappedWar()
     {
         // Arrange
-        WarDetailMapper mapper = new();
+        WarSummaryMapper mapper = new();
 
         var now = DateTime.UtcNow;
-        WarDetail war = new()
+        WarSummary war = new()
         {
-            State = "InWar",
             TeamSize = 5,
             AttacksPerMember = 2,
-            PreparationStartTime = now,
-            StartTime = now,
             EndTime = now.AddHours(24),
             Clan = new WarClan
             {
@@ -58,11 +55,8 @@ public class WarDetailMapperTests
 
         // Assert
         Assert.NotNull(dbwar);
-        Assert.Equal(war.State, dbwar.State);
         Assert.Equal(war.TeamSize, dbwar.TeamSize);
         Assert.Equal(war.AttacksPerMember, dbwar.AttacksPerMember);
-        Assert.Equal(war.PreparationStartTime, dbwar.PreparationStartTime);
-        Assert.Equal(war.StartTime, dbwar.StartTime);
         Assert.Equal(war.EndTime, dbwar.EndTime);
         Assert.Equal(war.Clan.Tag, dbwar.Clan.Tag);
         Assert.Equal(war.Clan.Name, dbwar.Clan.Name);
@@ -99,7 +93,7 @@ public class WarDetailMapperTests
     public void Map_UpdatesWarDetail_ReturnsMappedWarDetail()
     {
         // Arrange
-        WarDetailMapper mapper = new();
+        WarSummaryMapper mapper = new();
 
         var now = DateTime.UtcNow;
         DBWar dbwar = new()
@@ -142,13 +136,10 @@ public class WarDetailMapperTests
             }
         };
 
-        WarDetail war = new()
+        WarSummary war = new()
         {
-            State = "Ended",
             TeamSize = 7,
             AttacksPerMember = 1,
-            PreparationStartTime = now.AddHours(2),
-            StartTime = now.AddHours(2),
             EndTime = now.AddHours(26),
             Clan = new WarClan
             {
@@ -188,11 +179,8 @@ public class WarDetailMapperTests
 
         // Assert
         Assert.True(changed);
-        Assert.Equal(war.State, dbwar.State);
         Assert.Equal(war.TeamSize, dbwar.TeamSize);
         Assert.Equal(war.AttacksPerMember, dbwar.AttacksPerMember);
-        Assert.Equal(war.PreparationStartTime, dbwar.PreparationStartTime);
-        Assert.Equal(war.StartTime, dbwar.StartTime);
         Assert.Equal(war.EndTime, dbwar.EndTime);
         Assert.Equal(war.Clan.Tag, dbwar.Clan.Tag);
         Assert.Equal(war.Clan.Name, dbwar.Clan.Name);

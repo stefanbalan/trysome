@@ -3,43 +3,16 @@ using WarClan = ClashOfLogs.Shared.WarClan;
 
 namespace CoL.Service.Mappers;
 
-internal class WarSummaryMapper : BaseMapper<DBWar, WarSummary>
+public class WarSummaryMapper : BaseMapper<DBWar, WarSummary>
 {
-    public override DBWar CreateAndUpdateEntity(WarSummary entity, DateTime timeStamp) =>
-        base.CreateAndUpdateEntity(entity, timeStamp) with
-        {
-            Clan = new DBWarClan { Tag = entity.Clan.Tag },
-            Opponent = new DBWarClan { Tag = entity.Opponent.Tag },
-            EndTime = entity.EndTime
-        };
-
-
-    public override bool UpdateEntity(DBWar entity, WarSummary model, DateTime timeStamp)
+    public WarSummaryMapper()
     {
-        base.UpdateEntity(entity, model, timeStamp);
-
-        entity.Result = model.Result;
-        entity.TeamSize = model.TeamSize;
-        entity.AttacksPerMember = model.AttacksPerMember;
-
-        UpdateWarClan(entity.Clan, model.Clan);
-        UpdateWarClan(entity.Opponent, model.Opponent);
-
-        static void UpdateWarClan(DBWarClan warClan, WarClan clan)
-        {
-            warClan.Name = clan.Name;
-            warClan.ClanLevel = clan.ClanLevel;
-            warClan.Attacks = clan.Attacks;
-            warClan.Stars = clan.Stars;
-            warClan.DestructionPercentage = clan.DestructionPercentage;
-            warClan.BadgeUrls = new DBBadgeUrls
-            {
-                Small = clan.BadgeUrls.Small,
-                Medium = clan.BadgeUrls.Medium,
-                Large = clan.BadgeUrls.Large
-            };
-        }
-
-        return true;
+        //build mappings from WarSummary to DBWar
+        MapT2ToT1(ws => WarClanMapper.GetWarClan(ws.Clan), dbw => dbw.Clan);
+        MapT2ToT1(ws => WarClanMapper.GetWarClan(ws.Opponent), dbw => dbw.Opponent);
+        MapT2ToT1(ws => ws.EndTime, dbw => dbw.EndTime);
+        MapT2ToT1(ws => ws.Result, dbw => dbw.Result);
+        MapT2ToT1(ws => ws.TeamSize, dbw => dbw.TeamSize);
+        MapT2ToT1(ws => ws.AttacksPerMember, dbw => dbw.AttacksPerMember);
     }
 }
