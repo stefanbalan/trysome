@@ -15,23 +15,7 @@ public class WarDetailMapper : BaseMapper<DBWar, WarDetail>
         MapT2ToT1(w => w.StartTime, dw => dw.StartTime);
         MapT2ToT1(w => w.EndTime, dw => dw.EndTime);
 
-        MapT2ToT1(w => GetWarClan(w.Clan), dw => dw.Clan);
-        MapT2ToT1(w => GetWarClan(w.Opponent), dw => dw.Opponent);
+        // MapT2ToT1(w => WarClanMapper.GetWarClan(w.Clan), dw => dw.Clan);
+        // MapT2ToT1(w => WarClanMapper.GetWarClan(w.Opponent), dw => dw.Opponent);
     }
-
-    private static DBWarClan GetWarClan(WarClan clan) => new()
-    {
-        Tag = clan.Tag,
-        Name = clan.Name,
-        ClanLevel = clan.ClanLevel,
-        Attacks = clan.Attacks,
-        Stars = clan.Stars,
-        DestructionPercentage = clan.DestructionPercentage,
-        BadgeUrls = new DBBadgeUrls
-        {
-            Small = clan.BadgeUrls.Small,
-            Medium = clan.BadgeUrls.Medium,
-            Large = clan.BadgeUrls.Large
-        }
-    };
 }

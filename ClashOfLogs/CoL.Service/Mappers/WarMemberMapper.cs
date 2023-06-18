@@ -6,9 +6,7 @@ using WarMember = ClashOfLogs.Shared.WarMember;
 
 namespace CoL.Service.Mappers;
 
-public class WarMemberMapper
-    : EntityModelMapper<DBWarMember, WarMember>,
-        IMapper<DBWarMember, WarMember>
+public class WarMemberMapper : BaseMapper<DBWarMember, WarMember>
 {
     public WarMemberMapper()
     {
@@ -21,15 +19,6 @@ public class WarMemberMapper
         MapT2ToT1(wm => wm.OpponentAttacks, wm => wm.OpponentAttacks);
         MapT2ToT1(wm => BuildAttack(wm.BestOpponentAttack), wm => wm.BestOpponentAttack);
     }
-
-
-    public virtual DBWarMember CreateAndUpdateEntity(WarMember model, DateTime timeStamp)
-        => new() { Tag = model.Tag };
-
-    public virtual bool UpdateEntity(DBWarMember entity, WarMember model, DateTime timeStamp)
-        => UpdateT1FromT2(entity, model);
-
-
 
     private static WarAttack? BuildAttacks(List<Attack>? l, int number)
         => l?.Count >= number ? BuildAttack(l[number - 1]) : null;

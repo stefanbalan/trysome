@@ -46,7 +46,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
 
             if (dbEntity != null)
             {
-                if (mapper.UpdateEntity(dbEntity, entity, timestamp))
+                var changed = mapper.UpdateEntity(dbEntity, entity, timestamp);
+                if (changed)
                 {
                     Repository.Update(dbEntity);
                     logger.LogDebug("Updated existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
