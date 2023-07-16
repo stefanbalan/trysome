@@ -3,9 +3,9 @@ using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using Microsoft.Extensions.Logging;
 
-namespace CoL.Service.Importer;
+namespace CoL.Service.Importers;
 
-internal class WarMemberImporter : EntityImporter<DBWarMember, WarMember>
+public class WarMemberImporter : EntityImporter<DBWarMember, WarMember>
 {
     public WarMemberImporter(
         IMapper<DBWarMember, WarMember> mapper,
@@ -15,8 +15,8 @@ internal class WarMemberImporter : EntityImporter<DBWarMember, WarMember>
     {
     }
 
-    protected override object?[] EntityKey(WarMember entity) => new object?[] { entity.Tag };
+    public override object?[] EntityKey(WarMember entity) => new object?[] { entity.Tag };
 
-    protected async override Task UpdateChildrenAsync(DBWarMember dbEntity, WarMember entity, DateTime timestamp)
+    public async override Task UpdateChildrenAsync(DBWarMember dbEntity, WarMember entity, DateTime timestamp)
         => await Task.CompletedTask;
 }

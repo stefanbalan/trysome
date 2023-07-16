@@ -1,5 +1,5 @@
 ﻿using CoL.DB.Entities;
-using CoL.Service.Importer;
+using CoL.Service.Importers;
 using League = ClashOfLogs.Shared.League;
 using Member = ClashOfLogs.Shared.Member;
 
@@ -7,11 +7,11 @@ namespace CoL.Service.Mappers;
 
 public class MemberMapper : BaseMapper<DBMember, Member>
 {
-    private readonly EntityImporter<DBLeague, League> leagueProvider;
+    private readonly IEntityImporter<DBLeague, League> leagueImporter;
 
-    public MemberMapper(EntityImporter<DBLeague, League> leagueProvider)
+    public MemberMapper(IEntityImporter<DBLeague, League> leagueImporter)
     {
-        this.leagueProvider = leagueProvider;
+        this.leagueImporter = leagueImporter;
 
         MapT2ToT1(m => m.Tag, dm => dm.Tag);
         MapT2ToT1(m => m.Name, dm => dm.Name,
@@ -36,7 +36,7 @@ public class MemberMapper : BaseMapper<DBMember, Member>
         TimeStamp = timeStamp;
 
         var entity = base.CreateAndUpdateEntity(model, timeStamp);
-        entity.League = leagueProvider.ImportAsync(model.League, timeStamp)
+        entity.League = leagueImporter.ImportAsync(model.League, timeStamp)
             .GetAwaiter().GetResult();
         return entity;
     }
@@ -56,7 +56,7 @@ public class MemberMapper : BaseMapper<DBMember, Member>
                 entity.DonationsReceived.ToString()));
         }
 
-        entity.League = leagueProvider.ImportAsync(model.League, timeStamp)
+        entity.League = leagueImporter.ImportAsync(model.League, timeStamp)
             .GetAwaiter().GetResult();
 
         return base.UpdateEntity(entity, model, timeStamp);

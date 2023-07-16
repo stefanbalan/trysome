@@ -1,18 +1,27 @@
 ﻿using CoL.DB.Entities;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
+using CoL.Service.Validators;
 using Microsoft.Extensions.Logging;
 
-namespace CoL.Service.Importer;
+namespace CoL.Service.Importers;
 
 // needs:
 //todo - validate that all (needed) properties are present, there are wars in log with null result or no name for opponent clan
 //todo - check test coverage to see what properties are not being imported (eg: Clan.Location)
 
-public abstract class EntityImporter<TDbEntity, TEntity>
-    where TDbEntity : BaseEntity
+public interface IEntityImporter<TDbEntity, TEntity> where TDbEntity : BaseEntity
 {
-    private readonly ILogger<EntityImporter<TDbEntity, TEntity>> logger;
+    Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp, bool persist = false);
+    object?[] EntityKey(TEntity entity);
+    Task UpdateChildrenAsync(TDbEntity dbEntity, TEntity entity, DateTime timestamp);
+}
+
+public abstract class EntityImporter<TDbEntity, TEntity>
+    : IEntityImporter<TDbEntity, TEntity> where TDbEntity : BaseEntity
+{
+    private readonly ILogger<IEntityImporter<TDbEntity, TEntity>> logger;
+    private readonly IValidator<TDbEntity>? validator;
     protected readonly IRepository<TDbEntity> Repository;
     private readonly IMapper<TDbEntity, TEntity> mapper;
     protected bool PersistChangesAfterImport;
@@ -20,10 +29,12 @@ public abstract class EntityImporter<TDbEntity, TEntity>
     protected EntityImporter(
         IMapper<TDbEntity, TEntity> mapper,
         IRepository<TDbEntity> repository,
-        ILogger<EntityImporter<TDbEntity, TEntity>> logger)
+        ILogger<IEntityImporter<TDbEntity, TEntity>> logger,
+        IValidator<TDbEntity>? validator = null)
     {
         this.mapper = mapper;
         this.logger = logger;
+        this.validator = validator;
         Repository = repository;
     }
 
@@ -36,19 +47,23 @@ public abstract class EntityImporter<TDbEntity, TEntity>
             {
                 dbEntity = await Repository.GetByIdAsync(EntityKey(entity));
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                logger.LogError("Getting {Type} by id failed {Message}",
-                    typeof(TDbEntity).Name,
-                    ex.Message);
+                logger.LogError("Getting {Type} by id failed: {Message}", typeof(TDbEntity).Name, e.Message);
                 return null;
             }
 
+            bool valid;
             if (dbEntity != null)
             {
                 var changed = mapper.UpdateEntity(dbEntity, entity, timestamp);
                 if (changed)
                 {
+                    if (validator != null && !validator.IsValid(dbEntity))
+                    {
+                        logger.LogInformation("Skipping existing {Type} : {Entity} : updates are not valid", typeof(TDbEntity).Name, EntityKey(entity));
+                        return null;
+                    }
                     Repository.Update(dbEntity);
                     logger.LogDebug("Updated existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
                 }
@@ -58,7 +73,11 @@ public abstract class EntityImporter<TDbEntity, TEntity>
             else
             {
                 dbEntity = mapper.CreateAndUpdateEntity(entity, timestamp);
-
+                if (validator != null && !validator.IsValid(dbEntity))
+                {
+                    logger.LogInformation("Skipping adding {Type} : {Entity} : is not valid", typeof(TDbEntity).Name, EntityKey(entity));
+                    return null;
+                }
                 try
                 {
                     await Repository.AddAsync(dbEntity);
@@ -85,6 +104,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
                         typeof(TDbEntity).Name,
                         EntityKey(entity),
                         ex.Message);
+                    if (ex.InnerException != null)
+                        logger.LogError("Inner exception: {Error}", ex.InnerException.Message);
                     return null;
                 }
 
@@ -100,7 +121,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
         }
     }
 
-    protected abstract object?[] EntityKey(TEntity entity);
+    public abstract object?[] EntityKey(TEntity entity);
 
-    protected abstract Task UpdateChildrenAsync(TDbEntity dbEntity, TEntity entity, DateTime timestamp);
+    public abstract Task UpdateChildrenAsync(TDbEntity dbEntity, TEntity entity, DateTime timestamp);
 }

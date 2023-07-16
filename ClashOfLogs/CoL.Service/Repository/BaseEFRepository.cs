@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CoL.Service.Repository;
 
-public abstract class BaseEFRepository<TContext, TDbEntity> : IRepository<TDbEntity>
+public class BaseEFRepository<TContext, TDbEntity> : IRepository<TDbEntity>
     where TDbEntity : BaseEntity
     where TContext : DbContext
 {
@@ -13,9 +13,10 @@ public abstract class BaseEFRepository<TContext, TDbEntity> : IRepository<TDbEnt
     protected BaseEFRepository(TContext context)
     {
         Context = context;
+        EntitySet = Context.Set<TDbEntity>();
     }
 
-    protected abstract DbSet<TDbEntity> EntitySet { get; }
+    protected virtual DbSet<TDbEntity> EntitySet { get; }
 
     public async virtual ValueTask<TDbEntity?> GetByIdAsync(params object?[] keyValues)
         => await EntitySet.FindAsync(keyValues);

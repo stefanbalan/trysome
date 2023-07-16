@@ -1,4 +1,4 @@
-using CoL.Service.Importer;
+using CoL.Service.Importers;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using Microsoft.Extensions.Logging;

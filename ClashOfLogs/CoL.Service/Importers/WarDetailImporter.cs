@@ -6,25 +6,25 @@ using CoL.Service.Repository;
 using Microsoft.Extensions.Logging;
 using WarMember = ClashOfLogs.Shared.WarMember;
 
-namespace CoL.Service.Importer;
+namespace CoL.Service.Importers;
 
-internal class WarDetailImporter : EntityImporter<DBWar, WarDetail>
+public class WarDetailImporter : EntityImporter<DBWar, WarDetail>
 {
-    private readonly EntityImporter<DBWarMember, WarMember> warMemberImporter;
+    private readonly IEntityImporter<DBWarMember, WarMember> warMemberImporter;
 
     public WarDetailImporter(IMapper<DBWar, WarDetail> mapper,
         IRepository<DBWar> repository,
         ILogger<WarDetailImporter> logger,
-        EntityImporter<DBWarMember, WarMember> warMemberImporter)
+        IEntityImporter<DBWarMember, WarMember> warMemberImporter)
         : base(mapper, repository, logger)
     {
         this.warMemberImporter = warMemberImporter;
     }
 
-    protected override object?[] EntityKey(WarDetail entity)
+    public override object?[] EntityKey(WarDetail entity)
         => new object?[] { entity.EndTime, entity.Clan.Tag, entity.Opponent.Tag };
 
-    protected async override Task UpdateChildrenAsync(DBWar dbEntity, WarDetail entity, DateTime timestamp)
+    public async override Task UpdateChildrenAsync(DBWar dbEntity, WarDetail entity, DateTime timestamp)
     {
         dbEntity.ClanMembers ??= new List<DBWarMember>();
         foreach (var clanMember in entity.Clan.Members)

@@ -9,8 +9,9 @@ public class ClanMapperTests
     {
         // Arrange
         var dbClan = new DBClan();
-        var clan = new Clan
-        {
+        var timeStamp = DateTime.Now;
+
+        var clan = new Clan {
             Tag = "#9JYRJGQY",
             Name = "Test Clan",
             Type = "inviteOnly",
@@ -25,10 +26,10 @@ public class ClanMapperTests
             WarTies = 2,
             WarLosses = 4,
             IsWarLogPublic = true,
+            MemberCount = 7,
             RequiredVersusTrophies = 4000,
             RequiredTownhallLevel = 8,
-            BadgeUrls = new BadgeUrls
-            {
+            BadgeUrls = new BadgeUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Large = "https://fake-url.com/large.png",
@@ -38,7 +39,7 @@ public class ClanMapperTests
         var mapper = new ClanMapper();
 
         // Act
-        dbClan = mapper.CreateAndUpdateEntity(clan, DateTime.Now);
+        dbClan = mapper.CreateAndUpdateEntity(clan, timeStamp);
 
         // Assert
         Assert.Equal(clan.Tag, dbClan.Tag);
@@ -55,6 +56,7 @@ public class ClanMapperTests
         Assert.Equal(clan.WarTies, dbClan.WarTies);
         Assert.Equal(clan.WarLosses, dbClan.WarLosses);
         Assert.Equal(clan.IsWarLogPublic, dbClan.IsWarLogPublic);
+        Assert.Equal(clan.MemberCount, dbClan.MemberCount);
         Assert.Equal(clan.RequiredVersusTrophies, dbClan.RequiredVersusTrophies);
         Assert.Equal(clan.RequiredTownhallLevel, dbClan.RequiredTownhallLevel);
         Assert.NotNull(dbClan.BadgeUrls);
@@ -64,14 +66,18 @@ public class ClanMapperTests
             Assert.Equal(clan.BadgeUrls.Medium, dbClan.BadgeUrls.Medium);
             Assert.Equal(clan.BadgeUrls.Large, dbClan.BadgeUrls.Large);
         }
+
+        Assert.Equal(timeStamp, dbClan.CreatedAt);
+        Assert.Equal(timeStamp, dbClan.UpdatedAt);
     }
 
     [Fact]
     public void UpdateEntity_ValidRequest_ReturnsUpdatedDBClan()
     {
         // Arrange
-        var dbClan = new DBClan
-        {
+        var oldTimeStamp = DateTime.Now.AddDays(-1);
+        var timeStamp = DateTime.Now;
+        var dbClan = new DBClan {
             Tag = "#9JYRJGQY",
             Name = "Test Clan",
             Type = "inviteOnly",
@@ -88,15 +94,16 @@ public class ClanMapperTests
             IsWarLogPublic = true,
             RequiredVersusTrophies = 4000,
             RequiredTownhallLevel = 8,
-            BadgeUrls = new DBBadgeUrls
-            {
+            BadgeUrls = new DBBadgeUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Large = "https://fake-url.com/large.png",
-            }
+            },
+            CreatedAt = oldTimeStamp,
+            UpdatedAt = oldTimeStamp,
+
         };
-        var clan = new Clan
-        {
+        var clan = new Clan {
             Tag = "#9JYRJGQY",
             Name = "Updated Clan Name",
             Type = "closed",
@@ -111,10 +118,10 @@ public class ClanMapperTests
             WarTies = 5,
             WarLosses = 9,
             IsWarLogPublic = false,
+            MemberCount = 9,
             RequiredVersusTrophies = 4500,
             RequiredTownhallLevel = 9,
-            BadgeUrls = new BadgeUrls
-            {
+            BadgeUrls = new BadgeUrls {
                 Small = "https://fake-url.com/updated-small.png",
                 Medium = "https://fake-url.com/updated-medium.png",
                 Large = "https://fake-url.com/updated-large.png",
@@ -124,7 +131,7 @@ public class ClanMapperTests
         var mapper = new ClanMapper();
 
         // Act
-        var changed = mapper.UpdateEntity(dbClan, clan, DateTime.Now);
+        var changed = mapper.UpdateEntity(dbClan, clan, timeStamp);
 
         // Assert
         Assert.True(changed);
@@ -141,6 +148,7 @@ public class ClanMapperTests
         Assert.Equal(clan.WarTies, dbClan.WarTies);
         Assert.Equal(clan.WarLosses, dbClan.WarLosses);
         Assert.Equal(clan.IsWarLogPublic, dbClan.IsWarLogPublic);
+        Assert.Equal(clan.MemberCount, dbClan.MemberCount);
         Assert.Equal(clan.RequiredVersusTrophies, dbClan.RequiredVersusTrophies);
         Assert.Equal(clan.RequiredTownhallLevel, dbClan.RequiredTownhallLevel);
         Assert.NotNull(dbClan.BadgeUrls);
@@ -150,5 +158,8 @@ public class ClanMapperTests
             Assert.Equal(clan.BadgeUrls.Medium, dbClan.BadgeUrls.Medium);
             Assert.Equal(clan.BadgeUrls.Large, dbClan.BadgeUrls.Large);
         }
+
+        Assert.Equal(oldTimeStamp, dbClan.CreatedAt);
+        Assert.Equal(timeStamp, dbClan.UpdatedAt);
     }
 }

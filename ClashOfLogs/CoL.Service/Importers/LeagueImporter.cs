@@ -3,21 +3,21 @@ using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using Microsoft.Extensions.Logging;
 
-namespace CoL.Service.Importer;
+namespace CoL.Service.Importers;
 
 public class LeagueImporter : EntityImporter<DBLeague, League>
 {
     public LeagueImporter(
         IMapper<DBLeague, League> mapper,
         IRepository<DBLeague> repository,
-        ILogger<EntityImporter<DBLeague, League>> logger)
+        ILogger<IEntityImporter<DBLeague, League>> logger)
         : base(mapper, repository, logger)
     {
         PersistChangesAfterImport = true;
     }
 
-    protected override object?[] EntityKey(League entity) => new object?[] { entity.Id };
+    public override object?[] EntityKey(League entity) => new object?[] { entity.Id };
 
-    protected async override Task UpdateChildrenAsync(DBLeague dbEntity, League entity, DateTime timestamp)
+    public async override Task UpdateChildrenAsync(DBLeague dbEntity, League entity, DateTime timestamp)
         => await Task.CompletedTask;
 }

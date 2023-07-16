@@ -8,19 +8,19 @@ using League = ClashOfLogs.Shared.League;
 using Member = ClashOfLogs.Shared.Member;
 
 
-namespace CoL.Service.Importer;
+namespace CoL.Service.Importers;
 
-internal class ClanImporter : EntityImporter<DBClan, Clan>
+public class ClanImporter : EntityImporter<DBClan, Clan>
 {
-    private readonly EntityImporter<DBLeague, League> leagueImporter;
-    private readonly EntityImporter<DBMember, Member> memberImporter;
+    private readonly IEntityImporter<DBLeague, League> leagueImporter;
+    private readonly IEntityImporter<DBMember, Member> memberImporter;
 
     public ClanImporter(
         IMapper<DBClan, Clan> mapper,
         IRepository<DBClan> repository,
         ILogger<ClanImporter> logger,
-        EntityImporter<DBLeague, League> leagueImporter,
-        EntityImporter<DBMember, Member> memberImporter)
+        IEntityImporter<DBLeague, League> leagueImporter,
+        IEntityImporter<DBMember, Member> memberImporter)
         : base(mapper, repository, logger)
     {
         PersistChangesAfterImport = true;
@@ -28,9 +28,9 @@ internal class ClanImporter : EntityImporter<DBClan, Clan>
         this.memberImporter = memberImporter;
     }
 
-    protected override object?[] EntityKey(Clan entity) => new object?[] { entity.Tag };
+    public override object?[] EntityKey(Clan entity) => new object?[] { entity.Tag };
 
-    protected async override Task UpdateChildrenAsync(DBClan dbEntity, Clan clan, DateTime timeStamp)
+    public async override Task UpdateChildrenAsync(DBClan dbEntity, Clan clan, DateTime timeStamp)
     {
         // import leagues
         foreach (var member in clan.Members)
