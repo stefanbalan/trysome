@@ -15,7 +15,7 @@ public class WarDetailMapper : BaseMapper<DBWar, WarDetail>
         MapT2ToT1(w => w.StartTime, dw => dw.StartTime);
         MapT2ToT1(w => w.EndTime, dw => dw.EndTime);
 
-        // MapT2ToT1(w => WarClanMapper.GetWarClan(w.Clan), dw => dw.Clan);
-        // MapT2ToT1(w => WarClanMapper.GetWarClan(w.Opponent), dw => dw.Opponent);
+        MapT2ToT1(w => WarClanMapper.GetWarClan(w.Clan), dw => dw.Clan);
+        MapT2ToT1(w => WarClanMapper.GetWarClan(w.Opponent), dw => dw.Opponent);
     }
 }

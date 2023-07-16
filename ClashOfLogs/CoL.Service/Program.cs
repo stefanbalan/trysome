@@ -13,9 +13,10 @@ using ClashOfLogs.Shared;
 using CoL.DB;
 using CoL.DB.Entities;
 using CoL.Service.DataProvider;
-using CoL.Service.Importer;
+using CoL.Service.Importers;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
+using CoL.Service.Validators;
 using Lazy.Util.EntityModelMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -116,13 +117,16 @@ public static class Program
                 services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
                 // services.AddTransient<IJsonDataProvider, ApiJsonDataProvider>();
 
+                //validators
+                services.AddSingleton<IValidator<DBWar>, WarValidator>();
+
                 // importers
-                services.AddSingleton<EntityImporter<DBClan, Clan>, ClanImporter>();
-                services.AddSingleton<EntityImporter<DBMember, Member>, MemberImporter>();
-                services.AddSingleton<EntityImporter<DBLeague, League>, LeagueImporter>();
-                services.AddSingleton<EntityImporter<DBWar, WarSummary>, WarLogImporter>();
-                services.AddSingleton<EntityImporter<DBWar, WarDetail>, WarDetailImporter>();
-                services.AddSingleton<EntityImporter<DBWarMember, WarMember>, WarMemberImporter>();
+                services.AddSingleton<IEntityImporter<DBClan, Clan>, ClanImporter>();
+                services.AddSingleton<IEntityImporter<DBMember, Member>, MemberImporter>();
+                services.AddSingleton<IEntityImporter<DBLeague, League>, LeagueImporter>();
+                services.AddSingleton<IEntityImporter<DBWar, WarSummary>, WarLogImporter>();
+                services.AddSingleton<IEntityImporter<DBWar, WarDetail>, WarDetailImporter>();
+                services.AddSingleton<IEntityImporter<DBWarMember, WarMember>, WarMemberImporter>();
                 // services.AddSingleton<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
                 // services.AddSingleton<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
 
@@ -136,6 +140,8 @@ public static class Program
                 services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
                 // services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarMemberMapperForClan>();
                 // services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarMemberMapperForOpponent>();
+
+
 
                 // repositories
                 services.AddTransient<IRepository<DBClan>, ClanRepository>();

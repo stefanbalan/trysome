@@ -2,7 +2,7 @@ using System.Threading;
 using ClashOfLogs.Shared;
 using CoL.DB;
 using CoL.Service.DataProvider;
-using CoL.Service.Importer;
+using CoL.Service.Importers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -10,10 +10,10 @@ namespace CoL.Service;
 
 public class Worker : BackgroundService
 {
-    private readonly EntityImporter<DBLeague, League> leagueImporter;
-    private readonly EntityImporter<DBClan, Clan> clanDataImporter;
-    private readonly EntityImporter<DBWar, WarSummary> warLogImporter;
-    private readonly EntityImporter<DBWar, WarDetail> warDetailImporter;
+    private readonly IEntityImporter<DBLeague, League> leagueImporter;
+    private readonly IEntityImporter<DBClan, Clan> clanDataImporter;
+    private readonly IEntityImporter<DBWar, WarSummary> warLogImporter;
+    private readonly IEntityImporter<DBWar, WarDetail> warDetailImporter;
     private readonly CoLContext context;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
     private readonly IJsonDataProvider importDataProvider;
@@ -25,10 +25,10 @@ public class Worker : BackgroundService
         ILogger<Worker> logger,
         CoLContext context,
         IJsonDataProvider importDataProvider,
-        EntityImporter<DBClan, Clan> clanDataImporter,
-        EntityImporter<DBWar, WarSummary> warLogImporter,
-        EntityImporter<DBWar, WarDetail> warDetailImporter,
-        EntityImporter<DBLeague, League> leagueImporter)
+        IEntityImporter<DBClan, Clan> clanDataImporter,
+        IEntityImporter<DBWar, WarSummary> warLogImporter,
+        IEntityImporter<DBWar, WarDetail> warDetailImporter,
+        IEntityImporter<DBLeague, League> leagueImporter)
     {
         this.hostApplicationLifetime = hostApplicationLifetime;
         this.logger = logger;

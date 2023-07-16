@@ -3,21 +3,21 @@ using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using Microsoft.Extensions.Logging;
 
-namespace CoL.Service.Importer;
+namespace CoL.Service.Importers;
 
-internal class MemberImporter : EntityImporter<DBMember, Member>
+public class MemberImporter : EntityImporter<DBMember, Member>
 {
     public MemberImporter(
         IMapper<DBMember, Member> mapper,
         IRepository<DBMember> repository,
-        ILogger<EntityImporter<DBMember, Member>> logger)
+        ILogger<IEntityImporter<DBMember, Member>> logger)
         : base(mapper, repository, logger)
     {
         // PersistChangesAfterImport = true;
     }
 
-    protected override object?[] EntityKey(Member entity) => new object?[] { entity.Tag };
+    public override object?[] EntityKey(Member entity) => new object?[] { entity.Tag };
 
-    protected async override Task UpdateChildrenAsync(DBMember dbEntity, Member entity, DateTime timestamp)
+    public async override Task UpdateChildrenAsync(DBMember dbEntity, Member entity, DateTime timestamp)
         => await Task.CompletedTask;
 }
