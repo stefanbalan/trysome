@@ -25,7 +25,7 @@ public record Clan : BaseEntityWithTag
 
     //public WarLeague WarLeague { get; set; }
 
-    public int MembersCount { get; set; }
+    public int MemberCount { get; set; }
 
     public List<Member> Members { get; set; } = new();
     //public List<Label> Labels { get; set; } //= new List<Label>();

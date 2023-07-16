@@ -45,7 +45,7 @@ namespace CoL.DB.Migrations
                     b.Property<bool>("IsWarLogPublic")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MembersCount")
+                    b.Property<int>("MemberCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
