@@ -13,8 +13,7 @@ public partial class InitialCreate : Migration
     {
         migrationBuilder.CreateTable(
             name: "Clans",
-            columns: table => new
-            {
+            columns: table => new {
                 Tag = table.Column<string>(type: "varchar(12)", nullable: false),
                 Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
                 Type = table.Column<string>(type: "varchar(10)", nullable: false),
@@ -32,7 +31,7 @@ public partial class InitialCreate : Migration
                 WarTies = table.Column<int>(type: "int", nullable: false),
                 WarLosses = table.Column<int>(type: "int", nullable: false),
                 IsWarLogPublic = table.Column<bool>(type: "bit", nullable: false),
-                MembersCount = table.Column<int>(type: "int", nullable: false),
+                MemberCount = table.Column<int>(type: "int", nullable: false),
                 RequiredVersusTrophies = table.Column<int>(type: "int", nullable: false),
                 RequiredTownhallLevel = table.Column<int>(type: "int", nullable: false),
                 CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -45,8 +44,7 @@ public partial class InitialCreate : Migration
 
         migrationBuilder.CreateTable(
             name: "Leagues",
-            columns: table => new
-            {
+            columns: table => new {
                 Id = table.Column<int>(type: "int", nullable: false),
                 Name = table.Column<string>(type: "nvarchar(30)", nullable: false),
                 IconUrls_Small = table.Column<string>(type: "varchar(150)", nullable: true),
@@ -62,8 +60,7 @@ public partial class InitialCreate : Migration
 
         migrationBuilder.CreateTable(
             name: "Wars",
-            columns: table => new
-            {
+            columns: table => new {
                 Id = table.Column<int>(type: "int", nullable: false)
                     .Annotation("SqlServer:Identity", "1, 1"),
                 Result = table.Column<string>(type: "varchar(10)", nullable: true),
@@ -101,8 +98,7 @@ public partial class InitialCreate : Migration
 
         migrationBuilder.CreateTable(
             name: "ClanMembers",
-            columns: table => new
-            {
+            columns: table => new {
                 Tag = table.Column<string>(type: "varchar(12)", nullable: false),
                 Name = table.Column<string>(type: "nvarchar(50)", nullable: true),
                 Role = table.Column<string>(type: "varchar(10)", nullable: true),
@@ -140,8 +136,7 @@ public partial class InitialCreate : Migration
 
         migrationBuilder.CreateTable(
             name: "WarMember",
-            columns: table => new
-            {
+            columns: table => new {
                 Tag = table.Column<string>(type: "varchar(12)", nullable: false),
                 WarId = table.Column<int>(type: "int", nullable: false),
                 WarIdC = table.Column<int>(type: "int", nullable: true),
