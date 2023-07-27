@@ -21,11 +21,15 @@ public class BaseEFRepository<TContext, TDbEntity> : IRepository<TDbEntity>
     public async virtual ValueTask<TDbEntity?> GetByIdAsync(params object?[] keyValues)
         => await EntitySet.FindAsync(keyValues);
 
-    public async virtual ValueTask AddAsync(TDbEntity entity)
-        => await EntitySet.AddAsync(entity);
+    public virtual void Add(TDbEntity entity)
+    {
+        var unused = EntitySet.Add(entity);
+    }
 
-    public virtual EntityEntry<TDbEntity> Update(TDbEntity entity)
-        => EntitySet.Update(entity);
+    public virtual void Update(TDbEntity entity)
+    {
+        var unused = EntitySet.Update(entity);
+    }
 
     public async ValueTask PersistChangesAsync()
         => await Context.SaveChangesAsync();

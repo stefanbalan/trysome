@@ -17,6 +17,7 @@ public class Worker : BackgroundService
     private readonly CoLContext context;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
     private readonly IJsonDataProvider importDataProvider;
+    private readonly JsonDataBackup jsonDataBackup;
     private readonly ILogger<Worker> logger;
 
 
@@ -25,6 +26,7 @@ public class Worker : BackgroundService
         ILogger<Worker> logger,
         CoLContext context,
         IJsonDataProvider importDataProvider,
+        JsonDataBackup jsonDataBackup,
         IEntityImporter<DBClan, Clan> clanDataImporter,
         IEntityImporter<DBWar, WarSummary> warLogImporter,
         IEntityImporter<DBWar, WarDetail> warDetailImporter,
@@ -34,6 +36,7 @@ public class Worker : BackgroundService
         this.logger = logger;
         this.context = context;
         this.importDataProvider = importDataProvider;
+        this.jsonDataBackup = jsonDataBackup;
         this.clanDataImporter = clanDataImporter;
         this.warLogImporter = warLogImporter;
         this.warDetailImporter = warDetailImporter;
@@ -59,22 +62,21 @@ public class Worker : BackgroundService
                 &&
                 (jsonData = await importDataProvider.GetImportDataAsync()) is not null)
             {
-                //todo test multiple import set and check updated properties
-                var success = true;
-
                 if (jsonData.Clan is not null)
                     foreach (var clanMember in jsonData.Clan.Members)
-                        success &= await leagueImporter.ImportAsync(clanMember.League, jsonData.Date) != null;
+                        _ = await leagueImporter.ImportAsync(clanMember.League, jsonData.Date);
 
                 if (jsonData.Clan is not null)
-                    success &= await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date) != null;
+                    _ = await clanDataImporter.ImportAsync(jsonData.Clan, jsonData.Date);
 
                 if (jsonData.Warlog?.Items != null)
                     foreach (var warlogItem in jsonData.Warlog.Items)
-                        success &= await warLogImporter.ImportAsync(warlogItem, jsonData.Date) != null;
+                        _ = await warLogImporter.ImportAsync(warlogItem, jsonData.Date);
 
                 if (jsonData.CurrentWar != null)
-                    success &= await warDetailImporter.ImportAsync(jsonData.CurrentWar, jsonData.Date) != null;
+                {
+                    var curentWar = await warDetailImporter.ImportAsync(jsonData.CurrentWar, jsonData.Date);
+                }
 
                 // if (!importDataProvider.SetImported(success))
                 // {
@@ -82,10 +84,12 @@ public class Worker : BackgroundService
                 //     return;
                 // }
 
-                logger.LogInformation("Import result is {Success}", success);
+                await jsonDataBackup.BackupAsync(jsonData);
+
+                logger.LogInformation("Import finished");
             }
 
-            await Task.Delay(10_000, stoppingToken);
+            await Task.Delay(1_000, stoppingToken);
         }
     }
 

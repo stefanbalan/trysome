@@ -55,9 +55,11 @@ internal class FileJsonDataProvider : IJsonDataProvider
             if (currentImportDir is null) return null;
             var result = new JsonData { Date = date };
 
-            result.Clan = await ImportFileAsync<Clan>(currentImportDir, "Clan");
-            result.Warlog = await ImportFileAsync<Warlog>(currentImportDir, "Warlog");
-            result.CurrentWar = await ImportFileAsync<WarDetail>(currentImportDir, "CurrentWar");
+            result.Clan = await ImportFileAsync<Clan>(currentImportDir, "clan");
+            result.Warlog = await ImportFileAsync<Warlog>(currentImportDir, "warlog");
+            result.CurrentWar = await ImportFileAsync<WarDetail>(currentImportDir, "currentwar");
+
+            currentImportDir.MoveTo($"{currentImportDir.Name}_imported");
             return result;
         }
         catch (Exception ex)

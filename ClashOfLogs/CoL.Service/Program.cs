@@ -7,19 +7,14 @@ global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
 global using DBWarMember = CoL.DB.Entities.WarMember;
-// global using DBWarClanMember = CoL.DB.Entities.WarMemberOfClan;
-// global using DBWarOpponentMember = CoL.DB.Entities.WarMemberOfOpponent;
 using ClashOfLogs.Shared;
 using CoL.DB;
-using CoL.DB.Entities;
 using CoL.Service.DataProvider;
 using CoL.Service.Importers;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using CoL.Service.Validators;
-using Lazy.Util.EntityModelMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -82,7 +77,7 @@ public static class Program
     }
 
 
-    private static IHostBuilder CreateHostBuilder(IConfigurationRoot configuration, string[] args) =>
+    private static IHostBuilder CreateHostBuilder(IConfigurationRoot config, string[] args) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureHostConfiguration(builder =>
             {
@@ -97,28 +92,46 @@ public static class Program
                 services.AddLogging(lb =>
                 {
                     lb.AddConsole();
-                    lb.AddConfiguration(configuration);
+                    lb.AddConfiguration(config);
                 });
 
                 services.AddDbContext<CoLContext>(options =>
                     {
-                        options.UseSqlServer(configuration.GetConnectionString("CoLContext"),
+                        options.UseSqlServer(config.GetConnectionString("CoLContext"),
                             sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 #if DEBUG
-                        options.LogTo(Log.Debug, LogLevel.Information);
-                        options.ConfigureWarnings(warningOptions
-                            => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
-                        options.EnableSensitiveDataLogging();
+                        // options.LogTo(Log.Debug, LogLevel.Information);
+                        // options.ConfigureWarnings(warningOptions
+                        //     => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
+                        // options.EnableSensitiveDataLogging();
 #endif
                     },
                     ServiceLifetime.Singleton);
 
                 // data providers
-                services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
-                // services.AddTransient<IJsonDataProvider, ApiJsonDataProvider>();
+                // services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+
+                services.AddSingleton<IApiKeyProvider, AppSettingsApiKeyProvider>();
+                services.AddHttpClient<IJsonDataProvider, ApiJsonDataProvider>(
+                    client =>
+                    {
+                        client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
+                        client.DefaultRequestHeaders.Add("Accept", "application/json");
+                        return new ApiJsonDataProvider(
+                            services.BuildServiceProvider().GetRequiredService<ILogger<ApiJsonDataProvider>>(),
+                            services.BuildServiceProvider().GetRequiredService<IApiKeyProvider>(),
+                            client,
+                            config.GetValue<string>("ClanTag") ?? throw new Exception("Missing configuration ClanTag"));
+                    });
+
+                services.AddSingleton(typeof(JsonDataBackup),
+                    svcs =>
+                        new JsonDataBackup((config.GetValue<string>("JSONDirectory") ?? "") + "\\imported",
+                            svcs.GetService<ILogger<JsonDataBackup>>() ?? throw new Exception("Logger not configured")
+                        ));
 
                 //validators
-                services.AddSingleton<IValidator<DBWar>, WarValidator>();
+                services.AddSingleton<IValidator<WarSummary>, WarSummaryValidator>();
 
                 // importers
                 services.AddSingleton<IEntityImporter<DBClan, Clan>, ClanImporter>();
@@ -127,8 +140,7 @@ public static class Program
                 services.AddSingleton<IEntityImporter<DBWar, WarSummary>, WarLogImporter>();
                 services.AddSingleton<IEntityImporter<DBWar, WarDetail>, WarDetailImporter>();
                 services.AddSingleton<IEntityImporter<DBWarMember, WarMember>, WarMemberImporter>();
-                // services.AddSingleton<EntityImporter<DBWarClanMember, WarMember>, WarMemberClanImporter>();
-                // services.AddSingleton<EntityImporter<DBWarOpponentMember, WarMember>, WarMemberOpponentImporter>();
+
 
                 // mappers
                 services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
@@ -138,9 +150,6 @@ public static class Program
                 services.AddSingleton<IMapper<DBWar, WarDetail>, WarDetailMapper>();
 
                 services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
-                // services.AddSingleton<IMapper<DBWarClanMember, WarMember>, WarMemberMapperForClan>();
-                // services.AddSingleton<IMapper<DBWarOpponentMember, WarMember>, WarMemberMapperForOpponent>();
-
 
 
                 // repositories
@@ -149,8 +158,6 @@ public static class Program
                 services.AddTransient<IRepository<DBLeague>, LeagueEfRepository>();
                 services.AddTransient<IRepository<DBWar>, WarRepository>();
                 services.AddTransient<IRepository<DBWarMember>, WarMemberRepository>();
-                // services.AddTransient<IRepository<DBWarClanMember>, WarClanMemberRepository>();
-                // services.AddTransient<IRepository<DBWarOpponentMember>, WarClanOpponentMemberRepository>();
 
                 //the actual service to run
                 services.AddHostedService<Worker>();
