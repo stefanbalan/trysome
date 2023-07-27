@@ -1,6 +1,7 @@
 ﻿using ClashOfLogs.Shared;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
+using CoL.Service.Validators;
 using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.Importers;
@@ -10,8 +11,9 @@ public class WarLogImporter : EntityImporter<DBWar, WarSummary>
     public WarLogImporter(
         IMapper<DBWar, WarSummary> mapper,
         IRepository<DBWar> repository,
-        ILogger<IEntityImporter<DBWar, WarSummary>> logger)
-        : base(mapper, repository, logger)
+        ILogger<IEntityImporter<DBWar, WarSummary>> logger,
+        IValidator<WarSummary> validator)
+        : base(mapper, repository, logger, validator)
     {
         PersistChangesAfterImport = true;
     }

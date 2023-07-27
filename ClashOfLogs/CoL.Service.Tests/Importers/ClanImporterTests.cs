@@ -108,7 +108,7 @@ public class ClanImporterTests
         memberImporterMock.Verify(m => m.ImportAsync(It.IsAny<Member>(), timeStamp, false),
             Times.Exactly(2));
 
-        repositoryMock.Verify(r => r.AddAsync(updatedDbClan), Times.Once);
+        repositoryMock.Verify(r => r.Add(updatedDbClan), Times.Once);
         repositoryMock.Verify(r => r.PersistChangesAsync(), Times.Once);
     }
 

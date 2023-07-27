@@ -1,5 +1,4 @@
 ﻿using CoL.DB.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CoL.Service.Repository;
 
@@ -7,9 +6,9 @@ public interface IRepository<TDbEntity> where TDbEntity : BaseEntity
 {
     ValueTask<TDbEntity?> GetByIdAsync(params object?[] keyValues);
 
-    ValueTask AddAsync(TDbEntity entity);
+    void Add(TDbEntity entity);
 
-    EntityEntry<TDbEntity> Update(TDbEntity entity);
+    void Update(TDbEntity entity);
 
     ValueTask PersistChangesAsync();
 }

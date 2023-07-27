@@ -6,30 +6,33 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
 
+
 public class ApiJsonDataProvider : IJsonDataProvider
 {
-    private readonly string apiKey;
-    private readonly string clanTag;
+    private readonly IApiKeyProvider apiKeyProvider;
     private readonly HttpClient client;
+    private readonly string clanTag;
     private readonly ILogger<ApiJsonDataProvider> logger;
 
-    public ApiJsonDataProvider(string apiKey, string clanTag, HttpClient client, ILogger<ApiJsonDataProvider> logger)
+    public ApiJsonDataProvider(ILogger<ApiJsonDataProvider> logger,
+        IApiKeyProvider apiKeyProvider, HttpClient client,
+        string clanTag)
     {
-        this.apiKey = apiKey;
-        this.clanTag = clanTag;
+        this.apiKeyProvider = apiKeyProvider;
         this.client = client;
+        this.clanTag = clanTag;
         this.logger = logger;
-
-        this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-        this.client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
+        this.apiKeyProvider = apiKeyProvider;
     }
 
-    public bool HasImportData() => true; // maybe add a ping to the api
+    public bool HasImportData() => !string.IsNullOrWhiteSpace(apiKeyProvider.GetApiKey()); // maybe add a ping to the api
 
     public async Task<JsonData?> GetImportDataAsync()
     {
         try
         {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", apiKeyProvider.GetApiKey());
             // connect to Clash of Clans api and get CLan, Warlog and CurrentWar
             var clan = await GetClanByTagAsync(clanTag);
             var warlog = await GetClanWarlogByTagAsync(clanTag);

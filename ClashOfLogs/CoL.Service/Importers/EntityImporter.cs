@@ -21,7 +21,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
     : IEntityImporter<TDbEntity, TEntity> where TDbEntity : BaseEntity
 {
     private readonly ILogger<IEntityImporter<TDbEntity, TEntity>> logger;
-    private readonly IValidator<TDbEntity>? validator;
+    private readonly IValidator<TEntity>? validator;
     protected readonly IRepository<TDbEntity> Repository;
     private readonly IMapper<TDbEntity, TEntity> mapper;
     protected bool PersistChangesAfterImport;
@@ -30,7 +30,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
         IMapper<TDbEntity, TEntity> mapper,
         IRepository<TDbEntity> repository,
         ILogger<IEntityImporter<TDbEntity, TEntity>> logger,
-        IValidator<TDbEntity>? validator = null)
+        IValidator<TEntity>? validator = null)
     {
         this.mapper = mapper;
         this.logger = logger;
@@ -42,6 +42,13 @@ public abstract class EntityImporter<TDbEntity, TEntity>
     {
         try
         {
+            if (validator != null && !validator.IsValid(entity))
+            {
+                logger.LogInformation("Skipping {Type} : {Entity} : entity is not valid", typeof(TEntity).Name,
+                    EntityKey(entity));
+                return null;
+            }
+
             TDbEntity? dbEntity;
             try
             {
@@ -53,34 +60,24 @@ public abstract class EntityImporter<TDbEntity, TEntity>
                 return null;
             }
 
-            bool valid;
             if (dbEntity != null)
             {
                 var changed = mapper.UpdateEntity(dbEntity, entity, timestamp);
                 if (changed)
                 {
-                    if (validator != null && !validator.IsValid(dbEntity))
-                    {
-                        logger.LogInformation("Skipping existing {Type} : {Entity} : updates are not valid", typeof(TDbEntity).Name, EntityKey(entity));
-                        return null;
-                    }
                     Repository.Update(dbEntity);
                     logger.LogDebug("Updated existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
                 }
                 else
-                    logger.LogDebug("No update for existing {Type} : {Entity} ", typeof(TDbEntity).Name, EntityKey(entity));
+                    logger.LogDebug("No update for existing {Type} : {Entity} ", typeof(TDbEntity).Name,
+                        EntityKey(entity));
             }
             else
             {
                 dbEntity = mapper.CreateAndUpdateEntity(entity, timestamp);
-                if (validator != null && !validator.IsValid(dbEntity))
-                {
-                    logger.LogInformation("Skipping adding {Type} : {Entity} : is not valid", typeof(TDbEntity).Name, EntityKey(entity));
-                    return null;
-                }
                 try
                 {
-                    await Repository.AddAsync(dbEntity);
+                    Repository.Add(dbEntity);
                     logger.LogDebug("Added new {Type} : {Entity}", typeof(TDbEntity).Name, EntityKey(entity));
                 }
                 catch (Exception ex)
@@ -94,7 +91,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
 
             await UpdateChildrenAsync(dbEntity, entity, timestamp);
 
-            if (PersistChangesAfterImport || persist) try
+            if (PersistChangesAfterImport || persist)
+                try
                 {
                     await Repository.PersistChangesAsync();
                 }
