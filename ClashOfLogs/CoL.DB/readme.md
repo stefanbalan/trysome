@@ -18,7 +18,7 @@ dotnet ef migrations add InitialCreate --project CoL.DB --startup-project CoL.Se
 dotnet ef migrations add UpdateName --project CoL.DB --startup-project CoL.Service
 dotnet ef migrations add RenameClanMembers --project CoL.DB
 
- dotnet ef migrations remove --project CoL.DB --startup-project CoL.Service
+dotnet ef migrations remove --project CoL.DB --startup-project CoL.Service
 
 
 dotnet ef database update --project CoL.DB --startup-project CoL.Service
