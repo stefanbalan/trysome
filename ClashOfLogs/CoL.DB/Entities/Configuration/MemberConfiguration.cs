@@ -21,7 +21,7 @@ public class MemberBaseEntityWithTagConfiguration : BaseEntityWithTagConfigurati
         builder.HasOne(cm => cm.League).WithMany();
 
         builder.Property(cm => cm.History)
-            .HasColumnType("nvarchar(max)")
+            .HasColumnType("nvarchar(1073741823)")
             .HasConversion(h => ToCsvString(h),
                 s => FromCsvString(s),
                 new ValueComparer<List<HistoryEvent>>(

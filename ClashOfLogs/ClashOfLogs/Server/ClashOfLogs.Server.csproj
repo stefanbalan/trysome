@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>ClashOfLogs.Server-6698CD14-07DA-40B7-ADD9-C7C3C1DD8493</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
+    <Configurations>Debug;Release;Docker.Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

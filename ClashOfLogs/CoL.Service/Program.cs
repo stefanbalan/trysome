@@ -97,7 +97,10 @@ public static class Program
 
                 services.AddDbContext<CoLContext>(options =>
                     {
-                        options.UseSqlServer(config.GetConnectionString("CoLContext"),
+                        // options.UseSqlServer(config.GetConnectionString("CoLContext"),
+                        //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+
+                        options.UseSqlite(config.GetConnectionString("CoLContext"),
                             sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 #if DEBUG
                         // options.LogTo(Log.Debug, LogLevel.Information);
