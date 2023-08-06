@@ -10,7 +10,7 @@ public class CoLContext : DbContext
     {
     }
 
-    public CoLContext(DbContextOptions<CoLContext> options)
+    public CoLContext(DbContextOptions options)
         : base(options)
     {
 

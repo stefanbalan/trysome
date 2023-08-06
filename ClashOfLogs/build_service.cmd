@@ -1,0 +1,1 @@
+docker build -f CoL.Service\Dockerfile -t colservice:latest .

@@ -1,4 +1,4 @@
-﻿using Lazy.Util.EntityModelMapper;
+﻿using CoL.Service.EntityModelMapper;
 
 namespace CoL.Service.Mappers;
 

@@ -45,16 +45,20 @@ public class Worker : BackgroundService
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var fourHours = TimeSpan.FromHours(4);
-
         var dbOk = await context.Database.CanConnectAsync(stoppingToken);
         if (!dbOk)
         {
             await context.Database.EnsureCreatedAsync(stoppingToken);
 
-            logger.LogError("database not available");
-            hostApplicationLifetime.StopApplication();
-            return;
+            logger.LogInformation("Attempting to create database");
+            dbOk = await context.Database.CanConnectAsync(stoppingToken);
+            
+            if (!dbOk)
+            {
+                logger.LogError("Database not available");
+                hostApplicationLifetime.StopApplication();
+                return;
+            }
         }
 
         while (!stoppingToken.IsCancellationRequested)
@@ -62,7 +66,8 @@ public class Worker : BackgroundService
             logger.LogInformation("Importing new data at: {Time}", DateTimeOffset.Now);
 
             JsonData? jsonData;
-            var delay = fourHours;
+            var delay = TimeSpan.FromHours(4);
+
             if (importDataProvider.HasImportData()
                 &&
                 (jsonData = await importDataProvider.GetImportDataAsync()) is not null)
@@ -93,12 +98,8 @@ public class Worker : BackgroundService
 
                 logger.LogInformation("Import finished");
 
-                delay = jsonData.CurrentWar is null
-                    ? fourHours
-                    : jsonData.CurrentWar.EndTime > jsonData.Date
-                      && jsonData.CurrentWar.EndTime - jsonData.Date > fourHours
-                        ? jsonData.CurrentWar.EndTime - jsonData.Date
-                        : fourHours;
+                delay = importDataProvider.GetNextImportDelay();
+                    
                 logger.LogInformation("Current war ends at {WarEnd}", jsonData.CurrentWar?.EndTime);
             }
 
