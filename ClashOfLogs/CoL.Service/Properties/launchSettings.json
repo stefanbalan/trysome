@@ -2,13 +2,15 @@
   "profiles": {
     "CoL.Service": {
       "commandName": "Project",
+      "commandLineArgs": "-files",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": "true"
+      "dotnetRunMessages": true
     },
     "Docker": {
       "commandName": "Docker",
+      "commandLineArgs": " --volume c:\\\\prj\\\\data\\\\col:/data ",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Docker"
       }

@@ -14,7 +14,9 @@ dotnet tool install --global dotnet-ef
 dotnet tool update --global dotnet-ef
 
 
-dotnet ef migrations add InitialCreate --project CoL.DB --startup-project CoL.Service
+dotnet ef migrations add InitialCreate --project CoL.DB.Sqlite --startup-project CoL.Service
+dotnet ef migrations add InitialCreate --project CoL.DB.Sqlite
+
 dotnet ef migrations add UpdateName --project CoL.DB --startup-project CoL.Service
 dotnet ef migrations add RenameClanMembers --project CoL.DB
 

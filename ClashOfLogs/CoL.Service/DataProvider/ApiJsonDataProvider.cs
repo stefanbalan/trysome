@@ -6,13 +6,13 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
 
-
 public class ApiJsonDataProvider : IJsonDataProvider
 {
     private readonly IApiKeyProvider apiKeyProvider;
     private readonly HttpClient client;
     private readonly string clanTag;
     private readonly ILogger<ApiJsonDataProvider> logger;
+    private JsonData lastData;
 
     public ApiJsonDataProvider(ILogger<ApiJsonDataProvider> logger,
         IApiKeyProvider apiKeyProvider, HttpClient client,
@@ -25,7 +25,8 @@ public class ApiJsonDataProvider : IJsonDataProvider
         this.apiKeyProvider = apiKeyProvider;
     }
 
-    public bool HasImportData() => !string.IsNullOrWhiteSpace(apiKeyProvider.GetApiKey()); // maybe add a ping to the api
+    public bool HasImportData()
+        => !string.IsNullOrWhiteSpace(apiKeyProvider.GetApiKey()); // maybe add a ping to the api
 
     public async Task<JsonData?> GetImportDataAsync()
     {
@@ -38,7 +39,7 @@ public class ApiJsonDataProvider : IJsonDataProvider
             var warlog = await GetClanWarlogByTagAsync(clanTag);
             var currentWar = await GetCurrentWarByTagAsync(clanTag);
 
-            return new JsonData {
+            return lastData = new JsonData {
                 Date = DateTime.Now,
                 Clan = JsonSerializer.Deserialize<Clan>(clan),
                 Warlog = JsonSerializer.Deserialize<Warlog>(warlog),
@@ -51,6 +52,14 @@ public class ApiJsonDataProvider : IJsonDataProvider
             return null;
         }
     }
+
+    private readonly TimeSpan fourHours = TimeSpan.FromHours(4);
+
+    public TimeSpan GetNextImportDelay() => lastData.CurrentWar is null
+        ? fourHours
+        : lastData.CurrentWar.EndTime > lastData.Date && lastData.CurrentWar.EndTime - lastData.Date > fourHours
+            ? fourHours
+            : lastData.CurrentWar.EndTime - lastData.Date;
 
 
     private async Task<string> GetClanByTagAsync(string tag)

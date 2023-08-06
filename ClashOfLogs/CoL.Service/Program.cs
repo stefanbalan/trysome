@@ -1,5 +1,8 @@
 global using System;
 global using System.Threading.Tasks;
+
+global using CoLContext = CoL.DB.Sqlite.CoLContextSqlite;
+
 global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
 global using DBClan = CoL.DB.Entities.Clan;
 global using DBLeague = CoL.DB.Entities.League;
@@ -7,14 +10,14 @@ global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
 global using DBWarMember = CoL.DB.Entities.WarMember;
+using System.Linq;
 using ClashOfLogs.Shared;
-using CoL.DB;
+using CoL.DB.Sqlite;
 using CoL.Service.DataProvider;
 using CoL.Service.Importers;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using CoL.Service.Validators;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -68,10 +71,15 @@ public static class Program
     {
         var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
 
-        var builder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", true, true);
+        var builder = new ConfigurationBuilder();
+
+        builder.AddJsonFile("appsettings.json", true, true);
         if (!string.IsNullOrWhiteSpace(env))
             builder.AddJsonFile($"appsettings.{env}.json", true, true);
+
+        if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+            builder.AddJsonFile($"/data/appsettings.json", true, true);
+
         builder.AddEnvironmentVariables();
         return builder.Build();
     }
@@ -95,37 +103,49 @@ public static class Program
                     lb.AddConfiguration(config);
                 });
 
-                services.AddDbContext<CoLContext>(options =>
-                    {
-                        // options.UseSqlServer(config.GetConnectionString("CoLContext"),
-                        //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
 
-                        options.UseSqlite(config.GetConnectionString("CoLContext"),
-                            sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
-#if DEBUG
-                        // options.LogTo(Log.Debug, LogLevel.Information);
-                        // options.ConfigureWarnings(warningOptions
-                        //     => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
-                        // options.EnableSensitiveDataLogging();
-#endif
-                    },
-                    ServiceLifetime.Singleton);
+                //                 services.AddDbContext<CoLContext>(options =>
+                //                     {
+                //                         // options.UseSqlServer(config.GetConnectionString("CoLContext"),
+                //                         //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+                //                         
+                //                         // options.UseSqlite(config.GetConnectionString("CoLContext"),
+                //                         //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+                //                         
+                // #if DEBUG
+                //                         // options.LogTo(Log.Debug, LogLevel.Information);
+                //                         // options.ConfigureWarnings(warningOptions
+                //                         //     => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
+                //                         // options.EnableSensitiveDataLogging();
+                // #endif
+                //                     },
+                //                     ServiceLifetime.Singleton);
+
+                services.UseSqliteCoLContext(config.GetConnectionString("CoLContext") 
+                                             ?? throw new Exception("Missing db connection string configuration"));
 
                 // data providers
-                // services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
-
-                services.AddSingleton<IApiKeyProvider, AppSettingsApiKeyProvider>();
-                services.AddHttpClient<IJsonDataProvider, ApiJsonDataProvider>(
-                    client =>
-                    {
-                        client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
-                        client.DefaultRequestHeaders.Add("Accept", "application/json");
-                        return new ApiJsonDataProvider(
-                            services.BuildServiceProvider().GetRequiredService<ILogger<ApiJsonDataProvider>>(),
-                            services.BuildServiceProvider().GetRequiredService<IApiKeyProvider>(),
-                            client,
-                            config.GetValue<string>("ClanTag") ?? throw new Exception("Missing configuration ClanTag"));
-                    });
+                if (args.Contains("-files"))
+                {
+                    Log.Information("Using file data provider");
+                    services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+                }
+                else
+                {
+                    services.AddSingleton<IApiKeyProvider, AppSettingsApiKeyProvider>();
+                    services.AddHttpClient<IJsonDataProvider, ApiJsonDataProvider>(
+                        client =>
+                        {
+                            client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
+                            client.DefaultRequestHeaders.Add("Accept", "application/json");
+                            return new ApiJsonDataProvider(
+                                services.BuildServiceProvider().GetRequiredService<ILogger<ApiJsonDataProvider>>(),
+                                services.BuildServiceProvider().GetRequiredService<IApiKeyProvider>(),
+                                client,
+                                config.GetValue<string>("ClanTag") ??
+                                throw new Exception("Missing configuration ClanTag"));
+                        });
+                }
 
                 services.AddSingleton(typeof(JsonDataBackup),
                     svcs =>

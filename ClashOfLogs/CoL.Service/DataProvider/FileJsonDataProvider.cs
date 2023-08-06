@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using ClashOfLogs.Shared;
@@ -31,7 +32,7 @@ internal class FileJsonDataProvider : IJsonDataProvider
         {
             importDir = directory.EnumerateDirectories()
                 .Where(d => !d.Name.Contains("imported"))
-                .FirstOrDefault(d => DateTime.TryParse(d.Name, out _));
+                .FirstOrDefault(d => IsCorrectDateTime(d.Name, out _));
         }
         catch (Exception ex)
         {
@@ -40,6 +41,12 @@ internal class FileJsonDataProvider : IJsonDataProvider
 
         return importDir != null;
     }
+
+    private bool IsCorrectDateTime(string dirName, out DateTime date) => DateTime.TryParseExact(
+        dirName,
+        "yyyyMMdd HHmm",
+        CultureInfo.InvariantCulture,
+        DateTimeStyles.AssumeLocal, out date);
 
     public async Task<JsonData?> GetImportDataAsync()
     {
@@ -50,7 +57,7 @@ internal class FileJsonDataProvider : IJsonDataProvider
             currentImportDir = directory.EnumerateDirectories()
                 .Where(d => !d.Name.Contains("imported"))
                 .Where(d => !d.Name.Contains("error"))
-                .FirstOrDefault(d => DateTime.TryParse(d.Name, out date));
+                .FirstOrDefault(d => IsCorrectDateTime(d.Name, out date));
 
             if (currentImportDir is null) return null;
             var result = new JsonData { Date = date };
@@ -59,7 +66,7 @@ internal class FileJsonDataProvider : IJsonDataProvider
             result.Warlog = await ImportFileAsync<Warlog>(currentImportDir, "warlog");
             result.CurrentWar = await ImportFileAsync<WarDetail>(currentImportDir, "currentwar");
 
-            currentImportDir.MoveTo($"{currentImportDir.Name}_imported");
+            currentImportDir.MoveTo($"{currentImportDir.FullName}_imported");
             return result;
         }
         catch (Exception ex)
@@ -68,6 +75,8 @@ internal class FileJsonDataProvider : IJsonDataProvider
             return null;
         }
     }
+
+    public TimeSpan GetNextImportDelay() => TimeSpan.FromSeconds(5);
 
     private async Task<T?> ImportFileAsync<T>(DirectoryInfo dir, string name)
     {

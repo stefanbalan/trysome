@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using ClashOfLogs.Shared;
 using CoL.DB.Entities;
-using Lazy.Util.EntityModelMapper;
 using WarMember = ClashOfLogs.Shared.WarMember;
 
 namespace CoL.Service.Mappers;
