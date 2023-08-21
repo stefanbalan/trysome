@@ -16,11 +16,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5557DA06-77B2-45C8-A147-02CA48FFE341}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		build_service.cmd = build_service.cmd
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoL.Service.Tests", "CoL.Service.Tests\CoL.Service.Tests.csproj", "{283B3E60-298E-4E45-8FD2-F2C1E2A089DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoL.DB.Sqlite", "CoL.DB.Sqlite\CoL.DB.Sqlite.csproj", "{43D4BDE8-133B-4C27-9363-7C637DB2BA41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoL.DB.Sqlite", "CoL.DB.Sqlite\CoL.DB.Sqlite.csproj", "{43D4BDE8-133B-4C27-9363-7C637DB2BA41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

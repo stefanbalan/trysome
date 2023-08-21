@@ -17,7 +17,7 @@ public class Worker : BackgroundService
     private readonly CoLContext context;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
     private readonly IJsonDataProvider importDataProvider;
-    private readonly JsonDataBackup jsonDataBackup;
+    private readonly JsonBackup jsonDataBackup;
     private readonly ILogger<Worker> logger;
 
 
@@ -26,7 +26,7 @@ public class Worker : BackgroundService
         ILogger<Worker> logger,
         CoLContext context,
         IJsonDataProvider importDataProvider,
-        JsonDataBackup jsonDataBackup,
+        JsonBackup jsonDataBackup,
         IEntityImporter<DBClan, Clan> clanDataImporter,
         IEntityImporter<DBWar, WarSummary> warLogImporter,
         IEntityImporter<DBWar, WarDetail> warDetailImporter,
@@ -68,9 +68,7 @@ public class Worker : BackgroundService
             JsonData? jsonData;
             var delay = TimeSpan.FromHours(4);
 
-            if (importDataProvider.HasImportData()
-                &&
-                (jsonData = await importDataProvider.GetImportDataAsync()) is not null)
+            if ((jsonData = await importDataProvider.GetImportDataAsync()) is not null)
             {
                 if (jsonData.Clan is not null)
                     foreach (var clanMember in jsonData.Clan.Members)

@@ -20,11 +20,11 @@ internal class FileJsonDataProvider : IJsonDataProvider
         if (string.IsNullOrWhiteSpace(importPath))
             throw new Exception("Invalid configuration, import directory is empty");
         directory = new DirectoryInfo(importPath);
-        if (!directory.Exists) throw new Exception("Invalid configuration, import directory does not exist");
+        if (!directory.Exists) throw new Exception($"Invalid configuration, import directory {directory.FullName} does not exist");
         this.logger = logger;
     }
 
-    public bool HasImportData()
+    private bool HasImportData()
     {
         if (!directory.Exists) return false;
         DirectoryInfo? importDir = null;
@@ -76,7 +76,7 @@ internal class FileJsonDataProvider : IJsonDataProvider
         }
     }
 
-    public TimeSpan GetNextImportDelay() => TimeSpan.FromSeconds(5);
+    public TimeSpan GetNextImportDelay() => HasImportData() ? TimeSpan.FromSeconds(5) : TimeSpan.FromHours(1);
 
     private async Task<T?> ImportFileAsync<T>(DirectoryInfo dir, string name)
     {
