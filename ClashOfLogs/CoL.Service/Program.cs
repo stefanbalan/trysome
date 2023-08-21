@@ -1,8 +1,6 @@
 global using System;
 global using System.Threading.Tasks;
-
 global using CoLContext = CoL.DB.Sqlite.CoLContextSqlite;
-
 global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
 global using DBClan = CoL.DB.Entities.Clan;
 global using DBLeague = CoL.DB.Entities.League;
@@ -73,12 +71,14 @@ public static class Program
 
         var builder = new ConfigurationBuilder();
 
-        builder.AddJsonFile("appsettings.json", true, true);
-        if (!string.IsNullOrWhiteSpace(env))
-            builder.AddJsonFile($"appsettings.{env}.json", true, true);
-
         if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
             builder.AddJsonFile($"/data/appsettings.json", true, true);
+        else
+        {
+            builder.AddJsonFile("appsettings.json", true, true);
+            if (!string.IsNullOrWhiteSpace(env))
+                builder.AddJsonFile($"appsettings.{env}.json", true, true);
+        }
 
         builder.AddEnvironmentVariables();
         return builder.Build();
@@ -121,7 +121,7 @@ public static class Program
                 //                     },
                 //                     ServiceLifetime.Singleton);
 
-                services.UseSqliteCoLContext(config.GetConnectionString("CoLContext") 
+                services.UseSqliteCoLContext(config.GetConnectionString("CoLContext")
                                              ?? throw new Exception("Missing db connection string configuration"));
 
                 // data providers
@@ -133,24 +133,25 @@ public static class Program
                 else
                 {
                     services.AddSingleton<IApiKeyProvider, AppSettingsApiKeyProvider>();
-                    services.AddHttpClient<IJsonDataProvider, ApiJsonDataProvider>(
+                    services.AddSingleton<ApiClient>();
+                    services.AddHttpClient<ApiClient>(
                         client =>
                         {
                             client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
                             client.DefaultRequestHeaders.Add("Accept", "application/json");
-                            return new ApiJsonDataProvider(
-                                services.BuildServiceProvider().GetRequiredService<ILogger<ApiJsonDataProvider>>(),
-                                services.BuildServiceProvider().GetRequiredService<IApiKeyProvider>(),
-                                client,
-                                config.GetValue<string>("ClanTag") ??
-                                throw new Exception("Missing configuration ClanTag"));
                         });
+                    services.AddSingleton<IJsonDataProvider, ApiJsonDataProvider>(
+                        serviceProvider => new ApiJsonDataProvider(
+                            serviceProvider.GetRequiredService<ILogger<ApiJsonDataProvider>>(),
+                            serviceProvider.GetRequiredService<ApiClient>(),
+                            config.GetValue<string>("ClanTag") ??
+                            throw new Exception("Missing configuration ClanTag")));
                 }
 
-                services.AddSingleton(typeof(JsonDataBackup),
+                services.AddSingleton(typeof(JsonBackup),
                     svcs =>
-                        new JsonDataBackup((config.GetValue<string>("JSONDirectory") ?? "") + "\\imported",
-                            svcs.GetService<ILogger<JsonDataBackup>>() ?? throw new Exception("Logger not configured")
+                        new JsonBackup((config.GetValue<string>("JSONDirectory") ?? "") + "\\api",
+                            svcs.GetService<ILogger<JsonBackup>>() ?? throw new Exception("Logger not configured")
                         ));
 
                 //validators

@@ -49,7 +49,8 @@ public static class MapperExpressionToMemberBuilder
     public static MemberInfo DestinationMember<T, TP>(Expression<Func<T, TP>> expression)
     {
         if (expression.Body is not MemberExpression memberExpression)
-            throw new ArgumentException($"Expression '{expression.Name}' does not refer to a field or property.");
+            throw new ArgumentException($"Expression '{expression.Name}' does not refer to a field or property. " +
+                                        $"This can be caused by the destination expression being automatically replaced by unary 'Convert' when destination property type does not match (nullable)/.");
 
         var type = typeof(T);
 

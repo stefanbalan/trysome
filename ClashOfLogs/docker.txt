@@ -1,0 +1,62 @@
+# WSL
+
+Default is ubuntu, latest version.
+		
+		wsl --install
+
+set no password
+
+		sudo nano /etc/sudoers.d/admiarl
+
+add the following line:
+
+		admiral ALL=(ALL) NOPASSWD:ALL
+
+Copy certifcates from server /etc/docker/tls/* (running `top` will show docker daemon with params)
+		
+		container-station/dockerd -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock --bridge=lxcbr0 --tlsverify --tlscacert=/etc/docker/tls/ca.pem --tlscert=/etc/docker/tls/server.pem --tlskey=/etc/docker/tls/server-key.pem --storage-driver=overlay2 --dns 10.0.3.1 --data-root=/var/lib/docker --exec-root=/var/run/docker
+
+on client
+		
+		docker context create sq --description "nas" --docker "host=tcp://192.168.100.101:2376,ca=c:\docker\tls\ca.pem,cert=c:\docker\tls\cert.pem,key=c:\docker\tls\key.pem"
+
+list context
+docker context ls
+
+docker context use <context>
+
+
+build image
+
+		docker build -f Dockerfile -t colservice:latest .
+		docker build -f Dockerfile .
+	
+add the tags after
+
+		docker tag ab2bed950dd7 colservice:1.0.2
+		docker tag ab2bed950dd7 colservice:latest
+		
+run import files linux
+
+	docker run --entrypoint "dotnet CoL.Service.dll -files" \
+		-d \
+		-e PUID=1005 \
+		-e PGID=100 \
+		--name colservice \
+		--env "TZ=Europe/Bucharest" \
+		--restart always \
+		--volume /share/docker/col:/data \
+		colservice:latest
+
+docker run -it --entrypoint sh colservice
+docker run -it --entrypoint "dotnet CoL.Service.dll -files" colservice
+
+run import files windows
+	docker run --entrypoint "dotnet CoL.Service.dll -files" -d -e PUID=1005 -e PGID=100 --name colservice102 --env "TZ=Europe/Bucharest" --restart always --volume /share/docker/col:/data colservice:1.0.2
+	
+	docker run --entrypoint "dotnet CoL.Service.dll" -d -e PUID=1005 -e PGID=100 --name cs102 --env "TZ=Europe/Bucharest" --restart always --volume /share/docker/col:/data colservice:1.0.2
+	
+	docker run -d -e PUID=1005 -e PGID=100 --name cs102 --env "TZ=Europe/Bucharest" --volume /share/docker/col:/data colservice:1.0.2 -files
+	
+	
+	

@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
 
-public class JsonDataBackup
+public class JsonBackup
 {
     private readonly string backupDirectoryPath;
-    private readonly ILogger<JsonDataBackup> logger;
+    private readonly ILogger<JsonBackup> logger;
 
-    public JsonDataBackup(string backupDirectoryPath, ILogger<JsonDataBackup> logger)
+    public JsonBackup(string backupDirectoryPath, ILogger<JsonBackup> logger)
     {
         this.backupDirectoryPath = backupDirectoryPath;
         this.logger = logger;
@@ -17,8 +17,18 @@ public class JsonDataBackup
 
     public async Task BackupAsync(JsonData jsonData)
     {
-        var backupDir = Directory.CreateDirectory(Path.Combine(backupDirectoryPath,
-            jsonData.Date.ToString("yyyyMMdd HHmm")));
+        DirectoryInfo backupDir;
+        try
+        {
+            backupDir = Directory.CreateDirectory(Path.Combine(backupDirectoryPath,
+                jsonData.Date.ToString("yyyyMMdd HHmm")));
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error while creating backup directory");
+            return;
+        }
+
         if (jsonData.Clan != null) await BackupFileAsync(backupDir, "clan", jsonData.Clan);
         if (jsonData.Warlog != null) await BackupFileAsync(backupDir, "warlog", jsonData.Warlog);
         if (jsonData.CurrentWar != null) await BackupFileAsync(backupDir, "currentwar", jsonData.CurrentWar);
@@ -34,5 +44,23 @@ public class JsonDataBackup
         var file = Path.Combine(backupDir.FullName, $"{fileName}.json");
         logger.LogInformation("Writing backup file {File}", file);
         await File.WriteAllTextAsync(file, json);
+    }
+
+
+    public async ValueTask BackupJsonAsync(string fileName, string json)
+    {
+        if (!Directory.Exists(backupDirectoryPath))
+            try
+            {
+                Directory.CreateDirectory(backupDirectoryPath);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "error while creating backup directory");
+            }
+        var datestring = DateTime.Now.ToString("yyyyMMdd HHmm");
+        var filename = Path.Combine(backupDirectoryPath, $"{datestring}_{fileName}.json");
+        logger.LogInformation("Writing backup file {File}", filename);
+        await File.WriteAllTextAsync(filename, json);
     }
 }

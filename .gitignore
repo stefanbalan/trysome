@@ -354,3 +354,5 @@ ASALocalRun/
 .mfractor/
 
 /Squirrel/
+/ClashOfLogs/CoL.Service/data/json
+/ClashOfLogs/CoL.Service/data/db

@@ -63,15 +63,15 @@ public record WarDetail
 
     [JsonPropertyName("preparationStartTime")]
     [JsonConverter(typeof(CustomDateTimeJsonConverter))]
-    public DateTime PreparationStartTime { get; set; }
+    public DateTime? PreparationStartTime { get; set; }
 
     [JsonPropertyName("startTime")]
     [JsonConverter(typeof(CustomDateTimeJsonConverter))]
-    public DateTime StartTime { get; set; }
+    public DateTime? StartTime { get; set; }
 
     [JsonPropertyName("endTime")]
     [JsonConverter(typeof(CustomDateTimeJsonConverter))]
-    public DateTime EndTime { get; set; }
+    public DateTime? EndTime { get; set; }
 
     [JsonPropertyName("clan")]
     public WarClan Clan { get; set; }

@@ -2,7 +2,6 @@
 
 public interface IJsonDataProvider
 {
-    bool HasImportData();
     Task<JsonData?> GetImportDataAsync();
     TimeSpan GetNextImportDelay();
 }

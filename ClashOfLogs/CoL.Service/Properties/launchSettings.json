@@ -10,7 +10,7 @@
     },
     "Docker": {
       "commandName": "Docker",
-      "commandLineArgs": " --volume c:\\\\prj\\\\data\\\\col:/data ",
+      "commandLineArgs": "-files",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Docker"
       }
