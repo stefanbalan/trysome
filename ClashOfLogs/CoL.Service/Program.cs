@@ -1,6 +1,5 @@
 global using System;
 global using System.Threading.Tasks;
-global using CoLContext = CoL.DB.Sqlite.CoLContextSqlite;
 global using DBBadgeUrls = CoL.DB.Entities.BadgeUrls;
 global using DBClan = CoL.DB.Entities.Clan;
 global using DBLeague = CoL.DB.Entities.League;
@@ -8,6 +7,8 @@ global using DBMember = CoL.DB.Entities.Member;
 global using DBWar = CoL.DB.Entities.War;
 global using DBWarClan = CoL.DB.Entities.WarClan;
 global using DBWarMember = CoL.DB.Entities.WarMember;
+global using CoLContext = CoL.DB.Sqlite.CoLContextSqlite;
+using System.IO;
 using System.Linq;
 using ClashOfLogs.Shared;
 using CoL.DB.Sqlite;
@@ -150,7 +151,7 @@ public static class Program
 
                 services.AddSingleton(typeof(JsonBackup),
                     svcs =>
-                        new JsonBackup((config.GetValue<string>("JSONDirectory") ?? "") + "\\api",
+                        new JsonBackup(Path.Combine((config.GetValue<string>("JSONDirectory") ?? ""), "backup"),
                             svcs.GetService<ILogger<JsonBackup>>() ?? throw new Exception("Logger not configured")
                         ));
 
