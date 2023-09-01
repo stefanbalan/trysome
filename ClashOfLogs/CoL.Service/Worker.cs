@@ -1,6 +1,5 @@
 using System.Threading;
 using ClashOfLogs.Shared;
-using CoL.DB;
 using CoL.Service.DataProvider;
 using CoL.Service.Importers;
 using Microsoft.Extensions.Hosting;
@@ -17,7 +16,6 @@ public class Worker : BackgroundService
     private readonly CoLContext context;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
     private readonly IJsonDataProvider importDataProvider;
-    private readonly JsonBackup jsonDataBackup;
     private readonly ILogger<Worker> logger;
 
 
@@ -26,7 +24,6 @@ public class Worker : BackgroundService
         ILogger<Worker> logger,
         CoLContext context,
         IJsonDataProvider importDataProvider,
-        JsonBackup jsonDataBackup,
         IEntityImporter<DBClan, Clan> clanDataImporter,
         IEntityImporter<DBWar, WarSummary> warLogImporter,
         IEntityImporter<DBWar, WarDetail> warDetailImporter,
@@ -36,7 +33,6 @@ public class Worker : BackgroundService
         this.logger = logger;
         this.context = context;
         this.importDataProvider = importDataProvider;
-        this.jsonDataBackup = jsonDataBackup;
         this.clanDataImporter = clanDataImporter;
         this.warLogImporter = warLogImporter;
         this.warDetailImporter = warDetailImporter;
@@ -48,11 +44,20 @@ public class Worker : BackgroundService
         var dbOk = await context.Database.CanConnectAsync(stoppingToken);
         if (!dbOk)
         {
-            await context.Database.EnsureCreatedAsync(stoppingToken);
-
             logger.LogInformation("Attempting to create database");
+            try
+            {
+                await context.Database.EnsureCreatedAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to create database");
+                hostApplicationLifetime.StopApplication();
+                return;
+            }
+
             dbOk = await context.Database.CanConnectAsync(stoppingToken);
-            
+
             if (!dbOk)
             {
                 logger.LogError("Database not available");
@@ -92,13 +97,11 @@ public class Worker : BackgroundService
                 //     return;
                 // }
 
-                await jsonDataBackup.BackupAsync(jsonData);
-
                 logger.LogInformation("Import finished");
 
                 delay = importDataProvider.GetNextImportDelay();
-                    
-                logger.LogInformation("Current war ends at {WarEnd}", jsonData.CurrentWar?.EndTime);
+
+                if (jsonData.CurrentWar is not null) logger.LogInformation("Current war ends at {WarEnd}", jsonData.CurrentWar.EndTime);
             }
 
             logger.LogInformation("Next import in {Delay}", delay);

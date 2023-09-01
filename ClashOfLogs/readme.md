@@ -1,3 +1,11 @@
+# ToDo
+
+## bugs
+
+	- league is always updated unnecesarily
+	- member is updated unnecesarily?
+
+
 # Things to try:
 
 ### Playright

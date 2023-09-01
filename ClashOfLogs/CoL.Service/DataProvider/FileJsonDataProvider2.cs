@@ -8,21 +8,21 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
 
-internal class FileJsonDataProvider : IJsonDataProvider
+internal class FileJsonDataProvider2 : IJsonDataProvider
 {
     private readonly DirectoryInfo directory;
     private readonly ILogger<FileJsonDataProvider> logger;
     private readonly JsonBackup jsonBackup;
-    private DirectoryInfo? currentImportDir;
 
-    public FileJsonDataProvider(IConfiguration config, ILogger<FileJsonDataProvider> logger,
+    public FileJsonDataProvider2(IConfiguration config, ILogger<FileJsonDataProvider> logger,
         JsonBackup jsonBackup)
     {
         var importPath = config.GetValue(typeof(string), "JSONDirectory", ".") as string;
         if (string.IsNullOrWhiteSpace(importPath))
-            throw new Exception("Invalid configuration, \"JSONDirectory\" is empty");
+            throw new Exception("Invalid configuration, import directory is empty");
         directory = new DirectoryInfo(importPath);
-        if (!directory.Exists) throw new Exception($"Invalid configuration, \"JSONDirectory\"=\"{directory.FullName}\" does not exist");
+        if (!directory.Exists)
+            throw new Exception($"Invalid configuration, import directory {directory.FullName} does not exist");
         this.logger = logger;
         this.jsonBackup = jsonBackup;
     }
@@ -35,7 +35,7 @@ internal class FileJsonDataProvider : IJsonDataProvider
         {
             importDir = directory.EnumerateDirectories()
                 .Where(d => !d.Name.Contains("imported"))
-                .FirstOrDefault(d => IsCorrectDateTime(d.Name, out _));
+                .FirstOrDefault(d => IsJsonDataFile(d.Name, out _));
         }
         catch (Exception ex)
         {
@@ -45,11 +45,27 @@ internal class FileJsonDataProvider : IJsonDataProvider
         return importDir != null;
     }
 
-    private bool IsCorrectDateTime(string dirName, out DateTime date) => DateTime.TryParseExact(
-        dirName,
-        "yyyyMMdd HHmm",
-        CultureInfo.InvariantCulture,
-        DateTimeStyles.AssumeLocal, out date);
+    private bool IsJsonDataFile(string fileName, out DateTime date)
+    {
+        var fnp = fileName.Split('_');
+        if (fnp.Length != 2)
+        {
+            date = default;
+            return false;
+        }
+
+        if (string.Equals(fnp[1], "clan", StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals(fnp[1], "currentwar", StringComparison.InvariantCultureIgnoreCase) ||
+            string.Equals(fnp[1], "warlog", StringComparison.InvariantCultureIgnoreCase)
+           )
+            return DateTime.TryParseExact(
+                fileName,
+                "yyyyMMdd HHmm",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeLocal, out date);
+        date = default;
+        return false;
+    }
 
     public async Task<JsonData?> GetImportDataAsync()
     {
@@ -57,19 +73,15 @@ internal class FileJsonDataProvider : IJsonDataProvider
         try
         {
             DateTime date = default;
-            currentImportDir = directory.EnumerateDirectories()
-                .Where(d => !d.Name.Contains("imported"))
-                .Where(d => !d.Name.Contains("error"))
-                .FirstOrDefault(d => IsCorrectDateTime(d.Name, out date));
+            var nextFile = GetNextFile(out date);
 
-            if (currentImportDir is null) return null;
+            if (nextFile is null) return null;
             var result = new JsonData { Date = date };
 
-            result.Clan = await ImportFileAsync<Clan>(currentImportDir, date, "clan");
-            result.Warlog = await ImportFileAsync<Warlog>(currentImportDir, date, "warlog");
-            result.CurrentWar = await ImportFileAsync<WarDetail>(currentImportDir, date, "currentwar");
+            result.Clan = await ImportFileAsync<Clan>(directory, "clan", date);
+            result.Warlog = await ImportFileAsync<Warlog>(directory, "warlog", date);
+            result.CurrentWar = await ImportFileAsync<WarDetail>(directory, "currentwar", date);
 
-            currentImportDir.MoveTo($"{currentImportDir.FullName}_imported");
             return result;
         }
         catch (Exception ex)
@@ -79,18 +91,27 @@ internal class FileJsonDataProvider : IJsonDataProvider
         }
     }
 
+    private FileInfo? GetNextFile(out DateTime date)
+    {
+        DateTime d = default;
+        var firstOrDefault = directory.EnumerateFiles("???????? ????_*.json")
+            .FirstOrDefault(f => IsJsonDataFile(f.Name, out d));
+        date = d;
+        return firstOrDefault;
+    }
+
+
     public TimeSpan GetNextImportDelay() => HasImportData() ? TimeSpan.FromSeconds(5) : TimeSpan.FromHours(1);
 
-    private async Task<T?> ImportFileAsync<T>(DirectoryInfo dir, DateTime date, string name)
+    private async Task<T?> ImportFileAsync<T>(DirectoryInfo dir, string name, DateTime date)
     {
-        var fileInfo = dir.EnumerateFiles($"{name}*.json").FirstOrDefault();
+        var fileInfo = dir.EnumerateFiles($"{date:yyyyMMdd HHmm}_{name}.json").FirstOrDefault();
         if (fileInfo == null) return default;
         try
         {
             using var reader = fileInfo.OpenText();
             var json = await reader.ReadToEndAsync();
             await jsonBackup.BackupJsonAsync(json, name, date);
-            reader.Close();
             fileInfo.Delete();
             return JsonSerializer.Deserialize<T>(json);
         }

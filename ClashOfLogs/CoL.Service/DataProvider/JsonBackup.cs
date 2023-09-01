@@ -47,7 +47,7 @@ public class JsonBackup
     }
 
 
-    public async ValueTask BackupJsonAsync(string fileName, string json)
+    public async ValueTask BackupJsonAsync(string json, string fileName, DateTime date)
     {
         if (!Directory.Exists(backupDirectoryPath))
             try
@@ -58,7 +58,9 @@ public class JsonBackup
             {
                 logger.LogError(e, "error while creating backup directory");
             }
-        var datestring = DateTime.Now.ToString("yyyyMMdd HHmm");
+
+        //var datestring = DateTime.Now.ToString("yyyyMMdd HHmm");
+        var datestring = date.ToString("yyyyMMdd HHmm");
         var filename = Path.Combine(backupDirectoryPath, $"{datestring}_{fileName}.json");
         logger.LogInformation("Writing backup file {File}", filename);
         await File.WriteAllTextAsync(filename, json);

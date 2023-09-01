@@ -55,35 +55,35 @@ public class ApiClient
     public async Task<string?> GetClanAsync(string clanTag)
     {
         var json = await ApiRequestAsync($"clans/{Uri.EscapeDataString(clanTag)}");
-        if (json != null) await jsonBackup.BackupJsonAsync("clan", json);
+        if (json != null) await jsonBackup.BackupJsonAsync(json, "clan", DateTime.Now);
         return json;
     }
 
     public async Task<string?> GetClanMembersAsync(string clanTag)
     {
         var json = await ApiRequestAsync($"clans/{Uri.EscapeDataString(clanTag)}/members");
-        if (json != null) await jsonBackup.BackupJsonAsync("members", json);
+        if (json != null) await jsonBackup.BackupJsonAsync(json, "members", DateTime.Now);
         return json;
     }
 
     public async Task<string?> GetClanWarlogAsync(string tag)
     {
         var json = await ApiRequestAsync($"clans/{Uri.EscapeDataString(tag)}/warlog");
-        if (json != null) await jsonBackup.BackupJsonAsync("warlog", json);
+        if (json != null) await jsonBackup.BackupJsonAsync(json, "warlog", DateTime.Now);
         return json;
     }
 
     public async Task<string?> GetCurrentWarAsync(string tag)
     {
         var json = await ApiRequestAsync($"clans/{Uri.EscapeDataString(tag)}/currentwar");
-        if (json != null) await jsonBackup.BackupJsonAsync("currentwar", json);
+        if (json != null) await jsonBackup.BackupJsonAsync(json, "currentwar", DateTime.Now);
         return json;
     }
 
     public async Task<string?> GetCurrentLeagueGroupAsync(string tag)
     {
         var json = await ApiRequestAsync($"clans/{Uri.EscapeDataString(tag)}/currentwar/leaguegroup");
-        if (json != null) await jsonBackup.BackupJsonAsync("currentleaguegroup", json);
+        if (json != null) await jsonBackup.BackupJsonAsync(json, "currentleaguegroup", DateTime.Now);
         return json;
     }
 }
