@@ -83,7 +83,15 @@ public class ApiClient
     public async Task<string?> GetCurrentLeagueGroupAsync(string tag)
     {
         var json = await ApiRequestAsync($"clans/{Uri.EscapeDataString(tag)}/currentwar/leaguegroup");
-        if (json != null) await jsonBackup.BackupJsonAsync(json, "currentleaguegroup", DateTime.Now);
+        if (json != null) await jsonBackup.BackupJsonAsync(json, "leaguegroup", DateTime.Now);
+        return json;
+    }
+
+    public async Task<string?> GetLeagueWarAsync(string tag)
+    {
+        var json = await ApiRequestAsync($"clanwarleagues/wars/{Uri.EscapeDataString(tag)}");
+        var wartag = tag.Replace("#", "");
+        if (json != null) await jsonBackup.BackupJsonAsync(json, $"leaguewar_{wartag}", DateTime.Now);
         return json;
     }
 }

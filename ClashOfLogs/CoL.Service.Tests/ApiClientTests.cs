@@ -8,7 +8,7 @@ public class ApiClientTests
     [Fact]
     public async Task Test()
     {
-        var httpClient = new HttpClient() {
+        var httpClient = new HttpClient {
             BaseAddress = new Uri("https://api.clashofclans.com/v1/"),
         };
         httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -16,7 +16,8 @@ public class ApiClientTests
         var apiclient = new ApiClient(
             NullLogger<ApiClient>.Instance,
             httpClient,
-            new MockApiKeyProvider());
+            new MockApiKeyProvider(),
+            null!);
 
         var clanJson1 = await apiclient.GetClanAsync("#2Y2L9G8J");
         var clanJson2 = await apiclient.GetClanAsync("#2L82JLL9R");

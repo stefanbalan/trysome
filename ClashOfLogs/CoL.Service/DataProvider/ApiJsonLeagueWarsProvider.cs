@@ -4,15 +4,15 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
 
-public class ApiJsonDataProvider : IJsonDataProvider
+public class ApiJsonLeagueWarsProvider : IJsonDataProvider
 {
     private readonly ApiClient apiClient;
     private readonly string clanTag;
-    private readonly ILogger<ApiJsonDataProvider> logger;
+    private readonly ILogger<ApiJsonLeagueWarsProvider> logger;
     private JsonData? lastData;
 
-    public ApiJsonDataProvider(
-        ILogger<ApiJsonDataProvider> logger,
+    public ApiJsonLeagueWarsProvider(
+        ILogger<ApiJsonLeagueWarsProvider> logger,
         ApiClient apiClient,
         string clanTag)
     {
@@ -26,16 +26,23 @@ public class ApiJsonDataProvider : IJsonDataProvider
         try
         {
             // connect to Clash of Clans api and get CLan, Warlog and CurrentWar
-            var clan = await apiClient.GetClanAsync(clanTag);
-            var warlog = await apiClient.GetClanWarlogAsync(clanTag);
-            var currentWar = await apiClient.GetCurrentWarAsync(clanTag);
+            var leagueGroupStr = await apiClient.GetCurrentLeagueGroupAsync(clanTag);
 
-            return lastData = new JsonData {
-                Date = DateTime.Now,
-                Clan = clan is null ? null : JsonSerializer.Deserialize<Clan>(clan),
-                Warlog = warlog is null ? null : JsonSerializer.Deserialize<Warlog>(warlog),
-                CurrentWar = currentWar is null ? null : JsonSerializer.Deserialize<WarDetail>(currentWar)
-            };
+            if (leagueGroupStr != null)
+            {
+                var leagueGroup = JsonSerializer.Deserialize<LeagueWarGroup>(leagueGroupStr);
+
+                foreach (var round in leagueGroup.Rounds)
+                {
+                    var ownWar = round.WarTags[0];
+
+                    var warStr = await apiClient.GetLeagueWarAsync(ownWar);
+                }
+
+            }
+
+
+            return lastData;
         }
         catch (Exception e)
         {
