@@ -29,6 +29,7 @@ internal class FileJsonDataProvider : IJsonDataProvider
 
     private bool HasImportData()
     {
+        logger.LogInformation("Checking for import data 1");
         if (!directory.Exists) return false;
         DirectoryInfo? importDir = null;
         try

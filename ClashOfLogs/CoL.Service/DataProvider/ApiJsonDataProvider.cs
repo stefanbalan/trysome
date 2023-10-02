@@ -48,16 +48,10 @@ public class ApiJsonDataProvider : IJsonDataProvider
 
     public TimeSpan GetNextImportDelay()
     {
-        if (lastData?.CurrentWar?.EndTime is null)
-            return fourHours;
-
-        if (lastData.CurrentWar.EndTime > lastData.Date &&
+        if (lastData?.CurrentWar?.EndTime is null ||
+            lastData.CurrentWar.EndTime <= lastData.Date ||
             lastData.CurrentWar.EndTime - lastData.Date > fourHours)
             return fourHours;
-
         return lastData.CurrentWar.EndTime.Value - lastData.Date;
     }
-
-
-
 }

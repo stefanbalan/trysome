@@ -10,7 +10,7 @@
         <Platforms>AnyCPU;x64</Platforms>
         <Configurations>Debug;Release;Docker.Debug</Configurations>
         <!-- Set `docker run` arguments to mount a volume -->
-        <DockerfileRunArguments>-v $(MSBuildProjectDirectory)\data:/data</DockerfileRunArguments>
+        <DockerfileRunArguments>-v c:\d\data:/data</DockerfileRunArguments>
         <!-- Set `docker build` arguments to add a custom tag -->
         <!-- <DockerfileBuildArguments>-t contoso/name:v2.0</DockerfileBuildArguments> -->
     </PropertyGroup>

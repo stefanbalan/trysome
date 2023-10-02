@@ -17,12 +17,11 @@ RUN dotnet build "CoL.Service.csproj" -c Release -o /app/build /p:Version=$VERSI
 
 FROM build AS publish 
 RUN dotnet publish "CoL.Service.csproj" -c Release -o /app/publish
-COPY --from=build /src/CoL.Service/appsettings.Docker.json /data/appsettings.json
+#COPY --from=build /src/CoL.Service/appsettings.Docker.json /data/appsettings.json
 
 FROM base AS final
 WORKDIR /app 
-COPY --from=publish /app/publish . 
-VOLUME /data # Expose /data directory 
-ENTRYPOINT ["dotnet", "CoL.Service.dll"] 
-CMD ["dotnet", "CoL.Service.dll", "-files"] 
-CMD ["dotnet", "CoL.Service.dll"]
+COPY --from=publish /app/publish .
+# Expose /data directory 
+VOLUME /data 
+ENTRYPOINT ["dotnet", "CoL.Service.dll"]

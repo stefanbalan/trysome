@@ -21,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Clan = ClashOfLogs.Shared.Clan;
 using League = ClashOfLogs.Shared.League;
@@ -36,6 +37,7 @@ public static class Program
         var config = BuildConfiguration();
         // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
 
+
         var loggerConfiguration =
                 new LoggerConfiguration() //todo: study if it is better to use a separate logger for the bootstrapper part
                     .ReadFrom.Configuration(config)
@@ -48,6 +50,14 @@ public static class Program
             ;
 
         Log.Logger = loggerConfiguration.CreateLogger();
+
+        Log.Information("/data exists {Exists}", Directory.Exists("/data"));
+        Log.Information("/data/appsettings.json exists {Exists}", File.Exists("/data/appsettings.json"));
+        var fi = new FileInfo("/data/appsettings.json");
+
+        Log.Information("{Name} is file {IsFile}", fi.FullName, fi.Exists);
+        foreach (var file in Directory.EnumerateFiles("/data")) Log.Information("File {File}", file);
+        Log.Information("Using configuration from {Path}", config.GetValue<string>("ConfigSource"));
 
         try
         {
@@ -68,18 +78,27 @@ public static class Program
 
     private static IConfigurationRoot BuildConfiguration()
     {
-        var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
 
         var builder = new ConfigurationBuilder();
 
-        if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
-            builder.AddJsonFile($"/data/appsettings.json", true, true);
+        if (Directory.Exists("/data") /*&& File.Exists("/data/appsettings.json")*/)
+        {
+            Console.WriteLine("Loading cofiguration from /data");
+            builder.SetBasePath("/data");
+            builder.AddJsonFile("/data/appsettings.json", true, true);
+        }
         else
         {
+            Console.WriteLine("/data doesn't exist");
             builder.AddJsonFile("appsettings.json", true, true);
-            if (!string.IsNullOrWhiteSpace(env))
-                builder.AddJsonFile($"appsettings.{env}.json", true, true);
         }
+
+
+        // var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+        // if (!string.IsNullOrWhiteSpace(env))
+        //     builder.AddJsonFile($"appsettings.{env}.json", true, true);
+
+        // builder.AddJsonFile($"/data/appsettings.json", true, true);
 
         builder.AddEnvironmentVariables();
         return builder.Build();
@@ -128,8 +147,8 @@ public static class Program
                 // data providers
                 if (args.Contains("-files"))
                 {
-                    Log.Information("Using file data provider");
-                    services.AddTransient<IJsonDataProvider, FileJsonDataProvider>();
+                    Log.Information("Using file data provider with path {Path}", hostContext.Configuration.GetValue<string>("JSONDirectory"));
+                    services.AddTransient<IJsonDataProvider, FileJsonDataProvider2>();
                 }
                 else
                 {
