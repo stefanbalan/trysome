@@ -8,13 +8,16 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
 
+/// <summary>
+/// Imports json files with the new naming scheme [ddMMyyyy HHmm]_[type].json
+/// </summary>
 internal class FileJsonDataProvider2 : IJsonDataProvider
 {
     private readonly DirectoryInfo directory;
-    private readonly ILogger<FileJsonDataProvider> logger;
+    private readonly ILogger<FileJsonDataProvider2> logger;
     private readonly JsonBackup jsonBackup;
 
-    public FileJsonDataProvider2(IConfiguration config, ILogger<FileJsonDataProvider> logger,
+    public FileJsonDataProvider2(IConfiguration config, ILogger<FileJsonDataProvider2> logger,
         JsonBackup jsonBackup)
     {
         var importPath = config.GetValue(typeof(string), "JSONDirectory", ".") as string;
@@ -29,12 +32,17 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
 
     private bool HasImportData()
     {
-        if (!directory.Exists) return false;
-        DirectoryInfo? importDir = null;
+        logger.LogInformation("Checking for import data 2");
+        if (!directory.Exists)
+        {
+            logger.LogWarning("Import directory {Directory} does not exist", directory.FullName);
+            return false;
+        }
+
+        FileInfo? fileInfo = null;
         try
         {
-            importDir = directory.EnumerateDirectories()
-                .Where(d => !d.Name.Contains("imported"))
+            fileInfo = directory.EnumerateFiles("*.json")
                 .FirstOrDefault(d => IsJsonDataFile(d.Name, out _));
         }
         catch (Exception ex)
@@ -42,12 +50,13 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
             logger.LogError("Cannot read import directory {ExMessage}", ex.Message);
         }
 
-        return importDir != null;
+        return fileInfo != null;
     }
 
     private bool IsJsonDataFile(string fileName, out DateTime date)
     {
-        var fnp = fileName.Split('_');
+        var fn = fileName.Split('.');
+        var fnp = fn[0].Split('_');
         if (fnp.Length != 2)
         {
             date = default;
@@ -59,7 +68,7 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
             string.Equals(fnp[1], "warlog", StringComparison.InvariantCultureIgnoreCase)
            )
             return DateTime.TryParseExact(
-                fileName,
+                fnp[0],
                 "yyyyMMdd HHmm",
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.AssumeLocal, out date);
@@ -69,11 +78,15 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
 
     public async Task<JsonData?> GetImportDataAsync()
     {
-        if (!directory.Exists) return null;
+        logger.LogInformation("Checking for import data 2");
+        if (!directory.Exists)
+        {
+            logger.LogWarning("Import directory {Directory} does not exist", directory.FullName);
+            return null;
+        }
         try
         {
-            DateTime date = default;
-            var nextFile = GetNextFile(out date);
+            var nextFile = GetNextFile(out var date);
 
             if (nextFile is null) return null;
             var result = new JsonData { Date = date };
@@ -93,13 +106,19 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
 
     private FileInfo? GetNextFile(out DateTime date)
     {
+        logger.LogInformation("Getting next file");
         DateTime d = default;
-        var firstOrDefault = directory.EnumerateFiles("???????? ????_*.json")
+
+        var allFiles = directory.EnumerateFiles("???????? ????_*.json").ToList();
+        logger.LogInformation("Found {Count} files", allFiles.Count);
+
+        var firstOrDefault = allFiles
             .FirstOrDefault(f => IsJsonDataFile(f.Name, out d));
+        logger.LogInformation("First file: {File}", firstOrDefault?.FullName);
         date = d;
+        logger.LogInformation("Next file is {File} with date {Date}", firstOrDefault?.FullName, d);
         return firstOrDefault;
     }
-
 
     public TimeSpan GetNextImportDelay() => HasImportData() ? TimeSpan.FromSeconds(5) : TimeSpan.FromHours(1);
 

@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
@@ -28,16 +29,23 @@ public class ApiClient
     private async Task<string?> ApiRequestAsync(string url)
     {
         logger.LogInformation("API request: {Url}", url);
+        var apiKey = apiKeyProvider.GetApiKey();
+        logger.LogInformation("API key: {ApiKeyStart}...{ApiKeyEnd}", apiKey.Substring(0, 15), apiKey.Substring(apiKey.Length - 15));
         client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", apiKeyProvider.GetApiKey());
+            new AuthenticationHeaderValue("Bearer", apiKey);
         try
         {
             var response = await client.GetAsync(url);
-            if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
 
-            logger.LogError("Failed API request: {ReasonCode} {ReasonPhrase}",
-                response.StatusCode, response.ReasonPhrase);
-            if (response.ReasonPhrase == "accessDenied.invalidIp")
+            if (response.IsSuccessStatusCode)
+            {
+                return content;
+            }
+
+            logger.LogError("Failed API request: {ReasonCode} {ReasonPhrase}", response.StatusCode, response.ReasonPhrase);
+
+            if (response.ReasonPhrase.StartsWith("accessDenied"))
             {
                 // renew api key
                 apiKeyProvider.RenewApiKey();
@@ -51,6 +59,8 @@ public class ApiClient
             return null;
         }
     }
+
+    record ApiError(string Reason, string Message);
 
     public async Task<string?> GetClanAsync(string clanTag)
     {

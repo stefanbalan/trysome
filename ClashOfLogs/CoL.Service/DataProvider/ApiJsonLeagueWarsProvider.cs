@@ -32,13 +32,13 @@ public class ApiJsonLeagueWarsProvider : IJsonDataProvider
             {
                 var leagueGroup = JsonSerializer.Deserialize<LeagueWarGroup>(leagueGroupStr);
 
-                foreach (var round in leagueGroup.Rounds)
-                {
-                    var ownWar = round.WarTags[0];
+                if (leagueGroup?.Rounds != null)
+                    foreach (var round in leagueGroup.Rounds)
+                    {
+                        var ownWar = round.WarTags[0];
 
-                    var warStr = await apiClient.GetLeagueWarAsync(ownWar);
-                }
-
+                        var warStr = await apiClient.GetLeagueWarAsync(ownWar);
+                    }
             }
 
 

@@ -28,7 +28,7 @@ docker context use <context>
 
 build image
 
-		docker build -f Dockerfile -t colservice:latest .
+		docker build -f CoL.Service\CoL.Service.csproj -t colservice:1.0.3 -t colservice:latest .
 		docker build -f Dockerfile .
 	
 add the tags after
@@ -48,6 +48,11 @@ run import files linux
 		--volume /share/docker/col:/data \
 		colservice:latest
 
+
+
+docker run --entrypoint "sh" - it -d -e PUID=1005 -e PGID=100 --name colservice --env "TZ=Europe/Bucharest" --restart always --volume /share/docker/col:/data colservice:latest
+		
+		
 docker run -it --entrypoint sh colservice
 docker run -it --entrypoint "dotnet CoL.Service.dll -files" colservice
 
