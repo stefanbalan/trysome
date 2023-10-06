@@ -10,6 +10,7 @@ global using DBWarMember = CoL.DB.Entities.WarMember;
 global using CoLContext = CoL.DB.Sqlite.CoLContextSqlite;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using ClashOfLogs.Shared;
 using CoL.DB.Sqlite;
 using CoL.Service.DataProvider;
@@ -23,6 +24,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Serilog.Core;
 using Clan = ClashOfLogs.Shared.Clan;
 using League = ClashOfLogs.Shared.League;
 using Member = ClashOfLogs.Shared.Member;
@@ -62,7 +64,11 @@ public static class Program
         try
         {
             Log.Information("Starting host");
-            CreateHostBuilder(config, args).Build().Run();
+
+            var host = CreateHostBuilder(config, args).Build();
+
+            if (CheckDbOk(host.Services.GetService<CoLContext>()))
+                host.Run();
             return 0;
         }
         catch (Exception ex)
@@ -78,7 +84,6 @@ public static class Program
 
     private static IConfigurationRoot BuildConfiguration()
     {
-
         var builder = new ConfigurationBuilder();
 
         if (Directory.Exists("/data") /*&& File.Exists("/data/appsettings.json")*/)
@@ -103,7 +108,6 @@ public static class Program
         builder.AddEnvironmentVariables();
         return builder.Build();
     }
-
 
     private static IHostBuilder CreateHostBuilder(IConfigurationRoot config, string[] args) =>
         Host.CreateDefaultBuilder(args)
@@ -147,7 +151,8 @@ public static class Program
                 // data providers
                 if (args.Contains("-files"))
                 {
-                    Log.Information("Using file data provider with path {Path}", hostContext.Configuration.GetValue<string>("JSONDirectory"));
+                    Log.Information("Using file data provider with path {Path}",
+                        hostContext.Configuration.GetValue<string>("JSONDirectory"));
                     services.AddTransient<IJsonDataProvider, FileJsonDataProvider2>();
                 }
                 else
@@ -207,4 +212,32 @@ public static class Program
                 services.AddHostedService<Worker>();
             })
             .UseSerilog();
+
+    private static bool CheckDbOk(CoLContextSqlite? context)
+    {
+        if (context is null)
+        {
+            Log.Error("Could not get dbcotext from service collection");
+            return false;
+        }
+        var dbOk = context.Database.CanConnect();
+        if (dbOk) return true;
+
+        Log.Information("Attempting to create database");
+        try
+        {
+            context.Database.EnsureCreated();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to create database");
+            return false;
+        }
+
+        dbOk = context.Database.CanConnect();
+        if (dbOk) return true;
+
+        Log.Error("Database not available");
+        return false;
+    }
 }
