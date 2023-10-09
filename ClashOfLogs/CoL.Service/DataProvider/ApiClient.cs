@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 
 namespace CoL.Service.DataProvider;
@@ -30,9 +29,9 @@ public class ApiClient
     {
         logger.LogInformation("API request: {Url}", url);
         var apiKey = apiKeyProvider.GetApiKey();
-        logger.LogInformation("API key: {ApiKeyStart}...{ApiKeyEnd}", apiKey.Substring(0, 15), apiKey.Substring(apiKey.Length - 15));
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", apiKey);
+        client.DefaultRequestHeaders.Add("User-Agent", "PostmanRuntime/7.33.0");
         try
         {
             var response = await client.GetAsync(url);
@@ -43,7 +42,7 @@ public class ApiClient
                 return content;
             }
 
-            logger.LogError("Failed API request: {ReasonCode} {ReasonPhrase}", response.StatusCode, response.ReasonPhrase);
+            logger.LogError("Failed API request: {ReasonPhrase} {Content}", response.ReasonPhrase, content);
 
             if (response.ReasonPhrase.StartsWith("accessDenied"))
             {
