@@ -10,7 +10,6 @@ global using DBWarMember = CoL.DB.Entities.WarMember;
 global using CoLContext = CoL.DB.Sqlite.CoLContextSqlite;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using ClashOfLogs.Shared;
 using CoL.DB.Sqlite;
 using CoL.Service.DataProvider;
@@ -22,9 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using Serilog.Core;
 using Clan = ClashOfLogs.Shared.Clan;
 using League = ClashOfLogs.Shared.League;
 using Member = ClashOfLogs.Shared.Member;
@@ -39,10 +36,7 @@ public static class Program
         var config = BuildConfiguration();
         // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
 
-
-        var loggerConfiguration =
-                new LoggerConfiguration() //todo: study if it is better to use a separate logger for the bootstrapper part
-                    .ReadFrom.Configuration(config)
+        var loggerConfiguration = new LoggerConfiguration().ReadFrom.Configuration(config)
             // these are configured from appsettings.json
             // .MinimumLevel.Information()
             // .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -113,117 +107,117 @@ public static class Program
     {
         var hostBuilder = new HostBuilder(); //Host.CreateDefaultBuilder(args) //loads unwanted default configurations
         return hostBuilder
-                .ConfigureHostConfiguration(builder =>
+            .ConfigureHostConfiguration(builder =>
+            {
+                builder.AddConfiguration(config);
+            })
+            .ConfigureAppConfiguration(builder =>
+            {
+                /* App configuration */
+                builder.AddConfiguration(config);
+            })
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddLogging(lb =>
                 {
-                    builder.AddConfiguration(config);
-                })
-                .ConfigureAppConfiguration(builder =>
+                    lb.AddConsole();
+                    lb.AddConfiguration(config);
+                });
+
+
+                //                 services.AddDbContext<CoLContext>(options =>
+                //                     {
+                //                         // options.UseSqlServer(config.GetConnectionString("CoLContext"),
+                //                         //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+                //                         
+                //                         // options.UseSqlite(config.GetConnectionString("CoLContext"),
+                //                         //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+                //                         
+                // #if DEBUG
+                //                         // options.LogTo(Log.Debug, LogLevel.Information);
+                //                         // options.ConfigureWarnings(warningOptions
+                //                         //     => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
+                //                         // options.EnableSensitiveDataLogging();
+                // #endif
+                //                     },
+                //                     ServiceLifetime.Singleton);
+
+                services.UseSqliteCoLContext(config.GetConnectionString("CoLContext")
+                                             ?? throw new Exception("Missing db connection string configuration"));
+
+                // data providers
+                if (args.Contains("-files"))
                 {
-                    /* App configuration */
-                    builder.AddConfiguration(config);
-                })
-                .ConfigureServices((hostContext, services) =>
+                    Log.Information("Using file data provider with path {Path}",
+                        hostContext.Configuration.GetValue<string>("JSONDirectory"));
+                    services.AddTransient<IJsonDataProvider, FileJsonDataProvider2>();
+                }
+                else
                 {
-                    services.AddLogging(lb =>
-                    {
-                        lb.AddConsole();
-                        lb.AddConfiguration(config);
-                    });
+                    services.AddSingleton<IApiKeyProvider, AppSettingsApiKeyProvider>();
+                    services.AddSingleton<ApiClient>();
+                    services.AddHttpClient<ApiClient>(
+                        client =>
+                        {
+                            client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
+                            client.DefaultRequestHeaders.Add("Accept", "application/json");
+                        });
+
+                    services.AddSingleton<IJsonDataProvider, ApiJsonDataProvider>(
+                        serviceProvider => new ApiJsonDataProvider(
+                            serviceProvider.GetRequiredService<ILogger<ApiJsonDataProvider>>(),
+                            serviceProvider.GetRequiredService<ApiClient>(),
+                            config.GetValue<string>("ClanTag") ??
+                            throw new Exception("Missing configuration ClanTag")));
+
+                    services.AddSingleton<ApiJsonLeagueWarsProvider, ApiJsonLeagueWarsProvider>(
+                        serviceProvider => new ApiJsonLeagueWarsProvider(
+                            serviceProvider.GetRequiredService<ILogger<ApiJsonLeagueWarsProvider>>(),
+                            serviceProvider.GetRequiredService<ApiClient>(),
+                            config.GetValue<string>("ClanTag") ??
+                            throw new Exception("Missing configuration ClanTag")));
+                }
+
+                services.AddSingleton(typeof(JsonBackup),
+                    svcs =>
+                        new JsonBackup(Path.Combine((config.GetValue<string>("JSONDirectory") ?? ""), "backup"),
+                            svcs.GetService<ILogger<JsonBackup>>() ?? throw new Exception("Logger not configured")
+                        ));
+
+                //validators
+                services.AddSingleton<IValidator<WarSummary>, WarSummaryValidator>();
+
+                // importers
+                services.AddSingleton<IEntityImporter<DBClan, Clan>, ClanImporter>();
+                services.AddSingleton<IEntityImporter<DBMember, Member>, MemberImporter>();
+                services.AddSingleton<IEntityImporter<DBLeague, League>, LeagueImporter>();
+                services.AddSingleton<IEntityImporter<DBWar, WarSummary>, WarLogImporter>();
+                services.AddSingleton<IEntityImporter<DBWar, WarDetail>, WarDetailImporter>();
+                services.AddSingleton<IEntityImporter<DBWarMember, WarMember>, WarMemberImporter>();
 
 
-                    //                 services.AddDbContext<CoLContext>(options =>
-                    //                     {
-                    //                         // options.UseSqlServer(config.GetConnectionString("CoLContext"),
-                    //                         //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
-                    //                         
-                    //                         // options.UseSqlite(config.GetConnectionString("CoLContext"),
-                    //                         //     sqlOptions => sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
-                    //                         
-                    // #if DEBUG
-                    //                         // options.LogTo(Log.Debug, LogLevel.Information);
-                    //                         // options.ConfigureWarnings(warningOptions
-                    //                         //     => warningOptions.Log((RelationalEventId.CommandExecuting, LogLevel.Information)));
-                    //                         // options.EnableSensitiveDataLogging();
-                    // #endif
-                    //                     },
-                    //                     ServiceLifetime.Singleton);
+                // mappers
+                services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
+                services.AddTransient<IMapper<DBMember, Member>, MemberMapper>();
+                services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
+                services.AddSingleton<IMapper<DBWar, WarSummary>, WarSummaryMapper>();
+                services.AddSingleton<IMapper<DBWar, WarDetail>, WarDetailMapper>();
 
-                    services.UseSqliteCoLContext(config.GetConnectionString("CoLContext")
-                                                 ?? throw new Exception("Missing db connection string configuration"));
-
-                    // data providers
-                    if (args.Contains("-files"))
-                    {
-                        Log.Information("Using file data provider with path {Path}",
-                            hostContext.Configuration.GetValue<string>("JSONDirectory"));
-                        services.AddTransient<IJsonDataProvider, FileJsonDataProvider2>();
-                    }
-                    else
-                    {
-                        services.AddSingleton<IApiKeyProvider, AppSettingsApiKeyProvider>();
-                        services.AddSingleton<ApiClient>();
-                        services.AddHttpClient<ApiClient>(
-                            client =>
-                            {
-                                client.BaseAddress = new Uri("https://api.clashofclans.com/v1/");
-                                client.DefaultRequestHeaders.Add("Accept", "application/json");
-                            });
-
-                        services.AddSingleton<IJsonDataProvider, ApiJsonDataProvider>(
-                            serviceProvider => new ApiJsonDataProvider(
-                                serviceProvider.GetRequiredService<ILogger<ApiJsonDataProvider>>(),
-                                serviceProvider.GetRequiredService<ApiClient>(),
-                                config.GetValue<string>("ClanTag") ??
-                                throw new Exception("Missing configuration ClanTag")));
-
-                        services.AddSingleton<ApiJsonLeagueWarsProvider, ApiJsonLeagueWarsProvider>(
-                            serviceProvider => new ApiJsonLeagueWarsProvider(
-                                serviceProvider.GetRequiredService<ILogger<ApiJsonLeagueWarsProvider>>(),
-                                serviceProvider.GetRequiredService<ApiClient>(),
-                                config.GetValue<string>("ClanTag") ??
-                                throw new Exception("Missing configuration ClanTag")));
-                    }
-
-                    services.AddSingleton(typeof(JsonBackup),
-                        svcs =>
-                            new JsonBackup(Path.Combine((config.GetValue<string>("JSONDirectory") ?? ""), "backup"),
-                                svcs.GetService<ILogger<JsonBackup>>() ?? throw new Exception("Logger not configured")
-                            ));
-
-                    //validators
-                    services.AddSingleton<IValidator<WarSummary>, WarSummaryValidator>();
-
-                    // importers
-                    services.AddSingleton<IEntityImporter<DBClan, Clan>, ClanImporter>();
-                    services.AddSingleton<IEntityImporter<DBMember, Member>, MemberImporter>();
-                    services.AddSingleton<IEntityImporter<DBLeague, League>, LeagueImporter>();
-                    services.AddSingleton<IEntityImporter<DBWar, WarSummary>, WarLogImporter>();
-                    services.AddSingleton<IEntityImporter<DBWar, WarDetail>, WarDetailImporter>();
-                    services.AddSingleton<IEntityImporter<DBWarMember, WarMember>, WarMemberImporter>();
+                services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
 
 
-                    // mappers
-                    services.AddSingleton<IMapper<DBClan, Clan>, ClanMapper>();
-                    services.AddTransient<IMapper<DBMember, Member>, MemberMapper>();
-                    services.AddSingleton<IMapper<DBLeague, League>, LeagueMapper>();
-                    services.AddSingleton<IMapper<DBWar, WarSummary>, WarSummaryMapper>();
-                    services.AddSingleton<IMapper<DBWar, WarDetail>, WarDetailMapper>();
+                // repositories
+                services.AddTransient<IRepository<DBClan>, ClanRepository>();
+                services.AddTransient<IRepository<DBMember>, MemberEfRepository>();
+                services.AddTransient<IRepository<DBLeague>, LeagueEfRepository>();
+                services.AddTransient<IRepository<DBWar>, WarRepository>();
+                services.AddTransient<IRepository<DBWarMember>, WarMemberRepository>();
 
-                    services.AddSingleton<IMapper<DBWarMember, WarMember>, WarMemberMapper>();
-
-
-                    // repositories
-                    services.AddTransient<IRepository<DBClan>, ClanRepository>();
-                    services.AddTransient<IRepository<DBMember>, MemberEfRepository>();
-                    services.AddTransient<IRepository<DBLeague>, LeagueEfRepository>();
-                    services.AddTransient<IRepository<DBWar>, WarRepository>();
-                    services.AddTransient<IRepository<DBWarMember>, WarMemberRepository>();
-
-                    //the actual service to run
-                    services.AddHostedService<Worker>();
-                    services.AddHostedService<WorkerLeagueWars>();
-                })
-                .UseSerilog();
+                //the actual service to run
+                services.AddHostedService<Worker>();
+                services.AddHostedService<WorkerLeagueWars>();
+            })
+            .UseSerilog();
     }
 
     private static bool CheckDbOk(CoLContextSqlite? context)
