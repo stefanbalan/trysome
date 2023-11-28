@@ -215,7 +215,7 @@ public static class Program
 
                 //the actual service to run
                 services.AddHostedService<Worker>();
-                services.AddHostedService<WorkerLeagueWars>();
+                // services.AddHostedService<WorkerLeagueWars>();
             })
             .UseSerilog();
     }
