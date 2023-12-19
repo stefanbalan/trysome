@@ -1,0 +1,60 @@
+﻿@page "/leaves"
+@using WoN.DataProvider
+@using WoN.Model
+@using System.Globalization
+
+@inject IDataProvider<LeavesModel> DataProvider
+
+
+<h3>Leaves</h3>
+
+
+@if (leaves == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <h4>Start month: @leaves.StartMonth</h4>
+    <br/>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(leaves.StartMonth)</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        @foreach (var empLeave in leaves.EmployeeLeaves)
+        {
+            <tr>
+                <td>
+                    @empLeave.EmployeeName
+                </td>
+                <td>
+                    <Month WorkingDays="@leaves.WorkingDaysMonths" 
+                           Vacation="" /> 
+                </td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+}
+;
+
+
+@code {
+    private LeavesModel? leaves;
+
+    protected override async Task OnInitializedAsync()
+    {
+        leaves = await DataProvider.GetDataAsync();
+    }
+
+}

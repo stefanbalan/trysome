@@ -1,0 +1,34 @@
+﻿@using WoN.Model
+@* have on flexbox container with class month-line and 1 child flexbox for each element in WorkingDays *@
+
+<div class="month-line">
+    @if (Days != null)
+    {
+        @foreach (var day in Days)
+        {
+            <div class="@GetDivClass(day)">
+            </div>
+        }
+    }
+    )
+</div>
+
+
+@code {
+    [Parameter] public TimeTrackingDay[]? Days { get; set; }
+
+    private string GetDivClass(TimeTrackingDay day)
+    {
+        switch (day)
+        {
+            case TimeTrackingDay.WorkingDay:
+                return "day";
+            case TimeTrackingDay.WeekendDay:
+                return "day day-we";
+            case TimeTrackingDay.Vacation:
+                return "day day-va";
+            default:
+                return string.Empty;
+        }
+    }
+}
