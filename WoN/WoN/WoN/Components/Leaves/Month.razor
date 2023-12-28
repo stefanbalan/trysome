@@ -7,10 +7,11 @@
         @foreach (var day in Days)
         {
             <div class="@GetDivClass(day)">
+                @GetContent(day)
             </div>
         }
     }
-    )
+
 </div>
 
 
@@ -19,16 +20,23 @@
 
     private string GetDivClass(TimeTrackingDay day)
     {
-        switch (day)
+        return day switch
         {
-            case TimeTrackingDay.WorkingDay:
-                return "day";
-            case TimeTrackingDay.WeekendDay:
-                return "day day-we";
-            case TimeTrackingDay.Vacation:
-                return "day day-va";
-            default:
-                return string.Empty;
-        }
+            TimeTrackingDay.WorkingDay => "day",
+            TimeTrackingDay.WeekendDay => "day day-we",
+            TimeTrackingDay.PublicHoliday => "day day-ph",
+            TimeTrackingDay.Vacation => "day day-va",
+            _ => "day"
+        };
     }
+
+    private string GetContent(TimeTrackingDay day)
+    {
+        return day switch
+        {
+            TimeTrackingDay.Vacation => "C",
+            _ => string.Empty
+        };
+    }
+
 }

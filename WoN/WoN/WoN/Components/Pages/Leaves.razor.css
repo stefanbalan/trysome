@@ -1,0 +1,31 @@
+﻿/*div { border: 1px solid black; }*/
+
+.container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+}
+
+.employees, .months {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    font-weight: bold;
+    min-width: 200px;
+    padding: 0.2rem;
+}
+
+.employee {
+    display: flex;
+    align-items: flex-start;
+    white-space: nowrap;
+    padding: 0.1rem;
+}
+
+.month {
+    display: flex;
+    flex: 1;
+    padding: 0.1rem;
+}
