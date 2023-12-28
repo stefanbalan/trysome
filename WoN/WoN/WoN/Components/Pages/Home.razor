@@ -1,7 +1,40 @@
-﻿@page "/"
+﻿@page "/home"
+@using WoN.Components.Leaves
+@using WoN.Model
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+
+<Month Days="testdays" />
+
+@code {
+    private TimeTrackingDay[]? testdays;
+
+    protected override void OnInitialized()
+    {
+        testdays = new TimeTrackingDay[12]
+        {
+            TimeTrackingDay.WorkingDay,
+            TimeTrackingDay.WorkingDay,
+            TimeTrackingDay.WorkingDay,
+            TimeTrackingDay.WorkingDay,
+            TimeTrackingDay.WorkingDay,
+            TimeTrackingDay.WeekendDay,
+            TimeTrackingDay.WeekendDay,
+            TimeTrackingDay.Vacation,
+            TimeTrackingDay.Vacation,
+            TimeTrackingDay.Vacation,
+            TimeTrackingDay.WorkingDay,
+            TimeTrackingDay.WorkingDay
+        };
+
+
+    }
+
+
+}
+

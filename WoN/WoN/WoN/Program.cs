@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using WoN.Components;
 using WoN.Components.Account;
 using WoN.Data;
+using WoN.DataProvider;
+using WoN.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,9 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddSingleton<IDataProvider<LeavesModel>, LeavesMockDataProvider>();
+
 
 var app = builder.Build();
 

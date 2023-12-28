@@ -1,10 +1,10 @@
-﻿@page "/leaves"
+﻿@page "/"
 @using WoN.DataProvider
 @using WoN.Model
+@using WoN.Components.Leaves
 @using System.Globalization
 
 @inject IDataProvider<LeavesModel> DataProvider
-
 
 <h3>Leaves</h3>
 
@@ -20,33 +20,35 @@ else
     <h4>Start month: @leaves.StartMonth</h4>
     <br/>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(leaves.StartMonth)</th>
-        </tr>
-        </thead>
 
-        <tbody>
+    <div class="container">
 
-        @foreach (var empLeave in leaves.EmployeeLeaves)
+        <div class="employees">
+            <div class="employee header">Name</div>
+            @foreach (var empl in leaves.EmployeeLeaves)
+            {
+                <div id="@empl.EmployeeId" class="employee">
+                    @empl.EmployeeName
+                </div>
+            }
+        </div>
+
+        @* @for (var m = leaves.StartMonth; m < leaves.StartMonth + leaves.Months; m += 1) *@
+        @for (var m = leaves.StartMonth; m < 5; m += 1)
         {
-            <tr>
-                <td>
-                    @empLeave.EmployeeName
-                </td>
-                <td>
-                    <Month WorkingDays="@leaves.WorkingDaysMonths" 
-                           Vacation="" /> 
-                </td>
-            </tr>
+            <div class="months">
+                <div class="months header">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(leaves.StartMonth)</div>
+                @foreach (var month in leaves.EmployeeLeaves.Select(el => el.TimeTrackingDays[1]).ToArray())
+                {
+                    <div class="month">
+                        <Month Days=month></Month>
+                    </div>
+                }       
+            </div>
         }
-        </tbody>
 
-    </table>
+    </div>
 }
-;
 
 
 @code {
