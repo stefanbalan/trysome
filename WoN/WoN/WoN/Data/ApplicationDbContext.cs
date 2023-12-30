@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace WoN.Data
 {
@@ -14,6 +13,8 @@ namespace WoN.Data
             modelBuilder.HasAnnotation("ProductVersion", "1.0.1");
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+
         }
     }
 }

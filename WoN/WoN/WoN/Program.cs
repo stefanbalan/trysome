@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using WoN.Components;
 using WoN.Components.Account;
 using WoN.Data;
+using WoN.Data.Repository;
 using WoN.DataProvider;
 using WoN.Model;
+using WoN.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+builder.Services.AddSingleton<ICurrentUser, CurrentUserMock>();
+
+builder.Services.AddScoped<IRepository<PublicHoliday>, PublicHolidayRepository>();
+builder.Services.AddScoped<IRepository<Country>, CountryRepository>();
 
 builder.Services.AddSingleton<IDataProvider<LeavesModel>, LeavesMockDataProvider>();
 
