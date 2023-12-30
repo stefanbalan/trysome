@@ -33,7 +33,7 @@ public class EmployeeTimeTracking
 public class PublicHoliday
 {
     public int Year { get; set; }
-    public int CountryCode { get; set; }
+    public required string CountryCode { get; set; }
     public DateOnly Date { get; set; }
     public required string Name { get; set; }
 }

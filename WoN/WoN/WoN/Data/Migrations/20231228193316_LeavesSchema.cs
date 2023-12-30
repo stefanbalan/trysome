@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WoN.Migrations
 {
     /// <inheritdoc />
@@ -379,7 +381,7 @@ namespace WoN.Migrations
                 columns: table => new
                 {
                     Year = table.Column<int>(type: "INTEGER", nullable: false),
-                    CountryCode = table.Column<int>(type: "INTEGER", maxLength: 2, nullable: false),
+                    CountryCode = table.Column<string>(type: "TEXT", maxLength: 2, nullable: false),
                     Date = table.Column<DateOnly>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
@@ -425,6 +427,15 @@ namespace WoN.Migrations
                         principalTable: "Employee",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Country",
+                columns: new[] { "Code", "Name" },
+                values: new object[,]
+                {
+                    { "FR", "France" },
+                    { "RO", "Romania" }
                 });
 
             migrationBuilder.CreateIndex(

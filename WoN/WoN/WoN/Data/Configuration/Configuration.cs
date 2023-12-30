@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace WoN.Data.Configuration;
 
-public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+public class Configuration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
@@ -28,6 +28,10 @@ public class CountryConfiguration : IEntityTypeConfiguration<Country>
         builder.HasKey(e => e.Code);
         builder.Property(e => e.Code).HasMaxLength(2);
         builder.Property(e => e.Name).IsUnicode().IsRequired().HasMaxLength(50);
+
+        builder.HasData(
+            new Country { Code = "FR", Name = "France" },
+            new Country { Code = "RO", Name = "Romania" });
     }
 }
 

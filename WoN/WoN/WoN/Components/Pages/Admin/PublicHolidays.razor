@@ -1,0 +1,116 @@
+﻿@page "/admin/public-holidays"
+@using WoN.Services
+@using WoN.Data.Repository
+@using WoN.Data
+
+@inject ICurrentUser CurrentUser
+@inject IRepository<PublicHoliday> PhRepository
+@inject IRepository<Country> CRepository
+
+
+<h3>Public holidays</h3>
+
+@if (allCountries is null || allYears is null || allPublicHolidaysConfigurations is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country" class="form-control" @onchange="OnCountryChanged">
+                    @foreach (var country in allCountries)
+                    {
+                        <option value="@country.Code" selected="@country.Code == selectedCountry?.Code">@country.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="year">Year</label>
+                <select id="year" class="form-control" @onchange="OnYearChanged">
+                    @foreach (var year in allYears)
+                    {
+                        <option value="@year" selected="@(year == selectedYear)">@year</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Country</th>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var publicHoliday in allPublicHolidaysConfigurations.Where(ph => ph.CountryCode == selectedCountry?.Code && ph.Year == selectedYear).OrderBy(ph => ph.Date))
+                {
+                    <tr>
+                        <td>@publicHoliday.Year</td>
+                        <td>@publicHoliday.CountryCode</td>
+                        <td>@publicHoliday.Date.ToString("dd.MM.yyyy")</td>
+                        <td>@publicHoliday.Name</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" @onclick="() => OnDelete(publicHoliday)">Delete</button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+@code {
+    private IEnumerable<PublicHoliday>? allPublicHolidaysConfigurations;
+    private IEnumerable<Country>? allCountries;
+    private List<int>? allYears;
+
+    private Country? selectedCountry;
+    private int selectedYear;
+
+    protected override async void OnInitialized()
+    {
+        allCountries = await CRepository.GetAsync();
+        allPublicHolidaysConfigurations = await PhRepository.GetAsync();
+        allYears = allPublicHolidaysConfigurations.Select(ph => ph.Year).Distinct().ToList();
+
+        var currentYear = DateTime.Now.Year;
+        if (!allYears.Contains(currentYear))
+        {
+            allYears.Add(currentYear);
+        }
+
+        selectedYear = currentYear;
+
+        var currentUserCountryCode = CurrentUser.GetCountryCode();
+        selectedCountry = allCountries.FirstOrDefault(c => c.Code == currentUserCountryCode);
+    }
+
+
+    private void OnCountryChanged(ChangeEventArgs obj)
+    {
+    }
+
+    private void OnYearChanged(ChangeEventArgs obj)
+    {
+    }
+
+    private void OnDelete(PublicHoliday publicHoliday)
+    {
+     
+        }
+
+}

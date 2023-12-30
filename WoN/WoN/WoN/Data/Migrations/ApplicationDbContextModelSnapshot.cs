@@ -243,6 +243,18 @@ namespace WoN.Migrations
                     b.HasKey("Code");
 
                     b.ToTable("Country", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "FR",
+                            Name = "France"
+                        },
+                        new
+                        {
+                            Code = "RO",
+                            Name = "Romania"
+                        });
                 });
 
             modelBuilder.Entity("WoN.Data.Employee", b =>
@@ -292,9 +304,9 @@ namespace WoN.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CountryCode")
+                    b.Property<string>("CountryCode")
                         .HasMaxLength(2)
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("TEXT");

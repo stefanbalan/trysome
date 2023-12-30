@@ -1,14 +1,21 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace WoN.Data.Repository;
 
 public interface IRepository<T>
 {
-    IEnumerable<T> GetAsync(IFilter<T>? filter = null);
+    Task<IEnumerable<T>> GetAsync(params Expression<Func<T, bool>>[]? filter);
 }
 
-public interface IFilter<T>
+public class AbstractRepository<T>(DbContext context) : IRepository<T> where T : class
 {
-    Expression<Func<T, bool>> GetFilter();
-}
+    public async Task<IEnumerable<T>> GetAsync(params Expression<Func<T, bool>>[]? filter)
+    {
+        var query = context.Set<T>().AsQueryable();
+        if (filter is null) return await query.ToListAsync();
 
+        query = filter.Aggregate(query, (current, f) => current.Where(f));
+        return await query.ToListAsync();
+    }
+}
