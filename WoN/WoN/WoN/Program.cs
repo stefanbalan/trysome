@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using WoN.Components;
 using WoN.Components.Account;
@@ -50,6 +51,28 @@ builder.Services.AddSingleton<IDataProvider<LeavesModel>, LeavesMockDataProvider
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (applicationDbContext.Database.IsSqlite())
+    {
+        var connectionStringBuilder = new SqliteConnectionStringBuilder(connectionString);
+        var dbFilePath = connectionStringBuilder.DataSource;
+        var dbFile = new FileInfo(dbFilePath);
+        if (!dbFile.Exists && !(dbFile.Directory?.Exists ?? false))
+            dbFile.Directory?.Create();
+
+        Console.WriteLine($"SQLite database file path: {dbFilePath}");
+
+        applicationDbContext.Database.EnsureCreated();
+        applicationDbContext.Database.OpenConnection();
+        applicationDbContext.Database.ExecuteSqlRaw("PRAGMA foreign_keys=ON");
+    }
+    else
+        applicationDbContext.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

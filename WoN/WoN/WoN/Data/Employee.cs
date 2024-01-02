@@ -12,7 +12,7 @@ public class Employee
 public class Calendar
 {
     public int Year { get; set; } // 2024
-    public required string? CountryCode { get; set; }
+    public required string CountryCode { get; set; }
     public required int[] NonWorkingDays { get; set; }
 }
 
