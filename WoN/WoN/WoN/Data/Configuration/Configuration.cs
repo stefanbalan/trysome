@@ -41,7 +41,6 @@ public class CalendarConfiguration : IEntityTypeConfiguration<Calendar>
     {
         builder.ToTable("Calendar");
         builder.HasKey(e => new { e.Year, e.CountryCode });
-        builder.Property(e => e.Year).ValueGeneratedNever();
         builder.Property(e => e.CountryCode).HasMaxLength(2);
         builder.Property(e => e.NonWorkingDays).IsRequired().HasMaxLength(12);
     }

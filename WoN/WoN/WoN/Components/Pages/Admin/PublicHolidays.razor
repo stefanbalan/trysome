@@ -5,12 +5,11 @@
 
 @inject ICurrentUser CurrentUser
 @inject IRepository<PublicHoliday> PhRepository
-@inject IRepository<Country> CRepository
-
+@inject IRepository<Country> CountryRepository
 
 <h3>Public holidays</h3>
 
-@if (allCountries is null || allYears is null || allPublicHolidaysConfigurations is null)
+@if (allCountries is null || allYears is null || allPublicHolidays is null)
 {
     <p>Loading...</p>
 }
@@ -20,10 +19,10 @@ else
         <div class="col-md-3">
             <div class="form-group">
                 <label for="country">Country</label>
-                <select id="country" class="form-control" @onchange="OnCountryChanged">
+                <select id="country" class="form-control" @bind="selectedCountryCode">
                     @foreach (var country in allCountries)
                     {
-                        <option value="@country.Code" selected="@country.Code == selectedCountry?.Code">@country.Name</option>
+                        <option value="@country.Code" selected="@country.Code == selectedCountryCode">@country.Name</option>
                     }
                 </select>
             </div>
@@ -31,12 +30,31 @@ else
         <div class="col-md-3">
             <div class="form-group">
                 <label for="year">Year</label>
-                <select id="year" class="form-control" @onchange="OnYearChanged">
+                <select id="year" class="form-control" @bind="selectedYear" @bind:after="YearChanged">
                     @foreach (var year in allYears)
                     {
                         <option value="@year" selected="@(year == selectedYear)">@year</option>
                     }
                 </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input id="date" type="date" class="form-control" @bind="newDate"/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="name">Description</label>
+                <input id="name" type="text" class="form-control" @bind="newName"/>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <button class="btn btn-primary" @onclick="ButtonAddClick">Add</button>
             </div>
         </div>
     </div>
@@ -54,7 +72,7 @@ else
                 </tr>
                 </thead>
                 <tbody>
-                @foreach (var publicHoliday in allPublicHolidaysConfigurations.Where(ph => ph.CountryCode == selectedCountry?.Code && ph.Year == selectedYear).OrderBy(ph => ph.Date))
+                @foreach (var publicHoliday in allPublicHolidays.Where(ph => ph.CountryCode == selectedCountryCode && ph.Year == selectedYear).OrderBy(ph => ph.Date))
                 {
                     <tr>
                         <td>@publicHoliday.Year</td>
@@ -74,18 +92,21 @@ else
 
 
 @code {
-    private IEnumerable<PublicHoliday>? allPublicHolidaysConfigurations;
+    private IEnumerable<PublicHoliday>? allPublicHolidays;
     private IEnumerable<Country>? allCountries;
     private List<int>? allYears;
 
-    private Country? selectedCountry;
+    private string? selectedCountryCode;
     private int selectedYear;
 
-    protected override async void OnInitialized()
+    private DateOnly? newDate;
+    private string newName;
+
+    protected override async Task OnInitializedAsync()
     {
-        allCountries = await CRepository.GetAsync();
-        allPublicHolidaysConfigurations = await PhRepository.GetAsync();
-        allYears = allPublicHolidaysConfigurations.Select(ph => ph.Year).Distinct().ToList();
+        allCountries = await CountryRepository.GetAsync();
+        allPublicHolidays = await PhRepository.GetAsync();
+        allYears = allPublicHolidays.Select(ph => ph.Year).Distinct().ToList();
 
         var currentYear = DateTime.Now.Year;
         if (!allYears.Contains(currentYear))
@@ -93,24 +114,54 @@ else
             allYears.Add(currentYear);
         }
 
+        if (!allYears.Contains(currentYear + 1))
+        {
+            allYears.Add(currentYear + 1);
+        }
+
         selectedYear = currentYear;
 
         var currentUserCountryCode = CurrentUser.GetCountryCode();
-        selectedCountry = allCountries.FirstOrDefault(c => c.Code == currentUserCountryCode);
+        selectedCountryCode = currentUserCountryCode;
     }
 
-
-    private void OnCountryChanged(ChangeEventArgs obj)
+    private void YearChanged()
     {
+        var last = allPublicHolidays?.Where(ph => ph.Date.Year == selectedYear).MaxBy(ph => ph.Date)?.Date;
+        newDate = last ?? new DateOnly(selectedYear, 1, 1);
     }
 
-    private void OnYearChanged(ChangeEventArgs obj)
+    private async Task OnDelete(PublicHoliday publicHoliday)
     {
-    }
-
-    private void OnDelete(PublicHoliday publicHoliday)
-    {
-     
+        var deleted = await PhRepository.DeleteAsync(publicHoliday);
+        if (deleted)
+        {
+            allPublicHolidays = await PhRepository.GetAsync();
         }
+    }
+
+    private async Task ButtonAddClick()
+    {
+        if (string.IsNullOrWhiteSpace(selectedCountryCode) || newDate is null || newDate.Value.Year != selectedYear)
+        {
+            return;
+        }
+
+        var newPublicHoliday = new PublicHoliday
+        {
+            CountryCode = selectedCountryCode,
+            Date = newDate.Value,
+            Name = newName,
+            Year = selectedYear
+        };
+        var saved = await PhRepository.AddAsync(newPublicHoliday);
+        if (saved)
+        {
+            allPublicHolidays = await PhRepository.GetAsync();
+        }
+
+        newName = string.Empty;
+    }
+
 
 }
