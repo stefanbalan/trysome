@@ -80,7 +80,7 @@ else
                         <td>@publicHoliday.Date.ToString("dd.MM.yyyy")</td>
                         <td>@publicHoliday.Name</td>
                         <td>
-                            <button class="btn btn-danger btn-sm" @onclick="() => OnDelete(publicHoliday)">Delete</button>
+                            <button type="button" class="btn btn-danger btn-sm" @onclick="() => OnDelete(publicHoliday)">Delete</button>
                         </td>
                     </tr>
                 }

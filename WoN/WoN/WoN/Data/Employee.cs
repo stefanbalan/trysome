@@ -6,7 +6,7 @@ public class Employee
     public required string Name { get; set; }
     public required string CountryCode { get; set; }
 
-    public required Country Country { get; set; }
+    public Country Country { get; set; } = null!;
 }
 
 public class Calendar
@@ -27,7 +27,7 @@ public class EmployeeTimeTracking
     public int EmployeeId { get; set; }
     public int Year { get; set; }
     public required int[] Vacation { get; set; }
-    public required Employee Employee { get; set; }
+    public Employee Employee { get; set; } = null!;
 }
 
 public class PublicHoliday

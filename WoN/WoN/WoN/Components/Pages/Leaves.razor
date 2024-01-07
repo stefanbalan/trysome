@@ -19,17 +19,15 @@
 else
 {
     <h4>Start month: @leaves.StartMonth</h4>
-    <br/>
 
-
-    <div class="container">
+    <div class="flexcontainer">
 
         <div class="employees">
             <div class="employee header">Name</div>
-            @foreach (var empl in leaves.EmployeeLeaves)
+            @foreach (var employee in leaves.EmployeeLeaves)
             {
-                <div id="@empl.EmployeeId" class="employee">
-                    @empl.EmployeeName
+                <div id="@employee.EmployeeId" class="employee">
+                    @employee.EmployeeName
                 </div>
             }
         </div>
@@ -51,8 +49,6 @@ else
     </div>
 }
 
-<button type="button" @onclick="ButtonClickCount">Count = @counter</button>
-
 
 
 @code {
@@ -61,13 +57,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         leaves = await DataProvider.GetDataAsync();
-    }
-
-    private int counter;
-
-    private void ButtonClickCount()
-    {
-        counter += 1;
     }
 
 }
