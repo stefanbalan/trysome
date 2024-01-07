@@ -1,0 +1,108 @@
+﻿@page "/admin/employees"
+
+@using WoN.Services
+@using WoN.Data.Repository
+@using WoN.Data
+
+@inject ICurrentUser CurrentUser
+@inject IRepository<Employee> EmployeeRepository
+@inject IRepository<Country> CountryRepository
+
+<h3>Employees</h3>
+
+
+
+@if (allEmployees is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="id">Date</label>
+                <input id="id" type="number" class="form-control" @bind="newId" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" type="text" class="form-control" @bind="newName" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country" class="form-control" @bind="selectedCountryCode">
+                    @foreach (var country in allCountries)
+                    {
+                        <option value="@country.Code" selected="@country.Code == selectedCountryCode">@country.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <button class="btn btn-primary" >Add</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Country</th>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in allEmployees.OrderBy(e => e.Id))
+                    {
+                        <tr>
+                            <td>@employee.Country.Name</td>
+                            <td>@employee.Id</td>
+                            <td>@employee.Name</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm" @onclick="() => OnDelete(employee)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+@code {
+    private IEnumerable<Employee>? allEmployees;
+    private IEnumerable<Country>? allCountries;
+
+    private string? selectedCountryCode;
+    private int newId;
+    private string newName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allEmployees = await EmployeeRepository.GetAsync();
+    }
+
+
+    private async Task OnDelete(Employee employee)
+    {
+        var deleted = await EmployeeRepository.DeleteAsync(employee);
+        if (deleted)
+        {
+            allEmployees = await EmployeeRepository.GetAsync();
+        }
+    }
+
+
+
+
+}

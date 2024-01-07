@@ -3,16 +3,14 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    border-left: gray 1px solid;
 }
 
 .day {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: gray 1px solid;
-    border-bottom: gray.1px solid;
-    border-right: gray 1px solid;
+    border: gray 1px solid;
+    margin-right: -1px;
     width: 1rem;
     height: 1rem;
     font-size: 0.8rem;
