@@ -1,0 +1,6 @@
+namespace DFF;
+
+interface IBasicMetadataBuilder
+{
+    
+}
