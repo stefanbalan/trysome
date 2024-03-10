@@ -1,28 +1,26 @@
 using System.Collections;
-using DuplicateFileFind;
 
 namespace DFF;
 
 public class Worker : BackgroundService
 {
     private readonly ILogger<Worker> logger;
-    private IFileSource filesource;
+    private readonly IFileSource fileSource;
     private IndexDatabase db;
-    private Destination destination;
+    private readonly Destination destination;
 
-    public Worker(ILogger<Worker> logger, IFileSource filesource, Destination destination)
+    public Worker(ILogger<Worker> logger, IFileSource fileSource, Destination destination)
     {
         this.logger = logger;
-        this.filesource = filesource;
+        this.fileSource = fileSource;
         this.destination = destination;
     }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        //await foreach (var file in filesource.GetFilesAsync().WithCancellation(stoppingToken))
-        // { }
+        // async version: await foreach (var file in fileSource.GetFilesAsync().WithCancellation(stoppingToken)) { }
 
-        foreach (var file in filesource.GetFiles())
+        foreach (var file in fileSource.GetFiles())
         {
             try
             {
@@ -38,7 +36,7 @@ public class Worker : BackgroundService
                     logger.LogInformation("{File} exists in database", file.FileInfo.FullName);
                     if (destination.ExistingAction(file))
                     {
-                        // log? could be redundant
+                        // success
                     }
 
                     continue;
@@ -52,41 +50,11 @@ public class Worker : BackgroundService
             }
             catch (Exception e)
             {
-                logger.LogError("Exception occured while processing {File} : {Message}", file.FileInfo.FullName, e.Message);
+                logger.LogError("Exception occured while processing {File} : {Message}", file.FileInfo.FullName,
+                    e.Message);
             }
         }
     }
 
     private bool MatchesFilter(Item file) => true;
-}
-
-public class Destination
-{
-    public bool ExistingAction(Item file)
-    {
-        throw new NotImplementedException();
-    }
-
-    public bool NonExistingAction(Item file)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public class IndexDatabase
-{
-    public IndexDatabase(DffContext context)
-    {
-        context.Database.EnsureCreated();
-    }
-
-    public bool HasFile(Item file)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void AddFile(Item file)
-    {
-        throw new NotImplementedException();
-    }
 }
