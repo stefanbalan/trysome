@@ -7,24 +7,27 @@ namespace DuplicateFileFind
     {
         //EXPLAIN QUERY PLAN SELECT* FROM 'Files' where length = 387850
 
-        public DbSet<Folder> Directories { get; set; }
-        public DbSet<File> Files { get; set; }
+        public DbSet<IndexedFolder> Directories { get; set; }
+        public DbSet<IndexedFile> Files { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Folder>()
+            modelBuilder.Entity<IndexedFolder>()
                 .HasIndex(dir => dir.Path);
 
-            modelBuilder.Entity<File>()
+            modelBuilder.Entity<IndexedFile>()
                 .HasIndex(f => f.DirectoryId);
 
-            modelBuilder.Entity<File>()
+            modelBuilder.Entity<IndexedFile>()
                 .HasIndex(f => f.Name);
 
-            modelBuilder.Entity<File>()
+            modelBuilder.Entity<IndexedFile>()
                 .HasIndex(f => f.Length);
+            
+            modelBuilder.Entity<IndexedFile>()
+                .HasIndex(f => f.CreationTime);
 
-            modelBuilder.Entity<File>()
+            modelBuilder.Entity<IndexedFile>()
                 .HasIndex(f => f.Hash);
 
             base.OnModelCreating(modelBuilder);

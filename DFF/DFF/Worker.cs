@@ -31,6 +31,11 @@ public class Worker : BackgroundService
                     continue;
                 }
 
+
+                //build an IndexedFile with metadata
+
+                //write a IndexedFile comparer to determine if the file is new or not
+
                 if (db.HasFile(file))
                 {
                     logger.LogInformation("{File} exists in database", file.FileInfo.FullName);
