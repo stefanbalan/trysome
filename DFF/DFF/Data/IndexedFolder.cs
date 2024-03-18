@@ -1,8 +1,8 @@
 ﻿namespace DuplicateFileFind;
 
-public class Folder
+public class IndexedFolder
 {
     public int Id { get; set; }
     public string Path { get; set; }
-    public ICollection<File> Files { get; set; }
+    public ICollection<IndexedFile> Files { get; set; }
 }
