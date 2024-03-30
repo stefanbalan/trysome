@@ -21,6 +21,10 @@ public static class Program
             options.UseSqlite(configuration.GetConnectionString("DefaultConnection")
                               ?? Path.Combine(currentDirectory, "_dff.sqlite")));
 
+        builder.Services.AddSingleton<IConfig, Config>(provider => new Config(
+            provider.GetRequiredService<IConfiguration>(),
+            args));
+
 
         builder.Services.AddHostedService<Worker>();
 

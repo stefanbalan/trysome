@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace DFF;
 
 public class Worker : BackgroundService
@@ -16,10 +14,9 @@ public class Worker : BackgroundService
         this.destination = destination;
     }
 
-    protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         // async version: await foreach (var file in fileSource.GetFilesAsync().WithCancellation(stoppingToken)) { }
-
         foreach (var file in fileSource.GetFiles())
         {
             try
@@ -59,6 +56,8 @@ public class Worker : BackgroundService
                     e.Message);
             }
         }
+
+        return Task.CompletedTask;
     }
 
     private bool MatchesFilter(Item file) => true;

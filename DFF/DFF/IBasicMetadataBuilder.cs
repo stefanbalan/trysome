@@ -4,7 +4,7 @@ public interface IBasicMetadataBuilder
 {
     Task<Item> BuildMetadataAsync(Item item);
 
-    Task<(string? Hash, int hashSize)> ComputeHash128Async(FileInfo fileInfo);
-    Task<string?> ComputeHashAsync(FileInfo fileInfo);
-    Task<DateTime?> ComputeCreationDateAsync(FileInfo fileInfo);
+    ValueTask<(string? Hash, int hashSize)> ComputeHash128Async(FileInfo fileInfo);
+    ValueTask<string?> ComputeHashAsync(FileInfo fileInfo);
+    ValueTask<(DateTime? Date, string Extra)> ComputeCreationDateAsync(FileInfo fileInfo);
 }

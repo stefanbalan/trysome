@@ -1,5 +1,7 @@
 using System.Buffers;
+using System.Globalization;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace DFF;
 
@@ -21,7 +23,7 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
         }
         catch (IOException e) when ((e.HResult & 0x0000FFFF) == 32)
         {
-            logger.LogError("Cannot read file {File} : {Message}", item.FileInfo.FullName,  e.Message);
+            logger.LogError("Cannot read file {File} : {Message}", item.FileInfo.FullName, e.Message);
         }
 
 
@@ -30,7 +32,7 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
 
     private const int Size128Kb = 131072;
 
-    public async Task<(string? Hash, int hashSize)> ComputeHash128Async(FileInfo fileInfo)
+    public async ValueTask<(string? Hash, int hashSize)> ComputeHash128Async(FileInfo fileInfo)
     {
         try
         {
@@ -54,7 +56,7 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
         }
     }
 
-    public async Task<string?> ComputeHashAsync(FileInfo fileInfo)
+    public async ValueTask<string?> ComputeHashAsync(FileInfo fileInfo)
     {
         try
         {
@@ -65,7 +67,7 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
 
             stream.Close();
 
-            return hash ;
+            return hash;
         }
         catch (IOException e) when ((e.HResult & 0x0000FFFF) == 32)
         {
@@ -74,5 +76,43 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
         }
     }
 
-    public Task<DateTime?> ComputeCreationDateAsync(FileInfo fileInfo) => throw new NotImplementedException();
+    private readonly (string Format, string Regex)[] patterns = [
+        //2019-11-28 20.43.25
+        ("yyyy-MM-dd HH.mm.ss", @"\d{4}-\d{2}-\d{2}\s\d{2}.\d{2}.\d{2}"),
+        // 20190602_200549(0).jpg
+        ("yyyyMMdd_HHmmss", @"\d{8}_\d{6}")
+    ];
+
+
+    public ValueTask<(DateTime? Date, string Extra)> ComputeCreationDateAsync(FileInfo fileInfo)
+    {
+        var fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
+        var creationDate = default(DateTime?);
+
+        foreach (var pattern in patterns)
+        {
+            var match = Regex.Match(fileName, pattern.Regex);
+            if (match.Success)
+            {
+                var extra = Regex.Replace(fileName, pattern.Regex, "");
+
+                if (DateTime.TryParseExact(match.Value, pattern.Format, CultureInfo.InvariantCulture,
+                        DateTimeStyles.None, out var date))
+                {
+                    return ValueTask.FromResult<(DateTime?, string)>((date, extra));
+                }
+            }
+        }
+
+        return ValueTask.FromResult<(DateTime?, string)>((null, string.Empty));
+
+
+        string RegexPattern(string dateFormat) => dateFormat
+            .Replace("y", "\\d")
+            .Replace("M", "\\d")
+            .Replace("d", "\\d")
+            .Replace("H", "\\d")
+            .Replace("m", "\\d")
+            .Replace("s", "\\d");
+    }
 }
