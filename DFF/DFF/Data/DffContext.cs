@@ -25,7 +25,7 @@ namespace DuplicateFileFind
                 .HasIndex(f => f.Length);
             
             modelBuilder.Entity<IndexedFile>()
-                .HasIndex(f => f.CreationTime);
+                .HasIndex(f => f.CreationDateTime);
 
             modelBuilder.Entity<IndexedFile>()
                 .HasIndex(f => f.Hash);

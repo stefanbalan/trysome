@@ -1,23 +1,27 @@
 namespace DFF;
 
-public class FileSource(ILogger<FileSource> logger, IConfig config) : IFileSource
+public class FileSource(ILogger<FileSource> logger, IConfig config)
 {
     private readonly string path = config.SourcePath;
+    private readonly string extensionFilter = config.ExtensionFilter;
 
-    public IEnumerable<Item> GetFiles()
+    public IEnumerable<FileInfo> GetFiles()
     {
         var dir = new DirectoryInfo(path);
         if (!dir.Exists)
         {
             logger.LogError("Source directory {Path} does not exist", path);
-            return Enumerable.Empty<Item>();
+            return Enumerable.Empty<FileInfo>();
         }
-        return dir.EnumerateFileSystemInfos(
-                "*",
+
+        var extensions = extensionFilter.Split(',');
+
+        return dir.EnumerateFileSystemInfos("*",
                 new EnumerationOptions { RecurseSubdirectories = true })
             .Where(fse => fse is FileInfo)
-            .Select(fse => new Item { FileInfo =  (FileInfo)fse});
+            .Where(fse => Array.Exists(
+                extensions,
+                ext => Path.GetExtension(fse.Name).Equals(ext, StringComparison.OrdinalIgnoreCase)))
+            .Select(fsi => (FileInfo)fsi);
     }
-
-    public IAsyncEnumerable<Item> GetFilesAsync() => throw new NotImplementedException();
 }

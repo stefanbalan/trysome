@@ -1,39 +1,15 @@
 namespace DFF;
 
-public class Worker : BackgroundService
+public class Worker(ILogger<Worker> logger, FileSource fileSource, Destination destination)
+    : BackgroundService
 {
-    private readonly ILogger<Worker> logger;
-    private readonly IFileSource fileSource;
-    private IndexDatabase db;
-    private readonly Destination destination;
-
-    public Worker(ILogger<Worker> logger, IFileSource fileSource, Destination destination)
-    {
-        this.logger = logger;
-        this.fileSource = fileSource;
-        this.destination = destination;
-    }
-
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // async version: await foreach (var file in fileSource.GetFilesAsync().WithCancellation(stoppingToken)) { }
         foreach (var file in fileSource.GetFiles())
         {
             try
             {
-                logger.LogInformation("{File} started", file.FileInfo.FullName);
-                if (!MatchesFilter(file))
-                {
-                    logger.LogInformation("{File} skipped, does not match filter", file.FileInfo.FullName);
-                    continue;
-                }
-
-
-                //build an IndexedFile with metadata
-
-                //write a IndexedFile comparer to determine if the file is new or not
-
-                if (db.HasFile(file))
+                if (var item  = destination.HasItem(file))
                 {
                     logger.LogInformation("{File} exists in database", file.FileInfo.FullName);
                     if (destination.ExistingAction(file))
@@ -59,6 +35,4 @@ public class Worker : BackgroundService
 
         return Task.CompletedTask;
     }
-
-    private bool MatchesFilter(Item file) => true;
 }

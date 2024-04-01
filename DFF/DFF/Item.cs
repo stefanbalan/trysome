@@ -13,5 +13,5 @@ public class Item
     /// <summary>
     /// DateTime when the file was produced (not created, not modified) = EXIF DateTimeOriginal
     /// </summary>
-    public DateTime? ProducedDateTime { get; set; }
+    public DateTime? DateTime { get; set; }
 }

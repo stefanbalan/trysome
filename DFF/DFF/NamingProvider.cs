@@ -14,8 +14,8 @@ public class NamingProvider(ILogger<NamingProvider> logger)
                 // the last directory from the file path
                 return file.FileInfo.Directory?.Name ?? UnknownPath;
             
-            return file.ProducedDateTime.HasValue
-                ? file.ProducedDateTime.Value.ToString("yyyy\\MM")
+            return file.DateTime.HasValue
+                ? file.DateTime.Value.ToString("yyyy\\MM")
                 : UnknownPath;
         }
         catch (Exception e)
