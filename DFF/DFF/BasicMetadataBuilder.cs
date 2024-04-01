@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 namespace DFF;
 
 public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
-    : IBasicMetadataBuilder
 {
     private readonly MD5 md5 = MD5.Create();
 

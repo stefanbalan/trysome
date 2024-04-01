@@ -25,6 +25,9 @@ public static class Program
             provider.GetRequiredService<IConfiguration>(),
             args));
 
+        builder.Services.AddSingleton<FileSource, FileSource>();
+        
+        builder.Services.AddSingleton<BasicMetadataBuilder, BasicMetadataBuilder>();
 
         builder.Services.AddHostedService<Worker>();
 
