@@ -1,13 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ClashOfLogs.Shared
-{
-    public class WarLeague
-    {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
+namespace ClashOfLogs.Shared;
 
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
-    }
+public record WarLeague
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
 }

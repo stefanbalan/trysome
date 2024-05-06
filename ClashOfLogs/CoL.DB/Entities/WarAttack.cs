@@ -1,17 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace CoL.DB.Entities;
 
-namespace CoL.DB.Entities
+public record WarAttack
 {
-
-    [Owned]
-    public class WarAttack
-    {
-        public string AttackerTag { get; set; }
-        public string DefenderTag { get; set; }
-        public int Stars { get; set; }
-        public int DestructionPercentage { get; set; }
-        public int Order { get; set; }
-        public int Duration { get; set; }
-    }
-
+    public string AttackerTag { get; set; } = null!;
+    public string DefenderTag { get; set; } = null!;
+    public int Stars { get; set; }
+    public int DestructionPercentage { get; set; }
+    public int Order { get; set; }
+    public int Duration { get; set; }
 }

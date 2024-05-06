@@ -1,31 +1,20 @@
 ﻿using ClashOfLogs.Shared;
 
-namespace CoL.Service.Mappers
+namespace CoL.Service.Mappers;
+
+public class LeagueMapper : BaseMapper<DBLeague, League>
 {
-    internal class LeagueMapper : IMapper<DBLeague, League>
+    public LeagueMapper()
     {
-        public DBLeague CreateEntity(League league, DateTime timeStamp)
-        {
-            var dbLeague = new DBLeague
-            {
-                Id = league.Id,
-            };
-            return dbLeague;
-        }
-
-        public Task UpdateEntityAsync(DBLeague dbLeague, League league, DateTime timeStamp)
-        {
-            dbLeague.Name = league.Name;
-
-            dbLeague.IconUrls = new DB.Entities.IconUrls
-            {
-                Small = league.IconUrls.Small,
-                Medium = league.IconUrls.Medium,
-                Tiny = league.IconUrls.Tiny,
-            };
-
-            dbLeague.UpdatedAt = timeStamp;
-            return Task.CompletedTask;
-        }
+        MapT2ToT1(l => l.Id, dl => dl.Id);
+        MapT2ToT1(l => l.Name, dl => dl.Name);
+        MapT2ToT1(l => DbLeagueIconUrls(l.IconUrls), dl => dl.IconUrls);
     }
+
+    private static DB.Entities.IconUrls DbLeagueIconUrls(IconUrls iconUrls) => new()
+    {
+        Small = iconUrls.Small,
+        Medium = iconUrls.Medium,
+        Tiny = iconUrls.Tiny,
+    };
 }

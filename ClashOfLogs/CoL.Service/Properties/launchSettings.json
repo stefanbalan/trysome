@@ -2,13 +2,33 @@
   "profiles": {
     "CoL.Service": {
       "commandName": "Project",
+      "commandLineArgs": "",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": "true"
+      "dotnetRunMessages": true
+    },
+    "CoL.Service_files": {
+      "commandName": "Project",
+      "commandLineArgs": "-files",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
     },
     "Docker": {
-      "commandName": "Docker"
+      "commandName": "Docker",
+      "commandLineArgs": "",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Docker"
+      }
+    },
+    "Docker_files": {
+      "commandName": "Docker",
+      "commandLineArgs": "-files",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Docker"
+      }
     }
   }
 }

@@ -1,13 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace CoL.DB.Entities;
 
-namespace CoL.DB.Entities
+public class IconUrls
 {
-    public class IconUrls
-    {
-        public string Small { get; set; }
-
-        public string Tiny { get; set; }
-
-        public string Medium { get; set; }
-    }
+    public string? Small { get; set; }
+    public string? Tiny { get; set; }
+    public string? Medium { get; set; }
 }

@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Lazy.Client.Services;
 using Lazy.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
-
 namespace Lazy.Client.Pages.EmailTemplate;
 
 public partial class Edit
 {
+    [Inject]
+    protected DataService<EmailTemplateModel> DataService { get; set; } = null!;
+
+    [Inject]
+    protected NotificationService NotificationService { get; set; } = null!;
 
     [Parameter]
     public int? TemplateId { get; set; }

@@ -1,25 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace ClashOfLogs.Shared
+namespace ClashOfLogs.Shared;
+
+public record Cursors
 {
-    public class Cursors
-    {
-    }
+}
 
-    public class Paging
-    {
-        [JsonPropertyName("cursors")]
-        public Cursors Cursors { get; set; }
-    }
+public record Paging
+{
+    [JsonPropertyName("cursors")]
+    public Cursors Cursors { get; set; }
+}
 
-    public class Warlog
-    {
-        [JsonPropertyName("items")]
-        public List<WarSummary> Items { get; set; }
+public record Warlog
+{
+    [JsonPropertyName("items")]
+    public List<WarSummary> Items { get; set; }
 
-        [JsonPropertyName("paging")]
-        public Paging Paging { get; set; }
-    }
-
+    [JsonPropertyName("paging")]
+    public Paging Paging { get; set; }
 }

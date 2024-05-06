@@ -1,50 +1,64 @@
-﻿using ClashOfLogs.Shared;
+﻿using CoL.DB.Entities;
+using CoL.Service.Importers;
+using League = ClashOfLogs.Shared.League;
+using Member = ClashOfLogs.Shared.Member;
 
-using CoL.Service.Importer;
+namespace CoL.Service.Mappers;
 
-namespace CoL.Service.Mappers
+public class MemberMapper : BaseMapper<DBMember, Member>
 {
-    internal class MemberMapper : IMapper<DBMember, Member>
+    private readonly IEntityImporter<DBLeague, League> leagueImporter;
+
+    public MemberMapper(IEntityImporter<DBLeague, League> leagueImporter)
     {
-        private readonly EntityProviderBase<DBLeague,int, League> leagueProvider;
-        public MemberMapper(EntityProviderBase<DBLeague, int, League> leagueProvider)
+        this.leagueImporter = leagueImporter;
+
+        MapT2ToT1(m => m.Tag, dm => dm.Tag);
+        MapT2ToT1(m => m.Name, dm => dm.Name,
+            (m, dm) => dm.History.Add(
+                new HistoryEvent(TimeStamp, nameof(dm.Name), m.Name, dm.Name)));
+        MapT2ToT1(m => m.Role, dm => dm.Role,
+            (m, dm) => dm.History.Add(
+                new HistoryEvent(TimeStamp, nameof(dm.Role), m.Role, dm.Role)));
+        MapT2ToT1(m => m.ExpLevel, dm => dm.ExpLevel);
+        MapT2ToT1(m => m.Trophies, dm => dm.Trophies);
+        MapT2ToT1(m => m.VersusTrophies, dm => dm.VersusTrophies);
+        MapT2ToT1(m => m.ClanRank, dm => dm.ClanRank);
+        MapT2ToT1(m => m.PreviousClanRank, dm => dm.PreviousClanRank);
+        MapT2ToT1(m => m.Donations, dm => dm.Donations);
+        MapT2ToT1(m => m.DonationsReceived, dm => dm.DonationsReceived);
+    }
+
+    public DateTime TimeStamp { get; set; }
+
+    public override DBMember CreateAndUpdateEntity(Member model, DateTime timeStamp)
+    {
+        TimeStamp = timeStamp;
+
+        var entity = base.CreateAndUpdateEntity(model, timeStamp);
+        entity.League = leagueImporter.ImportAsync(model.League, timeStamp)
+            .GetAwaiter().GetResult();
+        return entity;
+    }
+
+    public override bool UpdateEntity(DBMember entity, Member model, DateTime timeStamp)
+    {
+        TimeStamp = timeStamp;
+        if (entity.Donations > model.Donations)
         {
-            this.leagueProvider = leagueProvider;
+            //new season
+            entity.DonationsPreviousSeason = entity.Donations;
+            entity.DonationsReceivedPreviousSeason = entity.DonationsReceived;
+
+            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.Donations), "0",
+                entity.Donations.ToString()));
+            entity.History.Add(new HistoryEvent(timeStamp, nameof(entity.DonationsReceived), "0",
+                entity.DonationsReceived.ToString()));
         }
 
-        public DBMember CreateEntity(Member entity, DateTime timeStamp) =>
-            new() {
-                Tag = entity.Tag,
-                CreatedAt = timeStamp
-            };
+        entity.League = leagueImporter.ImportAsync(model.League, timeStamp)
+            .GetAwaiter().GetResult();
 
-        public async Task UpdateEntityAsync(DBMember entity, Member model, DateTime timeStamp)
-        {
-            entity.Name = model.Name;
-            entity.Role = model.Role;
-            entity.ExpLevel = model.ExpLevel;
-            entity.Trophies = model.Trophies;
-            entity.VersusTrophies = model.VersusTrophies;
-            entity.ClanRank = model.ClanRank;
-            entity.PreviousClanRank = model.PreviousClanRank;
-            entity.IsMember = true;
-
-            if (entity.Donations > model.Donations)
-            {
-                //new season
-                entity.DonationsPreviousSeason = entity.Donations;
-                entity.DonationsReceivedPreviousSeason = entity.DonationsReceived;
-            }
-            else
-            {
-                entity.Donations = model.Donations;
-                entity.DonationsReceived = model.DonationsReceived;
-            }
-
-            entity.League = await leagueProvider.GetOrCreateAsync(model.League, timeStamp);//todo cannot find table Leagues
-
-            entity.UpdatedAt = timeStamp;
-        }
-
+        return base.UpdateEntity(entity, model, timeStamp);
     }
 }
