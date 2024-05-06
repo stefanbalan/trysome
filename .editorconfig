@@ -4,6 +4,14 @@
 [*.cs]
 
 # ReSharper properties
+resharper_csharp_naming_rule.event = AaBb
+resharper_csharp_naming_rule.interfaces = I + AaBb
+resharper_csharp_naming_rule.method = AaBb
+resharper_csharp_naming_rule.private_constants = AaBb
+resharper_csharp_naming_rule.private_static_fields = _ + aaBb
+resharper_csharp_naming_rule.private_static_readonly = AaBb
+resharper_csharp_naming_rule.property = AaBb
+resharper_csharp_naming_rule.types_and_namespaces = AaBb
 resharper_enforce_line_ending_style = true
 resharper_max_initializer_elements_on_line = 1
 resharper_place_accessorholder_attribute_on_same_line = false
@@ -28,7 +36,7 @@ csharp_new_line_before_finally = true
 #require members of anonymous types to be on separate lines
 csharp_new_line_before_members_in_anonymous_types = true
 #require members of object intializers to be on separate lines
-csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_object_initializers = false
 #require braces to be on a new line for anonymous_types, types, methods, object_collection_array_initializers, control_blocks, and lambdas (also known as "Allman" style)
 csharp_new_line_before_open_brace = anonymous_methods,control_blocks,lambdas,local_functions,methods,types
 
@@ -156,12 +164,18 @@ csharp_style_prefer_switch_expression = true:suggestion
 end_of_line = crlf
 
 # Microsoft .NET properties
-dotnet_naming_rule.interface_should_be_begins_with_i_rule.import_to_resharper = True
-dotnet_naming_rule.interface_should_be_begins_with_i_rule.resharper_description = interface_should_be_begins_with_i
-dotnet_naming_rule.interface_should_be_begins_with_i_rule.resharper_guid = d525716a-f5ca-4ab8-b98d-618f5822c01c
+dotnet_naming_rule.event_rule.import_to_resharper = as_predefined
+dotnet_naming_rule.event_rule.severity = suggestion
+dotnet_naming_rule.event_rule.style = upper_camel_case_style
+dotnet_naming_rule.event_rule.symbols = event_symbols
+dotnet_naming_rule.interface_should_be_begins_with_i_rule.import_to_resharper = as_predefined
 dotnet_naming_rule.interface_should_be_begins_with_i_rule.severity = suggestion
 dotnet_naming_rule.interface_should_be_begins_with_i_rule.style = i_upper_camel_case_style
 dotnet_naming_rule.interface_should_be_begins_with_i_rule.symbols = interface_should_be_begins_with_i_symbols
+dotnet_naming_rule.method_rule.import_to_resharper = as_predefined
+dotnet_naming_rule.method_rule.severity = suggestion
+dotnet_naming_rule.method_rule.style = upper_camel_case_style
+dotnet_naming_rule.method_rule.symbols = method_symbols
 dotnet_naming_rule.non_field_members_should_be_pascal_case_rule.import_to_resharper = True
 dotnet_naming_rule.non_field_members_should_be_pascal_case_rule.resharper_description = non_field_members_should_be_pascal_case
 dotnet_naming_rule.non_field_members_should_be_pascal_case_rule.resharper_guid = 812b95f9-983d-4d80-89f7-cade5808c86f
@@ -184,6 +198,14 @@ dotnet_naming_rule.private_static_readonly_rule.import_to_resharper = as_predefi
 dotnet_naming_rule.private_static_readonly_rule.severity = suggestion
 dotnet_naming_rule.private_static_readonly_rule.style = upper_camel_case_style
 dotnet_naming_rule.private_static_readonly_rule.symbols = private_static_readonly_symbols
+dotnet_naming_rule.property_rule.import_to_resharper = as_predefined
+dotnet_naming_rule.property_rule.severity = suggestion
+dotnet_naming_rule.property_rule.style = upper_camel_case_style
+dotnet_naming_rule.property_rule.symbols = property_symbols
+dotnet_naming_rule.types_and_namespaces_rule.import_to_resharper = as_predefined
+dotnet_naming_rule.types_and_namespaces_rule.severity = suggestion
+dotnet_naming_rule.types_and_namespaces_rule.style = upper_camel_case_style
+dotnet_naming_rule.types_and_namespaces_rule.symbols = types_and_namespaces_symbols
 dotnet_naming_rule.types_should_be_pascal_case_rule.import_to_resharper = True
 dotnet_naming_rule.types_should_be_pascal_case_rule.resharper_description = types_should_be_pascal_case
 dotnet_naming_rule.types_should_be_pascal_case_rule.resharper_guid = 25196edd-986c-4aba-a099-2d007a1229ea
@@ -196,10 +218,14 @@ dotnet_naming_style.lower_camel_case_style.capitalization = camel_case
 dotnet_naming_style.lower_camel_case_style_1.capitalization = camel_case
 dotnet_naming_style.lower_camel_case_style_1.required_prefix = _
 dotnet_naming_style.upper_camel_case_style.capitalization = pascal_case
+dotnet_naming_symbols.event_symbols.applicable_accessibilities = *
+dotnet_naming_symbols.event_symbols.applicable_kinds = event
 dotnet_naming_symbols.interface_should_be_begins_with_i_symbols.applicable_accessibilities = local,public,internal,private,protected,protected_internal,private_protected
 dotnet_naming_symbols.interface_should_be_begins_with_i_symbols.applicable_kinds = interface
 dotnet_naming_symbols.interface_should_be_begins_with_i_symbols.resharper_applicable_kinds = interface
 dotnet_naming_symbols.interface_should_be_begins_with_i_symbols.resharper_required_modifiers = any
+dotnet_naming_symbols.method_symbols.applicable_accessibilities = *
+dotnet_naming_symbols.method_symbols.applicable_kinds = method
 dotnet_naming_symbols.non_field_members_should_be_pascal_case_symbols.applicable_accessibilities = local,public,internal,private,protected,protected_internal,private_protected
 dotnet_naming_symbols.non_field_members_should_be_pascal_case_symbols.applicable_kinds = property,event,method
 dotnet_naming_symbols.non_field_members_should_be_pascal_case_symbols.resharper_applicable_kinds = property,event,method
@@ -215,6 +241,10 @@ dotnet_naming_symbols.private_static_fields_symbols.required_modifiers = static
 dotnet_naming_symbols.private_static_readonly_symbols.applicable_accessibilities = private
 dotnet_naming_symbols.private_static_readonly_symbols.applicable_kinds = field
 dotnet_naming_symbols.private_static_readonly_symbols.required_modifiers = static,readonly
+dotnet_naming_symbols.property_symbols.applicable_accessibilities = *
+dotnet_naming_symbols.property_symbols.applicable_kinds = property
+dotnet_naming_symbols.types_and_namespaces_symbols.applicable_accessibilities = *
+dotnet_naming_symbols.types_and_namespaces_symbols.applicable_kinds = namespace,class,struct,enum,delegate
 dotnet_naming_symbols.types_should_be_pascal_case_symbols.applicable_accessibilities = local,public,internal,private,protected,protected_internal,private_protected
 dotnet_naming_symbols.types_should_be_pascal_case_symbols.applicable_kinds = class,struct,interface,enum
 dotnet_naming_symbols.types_should_be_pascal_case_symbols.resharper_applicable_kinds = class,struct,interface,enum
@@ -302,6 +332,11 @@ dotnet_style_namespace_match_folder = true:suggestion
 dotnet_style_predefined_type_for_member_access = true:suggestion
 
 [*.{appxmanifest,asax,ascx,aspx,axaml,axml,build,config,cs,cshtml,csproj,css,dbml,discomap,dtd,htm,html,jsproj,lsproj,master,njsproj,nuspec,paml,proj,props,razor,resw,resx,skin,StyleCop,targets,tasks,vb,vbproj,xaml,xamlx,xml,xoml,xsd}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+[*.{appxmanifest,asax,ascx,aspx,axaml,axml,build,c,c++,c++m,cc,ccm,cginc,compute,config,cp,cpp,cppm,cs,cshtml,csproj,css,cu,cuh,cxx,cxxm,dbml,discomap,dtd,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,htm,html,hxx,inc,inl,ino,ipp,ixx,jsproj,lsproj,master,mpp,mq4,mq5,mqh,mxx,njsproj,nuspec,paml,proj,props,razor,resw,resx,skin,StyleCop,targets,tasks,tpp,usf,ush,vb,vbproj,xaml,xamlx,xml,xoml,xsd}]
 indent_style = space
 indent_size = 4
 tab_width = 4

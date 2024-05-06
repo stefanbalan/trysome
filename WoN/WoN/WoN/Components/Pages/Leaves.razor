@@ -1,0 +1,62 @@
+﻿@page "/"
+@using WoN.DataProvider
+@using WoN.Model
+@using WoN.Components.Leaves
+@using System.Globalization
+
+
+@inject IDataProvider<LeavesModel> DataProvider
+
+<h3>Leaves</h3>
+@rendermode InteractiveServer
+
+@if (leaves == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <h4>Start month: @leaves.StartMonth</h4>
+
+    <div class="flexcontainer">
+
+        <div class="employees">
+            <div class="employee header">Name</div>
+            @foreach (var employee in leaves.EmployeeLeaves)
+            {
+                <div id="@employee.EmployeeId" class="employee">
+                    @employee.EmployeeName
+                </div>
+            }
+        </div>
+
+        @* @for (var m = leaves.StartMonth; m < leaves.StartMonth + leaves.Months; m += 1) *@
+        @for (var m = leaves.StartMonth; m < 5; m += 1)
+        {
+            <div class="months">
+                <div class="months header">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(leaves.StartMonth)</div>
+                @foreach (var month in leaves.EmployeeLeaves.Select(el => el.TimeTrackingDays[1]).ToArray())
+                {
+                    <div class="month">
+                        <Month Days=month></Month>
+                    </div>
+                }       
+            </div>
+        }
+
+    </div>
+}
+
+
+
+@code {
+    private LeavesModel? leaves;
+
+    protected override async Task OnInitializedAsync()
+    {
+        leaves = await DataProvider.GetDataAsync();
+    }
+
+}
