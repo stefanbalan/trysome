@@ -82,7 +82,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError("Adding a new {Type} failed {Message}",
+                    logger.LogError(ex,
+                        "Adding a new {Type} failed {Message}",
                         typeof(TDbEntity).Name,
                         ex.Message);
                     return null;
@@ -98,7 +99,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError("Importing {Type} with key {Key} error: {Error}",
+                    logger.LogError(ex,
+                        "Importing {Type} with key {Key} error: {Error}",
                         typeof(TDbEntity).Name,
                         EntityKey(entity),
                         ex.Message);
@@ -111,7 +113,8 @@ public abstract class EntityImporter<TDbEntity, TEntity>
         }
         catch (Exception ex)
         {
-            logger.LogError("Importing {Type} with key {Key} error: {Error}",
+            logger.LogError(ex, 
+                "Importing {Type} with key {Key} error: {Error}",
                 typeof(TDbEntity).Name,
                 EntityKey(entity),
                 ex.Message);

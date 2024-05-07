@@ -112,12 +112,11 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
         var allFiles = directory.EnumerateFiles("???????? ????_*.json").ToList();
         logger.LogInformation("Found {Count} files", allFiles.Count);
 
-        var firstOrDefault = allFiles
-            .FirstOrDefault(f => IsJsonDataFile(f.Name, out d));
-        logger.LogInformation("First file: {File}", firstOrDefault?.FullName);
+        var nextFile = allFiles.Find(f => IsJsonDataFile(f.Name, out d));
+        logger.LogInformation("First file: {File}", nextFile?.FullName);
         date = d;
-        logger.LogInformation("Next file is {File} with date {Date}", firstOrDefault?.FullName, d);
-        return firstOrDefault;
+        logger.LogInformation("Next file is {File} with date {Date}", nextFile?.FullName, d);
+        return nextFile;
     }
 
     public TimeSpan GetNextImportDelay() => HasImportData() ? TimeSpan.FromSeconds(5) : TimeSpan.FromHours(1);
@@ -134,9 +133,9 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
             fileInfo.Delete();
             return JsonSerializer.Deserialize<T>(json);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.LogError("Error reading json file {Name}: {Exception}", name, e.Message);
+            logger.LogError(ex, "Error reading json file {Name}: {Exception}", name, ex.Message);
             return default;
         }
     }

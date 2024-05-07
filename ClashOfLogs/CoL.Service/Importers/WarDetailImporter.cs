@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ClashOfLogs.Shared;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
@@ -22,7 +21,7 @@ public class WarDetailImporter : EntityImporter<DBWar, WarDetail>
     }
 
     public override object?[] EntityKey(WarDetail entity)
-        => new object?[] { entity.EndTime, entity.Clan.Tag, entity.Opponent.Tag };
+        => [entity.EndTime, entity.Clan.Tag, entity.Opponent.Tag];
 
     public async override Task UpdateChildrenAsync(DBWar dbEntity, WarDetail entity, DateTime timestamp)
     {
@@ -31,11 +30,11 @@ public class WarDetailImporter : EntityImporter<DBWar, WarDetail>
         {
             var wm = await warMemberImporter.ImportAsync(clanMember, timestamp);
             if (wm == null) continue;
-            var existing = dbEntity.ClanMembers.FirstOrDefault(wmc => string.Equals(wmc.Tag, clanMember.Tag));
+            var existing = dbEntity.ClanMembers.Find(wmc => string.Equals(wmc.Tag, clanMember.Tag));
             if (existing != null && ReferenceEquals(wm, existing)) throw new Exception("I knew it!?!");
         }
 
-        dbEntity.OpponentMembers ??= new List<DBWarMember>();
+        dbEntity.OpponentMembers ??= [];
         foreach (var opponentMember in entity.Opponent.Members)
         {
             var wm = await warMemberImporter.ImportAsync(opponentMember, timestamp);

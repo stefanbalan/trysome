@@ -8,12 +8,10 @@ public class LeagueMapperTests
     public void CreateAndUpdateEntity_ValidRequest_ReturnsDBLeague()
     {
         // Arrange
-        var league = new League()
-        {
+        var league = new League {
             Id = 9001,
             Name = "Test league",
-            IconUrls = new IconUrls()
-            {
+            IconUrls = new IconUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Tiny = "https://fake-url.com/tiny.png",
@@ -41,23 +39,19 @@ public class LeagueMapperTests
     public void UpdateEntity_ValidRequest_ReturnsUpdateddbLeague()
     {
         // Arrange
-        var dbLeague = new DBLeague()
-        {
+        var dbLeague = new DBLeague {
             Id = 9001,
             Name = "Test league",
-            IconUrls = new CoL.DB.Entities.IconUrls()
-            {
+            IconUrls = new CoL.DB.Entities.IconUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Tiny = "https://fake-url.com/tiny.png",
             }
         };
-        var league = new League()
-        {
+        var league = new League {
             Id = 9002,
             Name = "Test league updated",
-            IconUrls = new IconUrls()
-            {
+            IconUrls = new IconUrls {
                 Small = "https://fake-url.com/updated-small.png",
                 Medium = "https://fake-url.com/updated-medium.png",
                 Tiny = "https://fake-url.com/updated-tiny.png",

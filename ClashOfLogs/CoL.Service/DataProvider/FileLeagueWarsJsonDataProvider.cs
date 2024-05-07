@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using ClashOfLogs.Shared;
+using CoL.Service.Infra;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -14,18 +15,18 @@ namespace CoL.Service.DataProvider;
 internal class FileLeagueWarsJsonDataProvider : IJsonDataProvider
 {
     private readonly DirectoryInfo directory;
-    private readonly ILogger<FileJsonDataProvider2> logger;
+    private readonly ILogger<FileLeagueWarsJsonDataProvider> logger;
     private readonly JsonBackup jsonBackup;
 
-    public FileLeagueWarsJsonDataProvider(IConfiguration config, ILogger<FileJsonDataProvider2> logger,
+    public FileLeagueWarsJsonDataProvider(IConfiguration config, ILogger<FileLeagueWarsJsonDataProvider> logger,
         JsonBackup jsonBackup)
     {
         var importPath = config.GetValue(typeof(string), "JSONDirectory", ".") as string;
         if (string.IsNullOrWhiteSpace(importPath))
-            throw new Exception("Invalid configuration, import directory is empty");
+            throw new MissingConfigurationException("Invalid configuration, import directory is empty");
         directory = new DirectoryInfo(importPath);
         if (!directory.Exists)
-            throw new Exception($"Invalid configuration, import directory {directory.FullName} does not exist");
+            throw new MissingConfigurationException($"Invalid configuration, import directory {directory.FullName} does not exist");
         this.logger = logger;
         this.jsonBackup = jsonBackup;
     }
@@ -47,7 +48,7 @@ internal class FileLeagueWarsJsonDataProvider : IJsonDataProvider
         }
         catch (Exception ex)
         {
-            logger.LogError("Cannot read import directory {ExMessage}", ex.Message);
+            logger.LogError(ex, "Cannot read import directory {ExMessage}", ex.Message);
         }
 
         return fileInfo != null;
@@ -99,7 +100,7 @@ internal class FileLeagueWarsJsonDataProvider : IJsonDataProvider
         }
         catch (Exception ex)
         {
-            logger.LogError("Error reading json files from disk {Message}", ex.Message);
+            logger.LogError(ex, "Error reading json files from disk {Message}", ex.Message);
             return null;
         }
     }
@@ -112,8 +113,7 @@ internal class FileLeagueWarsJsonDataProvider : IJsonDataProvider
         var allFiles = directory.EnumerateFiles("???????? ????_*.json").ToList();
         logger.LogInformation("Found {Count} files", allFiles.Count);
 
-        var firstOrDefault = allFiles
-            .FirstOrDefault(f => IsJsonDataFile(f.Name, out d));
+        var firstOrDefault = allFiles.Find(f => IsJsonDataFile(f.Name, out d));
         logger.LogInformation("First file: {File}", firstOrDefault?.FullName);
         date = d;
         logger.LogInformation("Next file is {File} with date {Date}", firstOrDefault?.FullName, d);
@@ -134,9 +134,9 @@ internal class FileLeagueWarsJsonDataProvider : IJsonDataProvider
             fileInfo.Delete();
             return JsonSerializer.Deserialize<T>(json);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            logger.LogError("Error reading json file {Name}: {Exception}", name, e.Message);
+            logger.LogError(ex, "Error reading json file {Name}: {Exception}", name, ex.Message);
             return default;
         }
     }

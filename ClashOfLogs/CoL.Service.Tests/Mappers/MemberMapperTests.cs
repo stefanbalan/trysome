@@ -13,31 +13,26 @@ public class MemberMapperTests
     {
         // Arrange
         var timeStamp = DateTime.Now;
-        var league = new League
-        {
+        var league = new League {
             Id = 9001,
             Name = "Test league",
-            IconUrls = new IconUrls
-            {
+            IconUrls = new IconUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Tiny = "https://fake-url.com/tiny.png",
             }
         };
-        DBLeague dbLeague = new()
-        {
+        DBLeague dbLeague = new() {
             Id = 9001,
             Name = "Test league",
-            IconUrls = new DB.Entities.IconUrls
-            {
+            IconUrls = new DB.Entities.IconUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Tiny = "https://fake-url.com/tiny.png",
             }
         };
 
-        var member = new Member
-        {
+        var member = new Member {
             Tag = "@1234ASDF",
             Name = "Test member",
             Role = "Elder",
@@ -102,30 +97,25 @@ public class MemberMapperTests
     {
         // Arrange
         var timeStamp = DateTime.Now;
-        var dbLeague = new DBLeague
-        {
+        var dbLeague = new DBLeague {
             Id = 9001,
             Name = "Test league",
-            IconUrls = new CoL.DB.Entities.IconUrls
-            {
+            IconUrls = new CoL.DB.Entities.IconUrls {
                 Small = "https://fake-url.com/small.png",
                 Medium = "https://fake-url.com/medium.png",
                 Tiny = "https://fake-url.com/tiny.png",
             }
         };
-        var league = new League
-        {
+        var league = new League {
             Id = 9002,
             Name = "Test league updated",
-            IconUrls = new IconUrls
-            {
+            IconUrls = new IconUrls {
                 Small = "https://fake-url.com/updated-small.png",
                 Medium = "https://fake-url.com/updated-medium.png",
                 Tiny = "https://fake-url.com/updated-tiny.png",
             }
         };
-        var dbMember = new DBMember
-        {
+        var dbMember = new DBMember {
             Tag = "@234ASDFG",
             Name = "Test member 1",
             Role = "Peasant",
@@ -138,8 +128,7 @@ public class MemberMapperTests
             Donations = 1000,
             DonationsReceived = 1200
         };
-        var member = new Member
-        {
+        var member = new Member {
             Tag = "@1234ASDF",
             Name = "Test member",
             Role = "Elder",
@@ -177,20 +166,19 @@ public class MemberMapperTests
 
 
         var historyName = dbMember.History
-            .FirstOrDefault(h => h.Property == nameof(dbMember.Name));
+            .Find(h => h.Property == nameof(dbMember.Name));
         var historyRole = dbMember.History
-            .FirstOrDefault(h => h.Property.Equals(nameof(dbMember.Role)));
+            .Find(h => h.Property.Equals(nameof(dbMember.Role)));
         var historyDonations = dbMember.History
-            .FirstOrDefault(h => h.Property == nameof(dbMember.Donations));
+            .Find(h => h.Property == nameof(dbMember.Donations));
         var historyDonationsReceived = dbMember.History
-            .FirstOrDefault(h => h.Property.Equals(nameof(dbMember.DonationsReceived)));
+            .Find(h => h.Property.Equals(nameof(dbMember.DonationsReceived)));
 
 
         Assert.NotNull(historyName);
         Assert.NotNull(historyRole);
         Assert.NotNull(historyDonations);
         Assert.NotNull(historyDonationsReceived);
-
 
 
         Assert.Equal(member.Tag, dbMember.Tag);
@@ -203,9 +191,6 @@ public class MemberMapperTests
         Assert.Equal(member.PreviousClanRank, dbMember.PreviousClanRank);
         Assert.Equal(member.Donations, dbMember.Donations);
         Assert.Equal(member.DonationsReceived, dbMember.DonationsReceived);
-
-
-
 
 
         leagueImporterMock.Verify(leagueImporter =>

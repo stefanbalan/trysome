@@ -14,6 +14,7 @@ using ClashOfLogs.Shared;
 using CoL.DB.Sqlite;
 using CoL.Service.DataProvider;
 using CoL.Service.Importers;
+using CoL.Service.Infra;
 using CoL.Service.Mappers;
 using CoL.Service.Repository;
 using CoL.Service.Validators;
@@ -82,7 +83,7 @@ public static class Program
 
         if (Directory.Exists("/data") /*&& File.Exists("/data/appsettings.json")*/)
         {
-            Console.WriteLine("Loading cofiguration from /data");
+            Console.WriteLine("Loading configuration from /data");
             builder.SetBasePath("/data");
             builder.AddJsonFile("/data/appsettings.json", false, true);
         }
@@ -143,7 +144,7 @@ public static class Program
                 //                     ServiceLifetime.Singleton);
 
                 services.UseSqliteCoLContext(config.GetConnectionString("CoLContext")
-                                             ?? throw new Exception("Missing db connection string configuration"));
+                                             ?? throw new MissingConfigurationException("Missing db connection string configuration"));
 
                 // data providers
                 if (args.Contains("-files"))
@@ -168,24 +169,25 @@ public static class Program
                             serviceProvider.GetRequiredService<ILogger<ApiJsonDataProvider>>(),
                             serviceProvider.GetRequiredService<ApiClient>(),
                             config.GetValue<string>("ClanTag") ??
-                            throw new Exception("Missing configuration ClanTag")));
+                            throw new MissingConfigurationException("Missing configuration ClanTag")));
 
                     services.AddSingleton<ApiJsonLeagueWarsProvider, ApiJsonLeagueWarsProvider>(
                         serviceProvider => new ApiJsonLeagueWarsProvider(
                             serviceProvider.GetRequiredService<ILogger<ApiJsonLeagueWarsProvider>>(),
                             serviceProvider.GetRequiredService<ApiClient>(),
                             config.GetValue<string>("ClanTag") ??
-                            throw new Exception("Missing configuration ClanTag")));
+                            throw new MissingConfigurationException("Missing configuration ClanTag")));
                 }
 
                 services.AddSingleton(typeof(JsonBackup),
                     svcs =>
                         new JsonBackup(Path.Combine((config.GetValue<string>("JSONDirectory") ?? ""), "backup"),
-                            svcs.GetService<ILogger<JsonBackup>>() ?? throw new Exception("Logger not configured")
+                            svcs.GetService<ILogger<JsonBackup>>() ?? throw new MissingConfigurationException("Logger not configured")
                         ));
 
                 //validators
                 services.AddSingleton<IValidator<WarSummary>, WarSummaryValidator>();
+                services.AddSingleton<IValidator<WarDetail>, WarDetailValidator>();
 
                 // importers
                 services.AddSingleton<IEntityImporter<DBClan, Clan>, ClanImporter>();
@@ -215,7 +217,7 @@ public static class Program
 
                 //the actual service to run
                 services.AddHostedService<Worker>();
-                // services.AddHostedService<WorkerLeagueWars>();
+                //services.AddHostedService<WorkerLeagueWars>();
             })
             .UseSerilog();
     }
@@ -224,7 +226,7 @@ public static class Program
     {
         if (context is null)
         {
-            Log.Error("Could not get dbcotext from service collection");
+            Log.Error("Could not get dbContext from service collection");
             return false;
         }
 

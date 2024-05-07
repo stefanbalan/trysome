@@ -8,7 +8,6 @@ public class ClanMapperTests
     public void CreateAndUpdateEntity_ValidRequest_ReturnsDBClan()
     {
         // Arrange
-        var dbClan = new DBClan();
         var timeStamp = DateTime.Now;
 
         var clan = new Clan {
@@ -39,7 +38,7 @@ public class ClanMapperTests
         var mapper = new ClanMapper();
 
         // Act
-        dbClan = mapper.CreateAndUpdateEntity(clan, timeStamp);
+        var dbClan = mapper.CreateAndUpdateEntity(clan, timeStamp);
 
         // Assert
         Assert.Equal(clan.Tag, dbClan.Tag);

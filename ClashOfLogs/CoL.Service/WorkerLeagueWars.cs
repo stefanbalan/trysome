@@ -54,5 +54,5 @@ public class WorkerLeagueWars : BackgroundService
     // kept for reference of what is possible 
     //// public override Task StartAsync(CancellationToken cancellationToken) => base.StartAsync(cancellationToken);
 
-    // public override Task StopAsync(CancellationToken cancellationToken) => base.StopAsync(cancellationToken);
+    //// public override Task StopAsync(CancellationToken cancellationToken) => base.StopAsync(cancellationToken);
 }

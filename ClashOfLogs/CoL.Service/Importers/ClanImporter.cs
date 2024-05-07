@@ -28,16 +28,13 @@ public class ClanImporter : EntityImporter<DBClan, Clan>
         this.memberImporter = memberImporter;
     }
 
-    public override object?[] EntityKey(Clan entity) => new object?[] { entity.Tag };
+    public override object?[] EntityKey(Clan entity) => [entity.Tag];
 
-    public async override Task UpdateChildrenAsync(DBClan dbEntity, Clan clan, DateTime timeStamp)
+    public async override Task UpdateChildrenAsync(DBClan dbEntity, Clan clan, DateTime timestamp)
     {
         // import leagues
-        foreach (var member in clan.Members)
-        {
-            if (member.League == null) continue;
-            await leagueImporter.ImportAsync(member.League, timeStamp);
-        }
+        foreach (var league in clan.Members.Select(m => m.League).Where(l => l is not null)) 
+            await leagueImporter.ImportAsync(league, timestamp);
 
         // import members
         const string trueStr = "true";
@@ -46,14 +43,14 @@ public class ClanImporter : EntityImporter<DBClan, Clan>
         var previousMembers = dbEntity.Members.ToList();
         foreach (var member in clan.Members)
         {
-            var dbMember = await memberImporter.ImportAsync(member, timeStamp);
+            var dbMember = await memberImporter.ImportAsync(member, timestamp);
             if (dbMember == null) continue;
 
-            var alreadyMember = previousMembers.FirstOrDefault(m => m.Tag.Equals(dbMember.Tag));
+            var alreadyMember = previousMembers.Find(m => m.Tag.Equals(dbMember.Tag));
             if (alreadyMember == null)
             {
                 dbEntity.Members.Add(dbMember);
-                dbMember.History.Add(new HistoryEvent(timeStamp, nameof(dbMember.IsMember), trueStr, falseStr));
+                dbMember.History.Add(new HistoryEvent(timestamp, nameof(dbMember.IsMember), trueStr, falseStr));
                 dbMember.IsMember = true;
             }
             else
@@ -62,9 +59,9 @@ public class ClanImporter : EntityImporter<DBClan, Clan>
 
         foreach (var pm in previousMembers)
         {
-            pm.LastLeft = timeStamp;
+            pm.LastLeft = timestamp;
             pm.IsMember = false;
-            pm.History.Add(new HistoryEvent(timeStamp, nameof(pm.IsMember), falseStr, trueStr));
+            pm.History.Add(new HistoryEvent(timestamp, nameof(pm.IsMember), falseStr, trueStr));
         }
     }
 }
