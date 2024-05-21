@@ -1,13 +1,8 @@
-﻿using CoL.DB;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service.Repository;
 
-public class MemberEfRepository : BaseEFRepository<CoLContext, DBMember>
+public class MemberEfRepository(CoLContext context) : BaseEFRepository<CoLContext, DBMember>(context)
 {
-    public MemberEfRepository(CoLContext context) : base(context)
-    {
-    }
-
     protected override DbSet<DBMember> EntitySet => Context.ClanMembers;
 }

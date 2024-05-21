@@ -1,6 +1,5 @@
 ﻿using CoL.DB.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CoL.Service.Repository;
 

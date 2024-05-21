@@ -1,13 +1,10 @@
 ﻿using System.Linq;
-using CoL.DB;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoL.Service.Repository;
 
-internal class ClanRepository : BaseEFRepository<CoLContext, DBClan>
+internal class ClanRepository(CoLContext context) : BaseEFRepository<CoLContext, DBClan>(context)
 {
-    public ClanRepository(CoLContext context) : base(context) { }
-
     protected override DbSet<DBClan> EntitySet => Context.Clans;
 
     public async override ValueTask<DBClan?> GetByIdAsync(params object?[] keyValues)
