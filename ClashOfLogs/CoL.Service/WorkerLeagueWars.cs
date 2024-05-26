@@ -1,31 +1,17 @@
 using System.Threading;
-using ClashOfLogs.Shared;
 using CoL.Service.DataProvider;
-using CoL.Service.Importers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace CoL.Service;
 
-public class WorkerLeagueWars : BackgroundService
+public class WorkerLeagueWars(
+    ILogger<WorkerLeagueWars> logger,
+    ApiJsonLeagueWarsProvider importDataProvider)
+    : BackgroundService
 {
-    private readonly CoLContext context;
-    private readonly IHostApplicationLifetime hostApplicationLifetime;
-    private readonly IJsonDataProvider importDataProvider;
-    private readonly ILogger<Worker> logger;
+    private readonly IJsonDataProvider importDataProvider = importDataProvider;
 
-
-    public WorkerLeagueWars(
-        IHostApplicationLifetime hostApplicationLifetime,
-        ILogger<Worker> logger,
-        CoLContext context,
-        ApiJsonLeagueWarsProvider importDataProvider)
-    {
-        this.hostApplicationLifetime = hostApplicationLifetime;
-        this.logger = logger;
-        this.context = context;
-        this.importDataProvider = importDataProvider;
-    }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {

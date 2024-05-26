@@ -35,7 +35,7 @@ public static class Program
     public static int Main(string[] args)
     {
         var config = BuildConfiguration();
-        // access as var setting = config["Setting"]; var setting = config["Category:Setting"]; or config.GetSection<T>("section");
+        // access as var setting = config["Setting"], var setting = config["Category:Setting"] or config.GetSection<T>("section")
 
         var loggerConfiguration = new LoggerConfiguration().ReadFrom.Configuration(config)
             // these are configured from appsettings.json

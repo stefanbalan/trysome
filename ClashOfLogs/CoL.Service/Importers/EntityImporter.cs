@@ -17,26 +17,16 @@ public interface IEntityImporter<TDbEntity, TEntity> where TDbEntity : BaseEntit
     Task UpdateChildrenAsync(TDbEntity dbEntity, TEntity entity, DateTime timestamp);
 }
 
-public abstract class EntityImporter<TDbEntity, TEntity>
-    : IEntityImporter<TDbEntity, TEntity> where TDbEntity : BaseEntity
+public abstract class EntityImporter<TDbEntity, TEntity>(
+    IMapper<TDbEntity, TEntity> mapper,
+    IRepository<TDbEntity> repository,
+    ILogger<IEntityImporter<TDbEntity, TEntity>> logger,
+    IValidator<TEntity>? validator = null)
+    : IEntityImporter<TDbEntity, TEntity>
+    where TDbEntity : BaseEntity
 {
-    private readonly ILogger<IEntityImporter<TDbEntity, TEntity>> logger;
-    private readonly IValidator<TEntity>? validator;
-    protected readonly IRepository<TDbEntity> Repository;
-    private readonly IMapper<TDbEntity, TEntity> mapper;
+    protected readonly IRepository<TDbEntity> Repository = repository;
     protected bool PersistChangesAfterImport;
-
-    protected EntityImporter(
-        IMapper<TDbEntity, TEntity> mapper,
-        IRepository<TDbEntity> repository,
-        ILogger<IEntityImporter<TDbEntity, TEntity>> logger,
-        IValidator<TEntity>? validator = null)
-    {
-        this.mapper = mapper;
-        this.logger = logger;
-        this.validator = validator;
-        Repository = repository;
-    }
 
     public async virtual Task<TDbEntity?> ImportAsync(TEntity entity, DateTime timestamp, bool persist = false)
     {
@@ -56,7 +46,7 @@ public abstract class EntityImporter<TDbEntity, TEntity>
             }
             catch (Exception e)
             {
-                logger.LogError("Getting {Type} by id failed: {Message}", typeof(TDbEntity).Name, e.Message);
+                logger.LogError(e, "Getting {Type} by id failed: {Message}", typeof(TDbEntity).Name, e.Message);
                 return null;
             }
 

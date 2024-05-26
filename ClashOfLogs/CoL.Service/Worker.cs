@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Threading;
 using ClashOfLogs.Shared;
 using CoL.Service.DataProvider;
@@ -7,37 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace CoL.Service;
 
-public class Worker : BackgroundService
+public class Worker(
+    ILogger<Worker> logger,
+    CoLContext context,
+    IJsonDataProvider importDataProvider,
+    IEntityImporter<DBClan, Clan> clanDataImporter,
+    IEntityImporter<DBWar, WarSummary> warLogImporter,
+    IEntityImporter<DBWar, WarDetail> warDetailImporter,
+    IEntityImporter<DBLeague, League> leagueImporter)
+    : BackgroundService
 {
-    private readonly IEntityImporter<DBLeague, League> leagueImporter;
-    private readonly IEntityImporter<DBClan, Clan> clanDataImporter;
-    private readonly IEntityImporter<DBWar, WarSummary> warLogImporter;
-    private readonly IEntityImporter<DBWar, WarDetail> warDetailImporter;
-    private readonly CoLContext context;
-    private readonly IHostApplicationLifetime hostApplicationLifetime;
-    private readonly IJsonDataProvider importDataProvider;
-    private readonly ILogger<Worker> logger;
+    private readonly CoLContext context = context;
 
-
-    public Worker(
-        IHostApplicationLifetime hostApplicationLifetime,
-        ILogger<Worker> logger,
-        CoLContext context,
-        IJsonDataProvider importDataProvider,
-        IEntityImporter<DBClan, Clan> clanDataImporter,
-        IEntityImporter<DBWar, WarSummary> warLogImporter,
-        IEntityImporter<DBWar, WarDetail> warDetailImporter,
-        IEntityImporter<DBLeague, League> leagueImporter)
-    {
-        this.hostApplicationLifetime = hostApplicationLifetime;
-        this.logger = logger;
-        this.context = context;
-        this.importDataProvider = importDataProvider;
-        this.clanDataImporter = clanDataImporter;
-        this.warLogImporter = warLogImporter;
-        this.warDetailImporter = warDetailImporter;
-        this.leagueImporter = leagueImporter;
-    }
 
     protected async override Task ExecuteAsync(CancellationToken stoppingToken)
     {

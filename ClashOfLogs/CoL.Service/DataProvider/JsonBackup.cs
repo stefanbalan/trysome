@@ -54,9 +54,9 @@ public class JsonBackup
             {
                 Directory.CreateDirectory(backupDirectoryPath);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                logger.LogError(e, "error while creating backup directory");
+                logger.LogError(ex, "error while creating backup directory");
             }
 
         //var datestring = DateTime.Now.ToString("yyyyMMdd HHmm");

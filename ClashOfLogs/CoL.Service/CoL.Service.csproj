@@ -37,4 +37,7 @@
     <ProjectReference Include="..\ClashOfLogs\Shared\ClashOfLogs.Shared.csproj" />
     <ProjectReference Include="..\CoL.DB.Sqlite\CoL.DB.Sqlite.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Providers\" />
+  </ItemGroup>
 </Project>

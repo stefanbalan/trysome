@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using ClashOfLogs.Shared;
+using CoL.Service.Infra;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -22,10 +23,10 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
     {
         var importPath = config.GetValue(typeof(string), "JSONDirectory", ".") as string;
         if (string.IsNullOrWhiteSpace(importPath))
-            throw new Exception("Invalid configuration, import directory is empty");
+            throw new InvalidConfigurationException("Invalid configuration, import directory is empty");
         directory = new DirectoryInfo(importPath);
         if (!directory.Exists)
-            throw new Exception($"Invalid configuration, import directory {directory.FullName} does not exist");
+            throw new InvalidConfigurationException($"Invalid configuration, import directory {directory.FullName} does not exist");
         this.logger = logger;
         this.jsonBackup = jsonBackup;
     }
@@ -47,7 +48,7 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
         }
         catch (Exception ex)
         {
-            logger.LogError("Cannot read import directory {ExMessage}", ex.Message);
+            logger.LogError(ex, "Cannot read import directory {ExMessage}", ex.Message);
         }
 
         return fileInfo != null;
@@ -99,7 +100,7 @@ internal class FileJsonDataProvider2 : IJsonDataProvider
         }
         catch (Exception ex)
         {
-            logger.LogError("Error reading json files from disk {Message}", ex.Message);
+            logger.LogError(ex, "Error reading json files from disk {Message}", ex.Message);
             return null;
         }
     }
