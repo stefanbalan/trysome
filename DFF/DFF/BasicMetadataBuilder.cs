@@ -9,25 +9,6 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
 {
     private readonly MD5 md5 = MD5.Create();
 
-    public async Task<Item> BuildMetadataAsync(Item item)
-    {
-        try
-        {
-            await using var stream = item.FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.None);
-
-            var hash = await md5.ComputeHashAsync(stream);
-            item.Hash = hash.Aggregate("", (s, b) => s + b.ToString("X2"));
-
-            stream.Close();
-        }
-        catch (IOException e) when ((e.HResult & 0x0000FFFF) == 32)
-        {
-            logger.LogError("Cannot read file {File} : {Message}", item.FileInfo.FullName, e.Message);
-        }
-
-
-        return item;
-    }
 
     private const int Size128Kb = 131072;
 
@@ -83,17 +64,16 @@ public class BasicMetadataBuilder(ILogger<BasicMetadataBuilder> logger)
     ];
 
 
-    public ValueTask<(DateTime? Date, string Extra)> ComputeCreationDateAsync(FileInfo fileInfo)
+    public ValueTask<(DateTime? Date, string Extra)> ComputeCreationDateAsync(string fileName)
     {
-        var fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-        var creationDate = default(DateTime?);
+        var name = Path.GetFileNameWithoutExtension(fileName);
 
         foreach (var pattern in patterns)
         {
-            var match = Regex.Match(fileName, pattern.Regex);
+            var match = Regex.Match(name, pattern.Regex);
             if (match.Success)
             {
-                var extra = Regex.Replace(fileName, pattern.Regex, "");
+                var extra = Regex.Replace(name, pattern.Regex, "");
 
                 if (DateTime.TryParseExact(match.Value, pattern.Format, CultureInfo.InvariantCulture,
                         DateTimeStyles.None, out var date))

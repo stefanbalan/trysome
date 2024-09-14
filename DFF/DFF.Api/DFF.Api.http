@@ -1,0 +1,6 @@
+@DFF.Api_HostAddress = http://localhost:5112
+
+GET {{DFF.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

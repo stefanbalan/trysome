@@ -1,13 +1,27 @@
-﻿namespace DuplicateFileFind;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+
+namespace DuplicateFileFind;
 
 public class IndexedFile
 {
-    public int Id { get; set; }
-    public int DirectoryId { get; set; }
+    public long Id { get; set; }
+    public int FolderId { get; set; }
     public required IndexedFolder Folder { get; set; }
+    
     public required string Name { get; set; }
     public long Length { get; set; }
-    public DateTime CreationDateTime { get; set; }
+
+    /// <summary>
+    /// Media creation date
+    /// </summary>
+    public DateOnly? Date { get; set; }
+    public TimeSpan? Time { get; set; }
+
+
+    public string? OriginalPath { get; set; }
+    public string OriginalName { get; set; }
+    public DateTime OriginalFileDate { get; set; }
+
 
     /// <summary>
     /// File hash for the first 128 kb of the file
@@ -18,4 +32,9 @@ public class IndexedFile
     /// File hash for the whole file
     /// </summary>
     public string? Hash { get; set; }
+
+    /// <summary>
+    /// json with extended metadata
+    /// </summary>
+    public string ExtendedMetadata { get; set; }
 }

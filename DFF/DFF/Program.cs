@@ -18,8 +18,8 @@ public static class Program
 
         // Configure DbContext with the connection string from appsettings.json
         builder.Services.AddDbContext<DffContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")
-                              ?? Path.Combine(currentDirectory, "_dff.sqlite")));
+            options.UseSqlite(configuration.GetConnectionString("DffContext")
+                              ?? Path.Combine(currentDirectory, "dff.db")));
 
         builder.Services.AddSingleton<IConfig, Config>(provider => new Config(
             provider.GetRequiredService<IConfiguration>(),
